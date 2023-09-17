@@ -1,0 +1,2 @@
+# StarRail-FastRun
+test
