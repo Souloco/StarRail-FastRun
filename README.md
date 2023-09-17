@@ -21,7 +21,7 @@ This software is open source, free of charge and for learning and exchange purpo
 - 软件设置
     - 以管理员身份运行
     - 英文路径下使用
-# 计划实现功能
+# 实现功能
 - [x] 锄大地
 - [x] 清体力
 - [x] 清兑换码
