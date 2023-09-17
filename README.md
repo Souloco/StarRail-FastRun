@@ -25,5 +25,5 @@ This software is open source, free of charge and for learning and exchange purpo
 - [x] 锄大地
 - [x] 清体力
 - [x] 清兑换码
-- [] 清委托
-- [] 多功能合一执行
+- [ ] 清委托
+- [ ] 多功能合一执行
