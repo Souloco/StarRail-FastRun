@@ -1,0 +1,22 @@
+{
+    "name": "登录界面",
+    "author": "Souloco",
+    "start": [
+        {"login.png": 60},
+        {"monthly_click.png": 60}
+    ],
+    "map": [
+        {
+            "delay":10
+        },
+        {
+            "fighting": 2
+        },
+        {
+        "delay":5
+        },
+        {
+            "fighting": 2
+        }
+    ]
+}

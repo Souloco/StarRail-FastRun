@@ -1,0 +1,14 @@
+{
+    "name": "测试",
+    "author": "Souloco",
+    "start": [
+        {"map_1.jpg": 2},
+        {"map_1_point.jpg": 1.5},
+        {"transfer": 1.5}
+    ],
+    "map": [
+        {
+            "w":1.0
+        }
+    ]
+}

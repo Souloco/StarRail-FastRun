@@ -1,0 +1,8 @@
+cnocr
+loguru
+numpy
+opencv_python==4.8.0.76
+opencv_python_headless==4.8.0.74
+Pillow==10.0.0
+pynput==1.7.6
+pywin32
