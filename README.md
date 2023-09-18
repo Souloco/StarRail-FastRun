@@ -21,6 +21,8 @@ This software is open source, free of charge and for learning and exchange purpo
 - 软件设置
     - 以管理员身份运行StarRail-FastRun/gui.exe
     - 英文路径下使用
+- 软件更新
+    - 运行update.exe
 # 实现功能
 - [x] 锄大地
 - [x] 清体力
