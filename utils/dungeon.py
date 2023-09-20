@@ -18,6 +18,7 @@ class Dungeon:
 
     def enter_dungeon(self,dungeonpath:str,nums=1):
         self.open_dungeon()
+        dungeon_id = dungeonpath[dungeonpath.index("_")+1:dungeonpath.index("-")]
         dungeon_name_dir = dungeonpath[0:dungeonpath.index("-")] + ".jpg"
         # 向下滚动寻找
         if not self.calculated.img_check(dungeon_name_dir,(0,0,0,0),1):
@@ -49,6 +50,10 @@ class Dungeon:
             self.calculated.img_click("exit.jpg")
             time.sleep(0.5)
             return True
+        # 凝滞虚影主动打怪
+        if dungeon_id == '3':
+            self.calculated.wait_main_interface()
+            self.calculated.fighting(2)
         while nums > 1:
             while not self.calculated.img_check("dungeon_again.jpg",overtime=2):
                 time.sleep(5)
