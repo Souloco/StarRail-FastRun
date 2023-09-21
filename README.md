@@ -12,6 +12,22 @@ This software is open source, free of charge and for learning and exchange purpo
 "一经发现，米哈游（下亦称“我们”）将视违规严重程度及违规次数，采取扣除违规收益、冻结游戏账号、永久封禁游戏账号等措施。"
 ```
 # 使用说明
+- 环境配置
+    - python安装
+        - [python推荐安装版本3.11.3](https://www.python.org/downloads/release/python-3113/)
+        - 页面拉至底部，下载Windows installer (64-bit)
+        - 点击安装包进行安装
+        - 勾选Add Python 3.x to PATH
+    - 依赖安装
+        - 安装方式一:
+            - 打开```cmd```并切换到StarRail-FastRun文件夹路径
+                - 方法一：win+R输入cmd,输入```cd 文件夹路径```切换到StarRail-FastRun文件夹路径
+                - 方法二:打开StarRail-FastRun文件夹,在```文件夹路径处输入cmd```
+            - 输入```pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/```
+            - 根据提示确认是否安装完毕
+        - 安装方式二：
+            - 下载```setup.exe```在StarRail-FastRun文件夹目录下启动
+            - 根据提示确认是否安装完毕
 - 游戏设置
     - 是否沿用自动战斗设置---是
     - 键鼠模式显示底部提示---是
@@ -19,7 +35,7 @@ This software is open source, free of charge and for learning and exchange purpo
     - 视角灵敏度---3
     - 游戏分辨率1920x1080---有窗口化选窗口化没有就选全屏幕
 - 软件设置
-    - 以管理员身份运行StarRail-FastRun/gui.exe
+    - 以管理员身份运行gui.exe
     - 英文路径下使用
 - 软件更新
     - 运行update.exe
