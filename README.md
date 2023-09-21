@@ -35,10 +35,13 @@ This software is open source, free of charge and for learning and exchange purpo
     - 视角灵敏度---3
     - 游戏分辨率1920x1080---有窗口化选窗口化没有就选全屏幕
 - 软件设置
-    - 以管理员身份运行gui.exe
+    - 以管理员身份运行```gui.exe```
     - 英文路径下使用
+- 软件使用
+    - 立即关闭程序```f8```
+    - 锄大地```远程角色```带队
 - 软件更新
-    - 运行update.exe
+    - 运行```update.exe```
 # 实现功能
 - [x] 锄大地
 - [x] 清体力
