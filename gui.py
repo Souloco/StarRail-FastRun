@@ -13,6 +13,8 @@ from pynput import keyboard
 import pyuac
 import requests
 import time
+import win32console
+import win32gui
 # 全局属性
 # 标题
 TITLE_NAME = 'StarRail-FastRun'
@@ -37,6 +39,7 @@ def Enter_frame2():
     root.update()
 # 进入主页面
 def Enter_mainframe():
+    logframe.pack_forget()
     announce_frame.pack_forget()
     allframe.pack_forget()
     hoe_frame.pack_forget()
@@ -192,7 +195,13 @@ def index_dungeon_change(event):
     dungeon_box.config(values=dungeon_list)
     dungeon_choose.set(dungeon_list[0])
     root.update()
-
+# 显隐cmd
+CMD = win32console.GetConsoleWindow()
+def hide_cmd():
+    if win32gui.IsWindowVisible(CMD):
+        win32gui.ShowWindow(CMD, 0)  # 隐藏命令行窗口
+    else:
+        win32gui.ShowWindow(CMD, 1)  # 显示命令行窗口
 if __name__ == '__main__':
     if not pyuac.isUserAdmin():
         messagebox.showerror("运行错误", "请以管理员权限运行")
@@ -218,6 +227,7 @@ if __name__ == '__main__':
     ttk.Button(mainframe,text='兑换码',width=10,command=Enter_cdkframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='每日委托',width=10).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='多脚本执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
+    hind = ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='编辑配置',width=10).grid(pady=5,ipady=10)
 
     # 公告页面
@@ -407,7 +417,9 @@ if __name__ == '__main__':
     t1 = threading.Thread(name='btn_close',target=btn_close_window)
     t1.daemon = True
     t1.start()
+    # 版本更新
     if ver_update:
         time.sleep(5)
         close_window()
+    win32gui.ShowWindow(CMD, 0)  # 隐藏命令行窗口
     root.mainloop()
