@@ -68,7 +68,7 @@ class Map:
                         # 进入层数
                         log.info(f"进入{value}层")
                         self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
-                elif "point" in key: 
+                elif "point" in key:
                     log.info("寻找传送点")
                     # 向下滚动寻找
                     for i in range(5):

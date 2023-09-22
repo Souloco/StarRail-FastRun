@@ -207,8 +207,13 @@ class Calculated:
                     x = int((loc[0][0]+loc[1][0]+loc[2][0]+loc[3][0])/4)
                     y = int((loc[0][1]+loc[1][1]+loc[2][1]+loc[3][1])/4)
                     return (x,y),rate
-            else:
+            elif nums > 2:
                 if ocr_num >= nums - 1:
+                    x = int((loc[0][0]+loc[1][0]+loc[2][0]+loc[3][0])/4)
+                    y = int((loc[0][1]+loc[1][1]+loc[2][1]+loc[3][1])/4)
+                    return (x,y),rate
+            else:
+                if text == content:
                     x = int((loc[0][0]+loc[1][0]+loc[2][0]+loc[3][0])/4)
                     y = int((loc[0][1]+loc[1][1]+loc[2][1]+loc[3][1])/4)
                     return (x,y),rate
@@ -320,10 +325,10 @@ class Calculated:
         mask1 = cv.inRange(hsv_img, lower_red, upper_red)
         mask2 = cv.inRange(hsv_img, lower_red2, upper_red2)
         mask = cv.bitwise_or(mask1, mask2)
-        # 统计掩膜中的像素数目 
+        # 统计掩膜中的像素数目
         red_pixel_count = cv.countNonZero(mask)
         print(red_pixel_count)
-        return red_pixel_count > 30
+        return red_pixel_count > 50
 
     def get_whiteimg(self,img):
         """
@@ -378,12 +383,15 @@ class Calculated:
     def wait_main_interface(self):
         start_time = time.time()    # 开始计算等待时间
         while True:
+            if self.img_click("fighting_lost.jpg",(700,140,1200,400),2):
+                log.info("战斗失败")
+                break
             if self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),2):
-                time.sleep(2)   # 等待人物模型出现
                 break
             time.sleep(3)
             if time.time() - start_time > 600:
                 return False
+        time.sleep(2)   # 等待人物模型出现
         return True
 
     def check_main_interface(self):
@@ -457,9 +465,27 @@ class Calculated:
         self.img_click("sure2.png",overtime=10)
         # 关机
         time.sleep(5)
-        os.system('shutdown -s -t 60')
+        os.system('shutdown /s /t 60')
         # 关闭程序
         self.Keyboard.press(Key.f8)
         time.sleep(0.05)
         self.Keyboard.release(Key.f8)
         return True
+
+    def change_team(self,teamid):
+        """
+        说明:
+            切换队伍
+        """
+        log.info("切换队伍")
+        self.Keyboard.press('t')
+        time.sleep(0.5)
+        self.Keyboard.release('t')
+        time.sleep(1)   # 缓冲
+        teamid = '0' + str(teamid)
+        self.ocr_click(text=teamid,points=(550,0,1300,130))
+        self.img_click("team_sure.png",points=(1500,950,1920,1080))
+        time.sleep(2)   # 缓冲
+        self.Keyboard.press(Key.esc)
+        time.sleep(0.05)
+        self.Keyboard.release(Key.esc)

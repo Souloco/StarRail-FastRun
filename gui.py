@@ -12,11 +12,13 @@ from utils.log import log
 from pynput import keyboard
 import pyuac
 import requests
+import time
 # 全局属性
 # 标题
 TITLE_NAME = 'StarRail-FastRun'
 # 版本号
 VER = get_config("version")
+# 版本更新提示
 ver_update = False
 # 用于日志文本框
 class TextboxHandler(logging.Handler):
@@ -89,7 +91,7 @@ def Enter_map():
         auto_map.calculated.active_window()
         auto_map.map_init()
         t = threading.Thread(name='chudi',target=auto_map.Enter_map_all,args=(map_use_list,auto_map_use_list,close_game_var.get(),auto_map_nums.get()))
-        t.setDaemon(True)
+        t.daemon = True
         t.start()
 # cdk线程
 def Enter_cdk():
@@ -102,7 +104,7 @@ def Enter_cdk():
     auto_cdk.calculated.set_windowsize()
     auto_cdk.calculated.active_window()
     t = threading.Thread(name='cdk',target=auto_cdk.cdk_all,args=(cdk_list,))
-    t.setDaemon(True)
+    t.daemon = True
     t.start()
 # 副本线程
 def enter_dungeon_all():
@@ -114,8 +116,9 @@ def enter_dungeon_all():
         auto_dungeon.calculated.set_windowsize()
         id = dungeon_notebook.index("current")
         t = threading.Thread(name='dungeon',target=auto_dungeon.enter_dungeon_list,args=(dungeon_config_list[id],))
-        t.setDaemon(True)
+        t.daemon = True
         t.start()
+
 # 多功能执行
 def enter_function():
     # 清体力执行
@@ -131,7 +134,7 @@ def enter_function():
     auto_map.calculated.active_window()
     auto_map.map_init()
     auto_map.Enter_map_all(map_use_list,auto_map_use_list,close_game_var.get(),auto_map_nums.get())
-
+# 多功能执行线程
 def enter_function_all():
     auto_map.calculated.get_hwnd()
     if auto_map.calculated.hwnd == 0:
@@ -232,18 +235,21 @@ if __name__ == '__main__':
     # 获取信息
     repos_url = 'https://api.github.com/repos/Souloco/StarRail-FastRun/releases/latest'
     # 请求版本最新信息
-    response = requests.get(repos_url)
-    if response.status_code == 200:
-        data = response.json()
-        # 获取版本信息
-        version = data['tag_name']
-        lowversion = str(data["body"]).split("lowversion:")[1]
-        announce_text.insert('end',data["body"])
-        if lowversion > VER:
-            ver_update = True
-            messagebox.showerror("版本更新","当前版本过低，请更新")
-    else:
-        announce_text.insert('end',"网络获取失败")
+    try:
+        response = requests.get(repos_url)
+        if response.status_code == 200:
+            data = response.json()
+            # 获取版本信息
+            version = data['tag_name']
+            lowversion = str(data["body"]).split("lowversion:")[1]
+            announce_text.insert('end',data["body"])
+            if lowversion > VER:
+                ver_update = True
+                messagebox.showerror("版本更新","当前版本过低，请更新")
+        else:
+            announce_text.insert('end',"网络获取失败")
+    except Exception:
+        announce_text.insert('end',"疑似网络超时")
     announce_text.configure(state='disabled')
     announce_text.grid(columnspan=2,padx=5,pady=5)
     ttk.Button(announce_frame,text='确认',width=10,command=Enter_mainframe).grid(columnspan=2)
@@ -302,7 +308,6 @@ if __name__ == '__main__':
     # 按钮
     ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=6,column=0,columnspan=2)
     ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=6,column=2,columnspan=2)
-
     ttk.Label(hoe_frame,text='执行次数:',font=('helvetica', 12)).grid(row=7,column=0)
     auto_map_nums = tk.IntVar()
     auto_map_nums.set(0)
@@ -320,9 +325,10 @@ if __name__ == '__main__':
     # 日志页面
     logframe = ttk.Frame(root)
     ttk.Label(logframe, text='实时日志', font=('Arial Black', 16)).pack(anchor='nw')   # justify控制对其方向，anchor控制位置 共同使文本靠左
-    ttk.Button(logframe, text='开始',width=5,command=Enter_map).place(relx=0.70,rely=0)
-    ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.80,rely=0)
-    ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.90,rely=0)
+    ttk.Button(logframe, text='开始',width=5,command=Enter_map).place(relx=0.60,rely=0)
+    ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.70,rely=0)
+    ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.80,rely=0)
+    ttk.Button(logframe, text='返回',width=5,command=Enter_mainframe).place(relx=0.90,rely=0)
     s2 = ttk.Scrollbar(logframe)      # 设置垂直滚动条
     b2 = ttk.Scrollbar(logframe, orient='horizontal')    # 水平滚动条
     s2.pack(side='right', fill='y')     # 靠右，充满Y轴
@@ -399,8 +405,9 @@ if __name__ == '__main__':
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
     t1 = threading.Thread(name='btn_close',target=btn_close_window)
-    t1.setDaemon(True)
+    t1.daemon = True
     t1.start()
     if ver_update:
+        time.sleep(5)
         close_window()
     root.mainloop()
