@@ -130,8 +130,10 @@ class Calculated:
             self.Mouse.press(mouse.Button.left)
             time.sleep(0.5)
             self.Mouse.release(mouse.Button.left)
+            return True
         else:
             log.info("识别超时")
+            return False
 
     def img_check(self,templepath,points=(0,0,0,0),overtime=5.0,rates=0.90):
         """
@@ -151,7 +153,7 @@ class Calculated:
             img = self.take_screenshot(points)
             val,loc = self.img_match(img,templeimg)
             time.sleep(0.05)
-        log.info(f"图片检测-{val}")
+        # log.info(f"图片检测-{val}")
         if val >= rates:
             return True
         else:
@@ -194,7 +196,7 @@ class Calculated:
         result = self.reader.ocr(img)
         nums = len(text)
         ocr_num = 0
-        print(result)
+        # print(result)
         for res in result:
             loc = res['position']
             content = str(res['text']).replace(" ", "")
@@ -246,8 +248,10 @@ class Calculated:
             self.Mouse.press(mouse.Button.left)
             time.sleep(0.5)
             self.Mouse.release(mouse.Button.left)
+            return True
         else:
             log.warning(f"OCR点击失败-{rate}")
+            return False
 
     def ocr_check(self,text:str,points=(0,0,0,0),overtime=5.0,rates=0.1):
         """
@@ -396,7 +400,7 @@ class Calculated:
 
     def check_main_interface(self):
         log.info("强制在主界面")
-        if self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),30):
+        if self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),10):
             time.sleep(2)   # 等待人物模型出现
         else:
             while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):
@@ -410,7 +414,6 @@ class Calculated:
         """
         说明:
             等待战斗结束
-        参数:
         """
         log.info("等待战斗结束")
         time.sleep(7)   # 缓冲
@@ -472,7 +475,7 @@ class Calculated:
         self.Keyboard.release(Key.f8)
         return True
 
-    def change_team(self,teamid):
+    def change_team(self,teamid:int,id:int):
         """
         说明:
             切换队伍
@@ -484,8 +487,32 @@ class Calculated:
         time.sleep(1)   # 缓冲
         teamid = '0' + str(teamid)
         self.ocr_click(text=teamid,points=(550,0,1300,130))
-        self.img_click("team_sure.png",points=(1500,950,1920,1080))
+        self.img_click("team_sure.png",points=(1500,950,1920,1080),overtime=2)
         time.sleep(2)   # 缓冲
         self.Keyboard.press(Key.esc)
         time.sleep(0.05)
         self.Keyboard.release(Key.esc)
+        self.check_main_interface()
+        if id >= 1 and id <= 4:
+            id = str(id)
+            self.Keyboard.press(id)
+            time.sleep(0.05)
+            self.Keyboard.release(id)
+
+    def commission(self):
+        """
+        说明:
+            委托功能
+        """
+        log.info("清委托")
+        self.Keyboard.press(Key.esc)
+        time.sleep(0.05)
+        self.Keyboard.release(Key.esc)
+        self.ocr_click(text='委托',points=(1700,400,1755,425))
+        while self.img_click('red_notice.jpg',overtime=3):
+            if self.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
+                self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2)
+        while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):
+            self.Keyboard.press(Key.esc)
+            time.sleep(0.05)
+            self.Keyboard.release(Key.esc)

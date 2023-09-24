@@ -55,12 +55,18 @@ def get_map_list(map_value_list):
         if value == 1:
             map_use_list.append(map_list[i])
     return map_use_list
-# 保存地图列表
-def save_map_list():
+# 保存
+def save_config():
     map_use_list = get_map_list(map_value_list)
     auto_map_use_list = get_map_list(auto_map_value_list)
     set_config("map_list_data",map_use_list)
     set_config("auto_map_list_data",auto_map_use_list)
+    set_config("team_id",teamid_sets.get())
+    set_config("character_id",id_sets.get())
+    set_config("team_change",team_change_var.get())
+    set_config("img_log",img_log_Var.get())
+    set_config("close_game",close_game_var.get())
+    set_config("auto_map_nums",auto_map_nums.get())
 # 进入日志页面
 def Enter_logframe():
     hoe_frame.pack_forget()
@@ -92,6 +98,8 @@ def Enter_map():
         auto_map.calculated.img_log_value = img_log_Var.get()   # 是否启用截图记录
         auto_map.calculated.set_windowsize()
         auto_map.calculated.active_window()
+        if team_change_var.get():
+            auto_map.calculated.change_team(teamid=teamid_sets.get(),id=id_sets.get())
         auto_map.map_init()
         t = threading.Thread(name='chudi',target=auto_map.Enter_map_all,args=(map_use_list,auto_map_use_list,close_game_var.get(),auto_map_nums.get()))
         t.daemon = True
@@ -144,7 +152,7 @@ def enter_function_all():
         log.warning("未检测到游戏运行,请启动游戏")
     else:
         t = threading.Thread(name='allfunction',target=enter_function)
-        t.setDaemon(True)
+        t.daemon = True
         t.start()
 # 添加副本配置项
 def add_dungeon_config():
@@ -204,6 +212,7 @@ def hide_cmd():
         win32gui.ShowWindow(CMD, 1)  # 显示命令行窗口
 if __name__ == '__main__':
     if not pyuac.isUserAdmin():
+        pyuac.runAsAdmin()
         messagebox.showerror("运行错误", "请以管理员权限运行")
         raise Exception("请以管理员身份运行")
     # 锄大地实例
@@ -269,6 +278,7 @@ if __name__ == '__main__':
     hoe_frame = ttk.Frame(root)
     ttk.Label(hoe_frame,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
     ttk.Label(hoe_frame,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
+    ttk.Label(hoe_frame,text='必跑路线',font=('Arial Black', 16)).grid(columnspan=4,pady=10)
     # notebook地图选项
     map_list = read_map()
     map_title = [('空间站「黑塔」',1),('雅利洛-VI',2),('仙舟「罗浮」',3),('匹诺康尼',4)]    # 星球选项
@@ -293,10 +303,10 @@ if __name__ == '__main__':
         map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     map_notebook.grid(columnspan=4)
     # 按钮
-    ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=3,column=0,columnspan=2)
-    ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=3,column=2,columnspan=2)
+    ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=4,column=0,columnspan=2)
+    ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=2,columnspan=2)
     # auto_notebook地图选项
-    ttk.Label(hoe_frame,text='捡漏设置',font=('Arial Black', 16)).grid(columnspan=4,pady=10)
+    ttk.Label(hoe_frame,text='重跑路线',font=('Arial Black', 16)).grid(columnspan=4,pady=10)
     auto_map_notebook = ttk.Notebook(hoe_frame)
     auto_map_tab_list = []
     auto_map_value_list = []
@@ -316,20 +326,36 @@ if __name__ == '__main__':
         auto_map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     auto_map_notebook.grid(columnspan=4)
     # 按钮
-    ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=6,column=0,columnspan=2)
-    ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=6,column=2,columnspan=2)
-    ttk.Label(hoe_frame,text='执行次数:',font=('helvetica', 12)).grid(row=7,column=0)
+    ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=7,column=0)
+    ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=7,column=1)
+    # 锄大地配置
+    # 重跑次数
+    ttk.Label(hoe_frame,text='重跑次数:',font=('', 12)).grid(row=7,column=2)
     auto_map_nums = tk.IntVar()
-    auto_map_nums.set(0)
+    auto_map_nums.set(get_config("auto_map_nums"))
     auto_map_spinbox = ttk.Spinbox(hoe_frame,from_=0, to=10, increment=1,textvariable=auto_map_nums)
-    auto_map_spinbox.grid(row=7,column=1)
+    auto_map_spinbox.grid(row=7,column=3)
+    # 切换队伍
+    teamid_sets = tk.IntVar()
+    teamid_option_list = [1,2,3,4,5,6]
+    id_sets = tk.IntVar()
+    id_option_list = [1,2,3,4]
+    ttk.Label(hoe_frame,text='队伍编号/人物编号:',font=('', 12)).grid(row=8,column=0)
+    ttk.OptionMenu(hoe_frame,teamid_sets,get_config("team_id"),*teamid_option_list).grid(row=8,column=1)
+    ttk.OptionMenu(hoe_frame,id_sets,get_config("character_id"),*id_option_list).grid(row=8,column=2)
+    team_change_var = tk.BooleanVar()
+    team_change_var.set(get_config("team_change"))
+    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=8,column=3)
     img_log_Var = tk.BooleanVar()
+    img_log_Var.set(get_config("img_log"))
     close_game_var = tk.BooleanVar()
-    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=7,column=2)
-    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=7,column=3)
+    close_game_var.set(get_config("close_game"))
+    # 其他配置
+    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=0)
+    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=9,column=1)
     # 按钮
     ttk.Button(hoe_frame,text='确定',width=10,command=Enter_logframe).grid(columnspan=4,pady=5)
-    ttk.Button(hoe_frame,text='保存',width=10,command=save_map_list).grid(columnspan=4,pady=5)
+    ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(columnspan=4,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
 
     # 日志页面
