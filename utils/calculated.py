@@ -516,3 +516,14 @@ class Calculated:
             self.Keyboard.press(Key.esc)
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
+
+    def login(self):
+        """
+        说明:
+            登录功能
+        """
+        log.info("登录界面")
+        while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):
+            self.Mouse.position = self.mouse_pos((950,900))
+            self.Mouse.click(mouse.Button.left)
+            time.sleep(1)

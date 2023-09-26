@@ -67,6 +67,7 @@ def save_config():
     set_config("img_log",img_log_Var.get())
     set_config("close_game",close_game_var.get())
     set_config("auto_map_nums",auto_map_nums.get())
+    set_config("commission",commission_var.get())
 # 进入日志页面
 def Enter_logframe():
     hoe_frame.pack_forget()
@@ -98,6 +99,8 @@ def Enter_map():
         auto_map.calculated.img_log_value = img_log_Var.get()   # 是否启用截图记录
         auto_map.calculated.set_windowsize()
         auto_map.calculated.active_window()
+        if commission_var.get():
+            auto_map.calculated.commission()
         if team_change_var.get():
             auto_map.calculated.change_team(teamid=teamid_sets.get(),id=id_sets.get())
         auto_map.map_init()
@@ -213,8 +216,8 @@ def hide_cmd():
 if __name__ == '__main__':
     if not pyuac.isUserAdmin():
         pyuac.runAsAdmin()
-        messagebox.showerror("运行错误", "请以管理员权限运行")
-        raise Exception("请以管理员身份运行")
+        # messagebox.showerror("运行错误", "请以管理员权限运行")
+        # raise Exception("请以管理员身份运行")
     # 锄大地实例
     auto_map = Map()
     # 清体力实例
@@ -234,10 +237,9 @@ if __name__ == '__main__':
     ttk.Button(mainframe,text='锄大地',width=10,command=Enter_frame2).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='清体力',width=10,command=Enter_dungeonframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='兑换码',width=10,command=Enter_cdkframe).grid(pady=5,ipady=10)
-    ttk.Button(mainframe,text='每日委托',width=10).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='多脚本执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
-    hind = ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
-    ttk.Button(mainframe,text='编辑配置',width=10).grid(pady=5,ipady=10)
+    ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
+    # ttk.Button(mainframe,text='编辑配置',width=10).grid(pady=5,ipady=10)
 
     # 公告页面
     announce_frame = ttk.Frame(root)
@@ -340,19 +342,22 @@ if __name__ == '__main__':
     teamid_option_list = [1,2,3,4,5,6]
     id_sets = tk.IntVar()
     id_option_list = [1,2,3,4]
-    ttk.Label(hoe_frame,text='队伍编号/人物编号:',font=('', 12)).grid(row=8,column=0)
-    ttk.OptionMenu(hoe_frame,teamid_sets,get_config("team_id"),*teamid_option_list).grid(row=8,column=1)
-    ttk.OptionMenu(hoe_frame,id_sets,get_config("character_id"),*id_option_list).grid(row=8,column=2)
+    ttk.Label(hoe_frame,text='队伍编号/人物编号:',font=('', 12)).grid(row=8,column=0,pady=5)
+    ttk.OptionMenu(hoe_frame,teamid_sets,get_config("team_id"),*teamid_option_list).grid(row=8,column=1,pady=5)
+    ttk.OptionMenu(hoe_frame,id_sets,get_config("character_id"),*id_option_list).grid(row=8,column=2,pady=5)
     team_change_var = tk.BooleanVar()
     team_change_var.set(get_config("team_change"))
-    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=8,column=3)
     img_log_Var = tk.BooleanVar()
     img_log_Var.set(get_config("img_log"))
     close_game_var = tk.BooleanVar()
     close_game_var.set(get_config("close_game"))
-    # 其他配置
-    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=0)
-    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=9,column=1)
+    commission_var = tk.BooleanVar()
+    commission_var.set(get_config("commission"))
+    # 配置开关
+    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=9,column=0,pady=5)
+    ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=9,column=1,pady=5)
+    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=9,column=3,pady=5)
     # 按钮
     ttk.Button(hoe_frame,text='确定',width=10,command=Enter_logframe).grid(columnspan=4,pady=5)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(columnspan=4,pady=5)

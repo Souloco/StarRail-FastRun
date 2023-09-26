@@ -8,3 +8,4 @@ pynput==1.7.6
 pywin32
 pyautogui
 pyuac
+onnxruntime==1.15.1
