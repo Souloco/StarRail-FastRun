@@ -1,6 +1,6 @@
 import time
 from .calculated import Calculated
-from .config import read_dungeon_info
+from .config import read_json_info
 from .log import log
 from pynput import mouse
 from pyautogui import drag
@@ -74,6 +74,6 @@ class Dungeon:
         for dungeon in dungeonlist:
             for key,value in dungeon.items():
                 log.info(f"执行副本{key}---{value}")
-                dungeonpath = read_dungeon_info("dungeon.json",key)
+                dungeonpath = read_json_info("dungeon.json",key,prepath="dungeon")
                 self.enter_dungeon(dungeonpath,value)
         log.info("清体力结束")

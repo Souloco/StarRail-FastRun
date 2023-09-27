@@ -2,7 +2,7 @@ import threading
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
-from utils.config import read_map,read_maplist_name,set_config,get_config,read_dungeon_info,save_dungeon_info
+from utils.config import read_map,read_maplist_name,set_config,get_config,save_dungeon_info,read_json_info
 from utils.map import Map
 from utils.dungeon import Dungeon
 from utils.cdk import CDK
@@ -202,7 +202,7 @@ def set_map_value_list(map_value_list,value):
         map_value.set(value)
 # 清体力下拉框
 def index_dungeon_change(event):
-    dungeon_list = read_dungeon_info("dungeon.json",index_dungeon_choose.get())
+    dungeon_list = read_json_info("dungeon.json",index_dungeon_choose.get(),prepath="dungeon")
     dungeon_box.config(values=dungeon_list)
     dungeon_choose.set(dungeon_list[0])
     root.update()
@@ -280,7 +280,7 @@ if __name__ == '__main__':
     hoe_frame = ttk.Frame(root)
     ttk.Label(hoe_frame,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
     ttk.Label(hoe_frame,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
-    ttk.Label(hoe_frame,text='必跑路线',font=('Arial Black', 16)).grid(columnspan=4,pady=10)
+    ttk.Label(hoe_frame,text='必跑路线',font=('Arial Black', 16)).grid(columnspan=4)
     # notebook地图选项
     map_list = read_map()
     map_title = [('空间站「黑塔」',1),('雅利洛-VI',2),('仙舟「罗浮」',3),('匹诺康尼',4)]    # 星球选项
@@ -308,7 +308,7 @@ if __name__ == '__main__':
     ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=4,column=0,columnspan=2)
     ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=2,columnspan=2)
     # auto_notebook地图选项
-    ttk.Label(hoe_frame,text='重跑路线',font=('Arial Black', 16)).grid(columnspan=4,pady=10)
+    ttk.Label(hoe_frame,text='重跑路线',font=('Arial Black', 16)).grid(columnspan=4)
     auto_map_notebook = ttk.Notebook(hoe_frame)
     auto_map_tab_list = []
     auto_map_value_list = []
@@ -342,9 +342,9 @@ if __name__ == '__main__':
     teamid_option_list = [1,2,3,4,5,6]
     id_sets = tk.IntVar()
     id_option_list = [1,2,3,4]
-    ttk.Label(hoe_frame,text='队伍编号/人物编号:',font=('', 12)).grid(row=8,column=0,pady=5)
-    ttk.OptionMenu(hoe_frame,teamid_sets,get_config("team_id"),*teamid_option_list).grid(row=8,column=1,pady=5)
-    ttk.OptionMenu(hoe_frame,id_sets,get_config("character_id"),*id_option_list).grid(row=8,column=2,pady=5)
+    ttk.Label(hoe_frame,text='队伍/人物编号:').grid(row=8,column=0,pady=5)
+    ttk.OptionMenu(hoe_frame,teamid_sets,get_config("team_id"),*teamid_option_list).grid(row=9,column=0,pady=5)
+    ttk.OptionMenu(hoe_frame,id_sets,get_config("character_id"),*id_option_list).grid(row=10,column=0,pady=5)
     team_change_var = tk.BooleanVar()
     team_change_var.set(get_config("team_change"))
     img_log_Var = tk.BooleanVar()
@@ -354,14 +354,14 @@ if __name__ == '__main__':
     commission_var = tk.BooleanVar()
     commission_var.set(get_config("commission"))
     # 配置开关
-    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=9,column=0,pady=5)
-    ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=9,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=2,pady=5)
-    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=9,column=3,pady=5)
+    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=8,column=1,pady=5)
+    ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=8,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=1,pady=5)
+    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=9,column=2,pady=5)
     # 按钮
-    ttk.Button(hoe_frame,text='确定',width=10,command=Enter_logframe).grid(columnspan=4,pady=5)
-    ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(columnspan=4,pady=5)
-    ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
+    ttk.Button(hoe_frame,text='确定',width=10,command=Enter_logframe).grid(row=8,column=3)
+    ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=3)
+    ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=3)
 
     # 日志页面
     logframe = ttk.Frame(root)
@@ -398,14 +398,14 @@ if __name__ == '__main__':
     ttk.Label(dungeonframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
     ttk.Label(dungeonframe,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
     ttk.Label(dungeonframe,text='副本类型:',font=('helvetica', 12)).grid(row=2,column=0)
-    index_dungeon_list = read_dungeon_info("dungeon.json","indexname")
+    index_dungeon_list = read_json_info("dungeon.json","indexname",prepath="dungeon")
     index_dungeon_choose = tk.StringVar()
     index_dungeon_choose.set(index_dungeon_list[0])
     index_dungeon_box = ttk.Combobox(dungeonframe,textvariable=index_dungeon_choose,values=index_dungeon_list,width=25)
     index_dungeon_box.bind("<<ComboboxSelected>>",index_dungeon_change)
     index_dungeon_box.grid(row=2,column=1)
     ttk.Label(dungeonframe,text='具体副本:',font=('helvetica', 12)).grid(row=2,column=2)
-    dungeon_list = read_dungeon_info("dungeon.json",index_dungeon_choose.get())
+    dungeon_list = read_json_info("dungeon.json",index_dungeon_choose.get(),prepath="dungeon")
     dungeon_choose = tk.StringVar()
     dungeon_choose.set(dungeon_list[0])
     dungeon_box = ttk.Combobox(dungeonframe,textvariable=dungeon_choose,values=dungeon_list,width=25)
@@ -419,14 +419,14 @@ if __name__ == '__main__':
     ttk.Button(dungeonframe,text='删除',command=delete_dungeon_config).grid(row=3,column=3)
     # notebook副本配置
     dungeon_notebook = ttk.Notebook(dungeonframe)
-    dungeon_title = read_dungeon_info("dungeon.json","configname")
+    dungeon_title = read_json_info("dungeon.json","configname",prepath="dungeon")
     dungeon_tab_list = []
     dungeon_config_list = []
     dungeon_config_lable_list = []
     for i in range(len(dungeon_title)):
         dungeon_tab_list.append(ttk.Frame(dungeon_notebook))
         dungeon_notebook.add(dungeon_tab_list[i],text=dungeon_title[i])
-        dungeon_config_list.append(read_dungeon_info("dungeon.json",dungeon_title[i]))
+        dungeon_config_list.append(read_json_info("dungeon.json",dungeon_title[i],prepath="dungeon"))
         dungeon_config_lable = []
         for j in range(len(dungeon_config_list[i])):
             dungeon_config_lable.append(ttk.Label(dungeon_tab_list[i],text=f"{dungeon_config_list[i][j]}",font=('', 12)))

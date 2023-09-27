@@ -1,6 +1,6 @@
 import win32gui
 import time
-from .config import read_map_info
+from .config import read_json_info
 from .calculated import Calculated
 from .log import log
 from pynput import mouse
@@ -16,9 +16,9 @@ class Map:
         参数:
             mapjson:路线json名
         """
-        start_list = read_map_info(mapjson,"start")
+        start_list = read_json_info(mapjson,"start",prepath="map")
         map_name_dir = mapjson[0:mapjson.index("_",5)] + ".jpg"
-        map_name = read_map_info(mapjson,"name").split("-")[0]
+        map_name = read_json_info(mapjson,"name",prepath="map").split("-")[0]
         planet_id = int(mapjson[mapjson.index('_') + 1:mapjson.index('-')])
         for start in start_list:
             for key,value in start.items():
@@ -26,7 +26,7 @@ class Map:
                     # 激活窗口
                     win32gui.SetForegroundWindow(self.calculated.hwnd)
                     self.calculated.wait_main_interface()
-                    if not self.calculated.ocr_check(map_name,(0,0,200,40),1):
+                    if not self.calculated.ocr_check(map_name,(0,0,200,40),1,mode=2):
                         # 进入地图
                         self.calculated.open_map()
                         # 进入星球
@@ -100,7 +100,7 @@ class Map:
             mapjson:路线json名
         """
         map_name = mapjson[0:mapjson.index(".")]
-        operate_list = read_map_info(mapjson,"map")
+        operate_list = read_json_info(mapjson,"map",prepath="map")
         for operate in operate_list:
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
@@ -123,7 +123,7 @@ class Map:
         参数:
             mapjson:路线json名
         """
-        map_name = read_map_info(mapjson,"name")
+        map_name = read_json_info(mapjson,"name",prepath="map")
         log.info(f"当前执行路线:{map_name}")
         self.Enter_map_start(mapjson)
         self.Enter_map_fighting(mapjson)

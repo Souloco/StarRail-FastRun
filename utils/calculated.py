@@ -185,13 +185,14 @@ class Calculated:
         else:
             log.info("识别超时")
 
-    def ocr_match(self,img,text:str):
+    def ocr_match(self,img,text:str,mode=1):
         """
         说明:
             返回匹配位置与匹配系数
         参数:
             img:图像
             text:匹配文本
+            mode:匹配模式
         """
         result = self.reader.ocr(img)
         nums = len(text)
@@ -201,27 +202,24 @@ class Calculated:
             loc = res['position']
             content = str(res['text']).replace(" ", "")
             rate = res['score']
-            for t in text:
-                if t in content:
-                    ocr_num = ocr_num + 1
-            if '层' in text:
+            # 完全匹配
+            if mode == 1:
                 if text == content:
                     x = int((loc[0][0]+loc[1][0]+loc[2][0]+loc[3][0])/4)
                     y = int((loc[0][1]+loc[1][1]+loc[2][1]+loc[3][1])/4)
                     return (x,y),rate
-            elif nums > 2:
+            # 部分匹配/误差字数为1
+            if mode == 2:
+                for t in text:
+                    if t in content[ocr_num:]:
+                        ocr_num = ocr_num + 1
                 if ocr_num >= nums - 1:
-                    x = int((loc[0][0]+loc[1][0]+loc[2][0]+loc[3][0])/4)
-                    y = int((loc[0][1]+loc[1][1]+loc[2][1]+loc[3][1])/4)
-                    return (x,y),rate
-            else:
-                if text == content:
                     x = int((loc[0][0]+loc[1][0]+loc[2][0]+loc[3][0])/4)
                     y = int((loc[0][1]+loc[1][1]+loc[2][1]+loc[3][1])/4)
                     return (x,y),rate
         return (0,0),0
 
-    def ocr_click(self,text:str,points=(0,0,0,0),overtime=5.0,rates=0.1):
+    def ocr_click(self,text:str,points=(0,0,0,0),overtime=5.0,rates=0.1,mode=1):
         """
         说明:
             识别到文本点击，否则不点击
@@ -230,13 +228,14 @@ class Calculated:
             points:截图区域
             overtime:识别时间
             rates:对比度要求
+            mode:匹配模式
         """
         img = self.take_screenshot(points)
-        pos,rate = self.ocr_match(img,text)
+        pos,rate = self.ocr_match(img,text,mode)
         start_time = time.time()
         while rate < rates and time.time() - start_time < overtime:
             img = self.take_screenshot(points)
-            pos,rate = self.ocr_match(img,text)
+            pos,rate = self.ocr_match(img,text,mode)
             time.sleep(0.05)
         if rate >= rates:
             log.info(f"OCR点击-{rate}")
@@ -253,7 +252,7 @@ class Calculated:
             log.warning(f"OCR点击失败-{rate}")
             return False
 
-    def ocr_check(self,text:str,points=(0,0,0,0),overtime=5.0,rates=0.1):
+    def ocr_check(self,text:str,points=(0,0,0,0),overtime=5.0,rates=0.1,mode=1):
         """
         说明:
             识别文本返回布尔值
@@ -262,13 +261,14 @@ class Calculated:
             points:截图区域
             overtime:识别时间
             rates:对比度要求
+            mode:匹配模式
         """
         img = self.take_screenshot(points)
-        pos,rate = self.ocr_match(img,text)
+        pos,rate = self.ocr_match(img,text,mode)
         start_time = time.time()
         while rate < rates and time.time() - start_time < overtime:
             img = self.take_screenshot(points)
-            pos,rate = self.ocr_match(img,text)
+            pos,rate = self.ocr_match(img,text,mode)
             time.sleep(0.05)
         if rate >= rates:
             log.info(f"OCR检测-{rate}")
@@ -304,7 +304,6 @@ class Calculated:
         while time.perf_counter() - start_time < times:
             pass
         self.Keyboard.release(key)
-        time.sleep(0.05)
         self.Keyboard.release(Key.shift_l)
 
     def mouse_move(self,value:int):
@@ -381,7 +380,7 @@ class Calculated:
                 return True
         else:   # 打障碍物
             self.Mouse.click(mouse.Button.left)
-            time.sleep(0.1)
+            time.sleep(0.7)
             return True
 
     def wait_main_interface(self):
@@ -511,7 +510,7 @@ class Calculated:
         self.ocr_click(text='委托',points=(1700,400,1755,425))
         while self.img_click('red_notice.jpg',overtime=3):
             if self.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
-                self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2)
+                self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
         while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):
             self.Keyboard.press(Key.esc)
             time.sleep(0.05)

@@ -58,29 +58,16 @@ def read_map_name():
             map_name_list[planet_id-1].append(map_name)
             map_planet_list[planet_id-1].append(map)
     return map_name_list,map_planet_list
-
-def read_map_info(map,info):
+def read_json_info(path,info,prepath=""):
     """
     说明：
-        读取单个map的info字段信息
+        读取单个json的info字段信息
     参数：
-        map：地图json名字
+        path：json名字
         info:信息字段
+        prepath:修补目录
     """
-    with open(os.path.join(map_dir,map),encoding='utf-8') as f:
-        data = json.load(f)
-        info_list = data[info]
-    return info_list
-
-def read_dungeon_info(dungeon,info):
-    """
-    说明：
-        读取单个dungeon的info字段信息
-    参数：
-        dungeon：json名字
-        info:信息字段
-    """
-    with open(os.path.join(dungeon_dir,dungeon),encoding='utf-8') as f:
+    with open(os.path.join(root_dir,prepath,path),encoding='utf-8') as f:
         data = json.load(f)
         info_list = data[info]
     return info_list
@@ -130,7 +117,7 @@ def set_config(info:str,value):
         data = json.load(f)
         data[info] = value
     with open(os.path.join(root_dir,CONFIG_FILE_NAME), "w", encoding="utf-8") as f:
-        json.dump(data,f,indent=2,sort_keys=True)
+        json.dump(data,f,indent=2,ensure_ascii=False)
 
 def get_config(info:str):
     with open(os.path.join(root_dir,CONFIG_FILE_NAME),"r",encoding='utf-8') as f:
