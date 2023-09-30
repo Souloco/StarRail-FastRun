@@ -31,6 +31,7 @@ class TextboxHandler(logging.Handler):
     def emit(self, record):
         msg = self.format(record)
         self.textbox.insert("end", msg + "\n")
+        self.textbox.see("end")
 # 事件
 # 进入锄大地页面
 def Enter_frame2():
@@ -237,7 +238,7 @@ if __name__ == '__main__':
     ttk.Button(mainframe,text='锄大地',width=10,command=Enter_frame2).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='清体力',width=10,command=Enter_dungeonframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='兑换码',width=10,command=Enter_cdkframe).grid(pady=5,ipady=10)
-    ttk.Button(mainframe,text='多脚本执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
+    ttk.Button(mainframe,text='多功能执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
     # ttk.Button(mainframe,text='编辑配置',width=10).grid(pady=5,ipady=10)
 
@@ -440,8 +441,13 @@ if __name__ == '__main__':
     allframe = ttk.Frame(root)
     ttk.Label(allframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
     ttk.Label(allframe,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
-    ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=2,column=0)
-    ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=2,column=2)
+    ttk.Label(allframe,text='队伍/人物编号:').grid(row=2,column=0,pady=5)
+    ttk.OptionMenu(allframe,teamid_sets,get_config("team_id"),*teamid_option_list).grid(row=2,column=1,pady=5)
+    ttk.OptionMenu(allframe,id_sets,get_config("character_id"),*id_option_list).grid(row=2,column=2,pady=5)
+    ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=3,column=0,pady=5)
+    ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=3,column=1,pady=5)
+    ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=3,column=2,pady=5)
+    ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=3,column=3,pady=5)
     ttk.Button(allframe,text='开始',width=10,command=enter_function_all).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
