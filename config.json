@@ -2,6 +2,7 @@
   "auto_map_list_data": [],
   "auto_map_nums": 0,
   "character_id": 1,
+  "dungeon_character_id": 3,
   "close_game": false,
   "img_log": false,
   "map_list_data": [
@@ -68,6 +69,7 @@
   ],
   "team_change": false,
   "team_id": 1,
-  "version": "V1.2.1",
+  "dungeon_team_id": 5,
+  "version": "V1.2.2",
   "commission": false
 }
