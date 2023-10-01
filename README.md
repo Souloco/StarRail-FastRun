@@ -28,6 +28,8 @@ This software is open source, free of charge and for learning and exchange purpo
         - 安装方式二：
             - 下载```setup.exe```在StarRail-FastRun文件夹目录下启动
             - 根据提示确认是否安装完毕
+        - Polygon3报错
+            - [蓝奏云网盘](https://wwgc.lanzouj.com/b03kwk1kh)密码:Souloco
 - 游戏设置
     - 是否沿用自动战斗设置---是
     - 键鼠模式显示底部提示---是
