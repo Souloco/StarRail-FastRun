@@ -508,7 +508,7 @@ class Calculated:
         time.sleep(0.05)
         self.Keyboard.release(Key.esc)
         self.ocr_click(text='委托',points=(1700,400,1755,425))
-        while self.img_click('red_notice.jpg',overtime=3):
+        while self.img_click('red_notice.jpg',overtime=5,rates=0.80):
             if self.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
                 self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
         while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):

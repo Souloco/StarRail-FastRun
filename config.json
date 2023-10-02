@@ -1,8 +1,8 @@
 {
   "auto_map_list_data": [],
   "auto_map_nums": 0,
-  "character_id": 1,
-  "dungeon_character_id": 3,
+  "character_id": 4,
+  "dungeon_character_id": 1,
   "close_game": false,
   "img_log": false,
   "map_list_data": [
@@ -67,9 +67,10 @@
     "map_3-6_5.json",
     "map_3-6_6.json"
   ],
-  "team_change": false,
+  "team_change": true,
   "team_id": 1,
-  "dungeon_team_id": 5,
-  "version": "V1.2.2",
-  "commission": false
+  "dungeon_team_id": 1,
+  "version": "V1.2.3",
+  "commission": true,
+  "gamepath": "G:\\Star Rail\\Game\\StarRail.exe"
 }

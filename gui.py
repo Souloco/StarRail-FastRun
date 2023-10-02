@@ -123,6 +123,10 @@ def enter_function():
     # 清体力执行
     auto_dungeon.calculated.active_window()
     auto_dungeon.calculated.set_windowsize()
+    if commission_var.get():
+        auto_dungeon.calculated.commission()
+    if team_change_var.get():
+        auto_dungeon.calculated.change_team(teamid=dungeon_teamid_sets.get(),id=dungeon_id_sets.get())
     id = dungeon_notebook.index("current")
     auto_dungeon.enter_dungeon_list(dungeon_config_list[id])
     # 锄地执行
@@ -131,6 +135,8 @@ def enter_function():
     auto_map.calculated.img_log_value = img_log_Var.get()   # 是否启用截图记录
     auto_map.calculated.set_windowsize()
     auto_map.calculated.active_window()
+    if team_change_var.get():
+        auto_map.calculated.change_team(teamid=teamid_sets.get(),id=id_sets.get())
     auto_map.map_init()
     auto_map.Enter_map_all(map_use_list,auto_map_use_list,close_game_var.get(),auto_map_nums.get())
 # 多功能执行线程
@@ -164,6 +170,11 @@ def save_dungeon_config():
     set_config("dungeon_team_id",dungeon_teamid_sets.get())
     set_config("dungeon_character_id",dungeon_id_sets.get())
     set_config("team_change",team_change_var.get())
+# 保存所有配置项
+def save_all_config():
+    save_dungeon_config()
+    save_config()
+    set_config("gamepath",game_path.get())
 # 清理图片log
 def clear_imglog():
     logpath = "./logs/image"
@@ -433,7 +444,13 @@ if __name__ == '__main__':
     ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=4,column=1,pady=5)
     ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=4,column=2,pady=5)
     ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=4,column=3,pady=5)
+    ttk.Label(allframe,text='(.\Game\StarRail.exe)游戏路径:').grid(row=5,column=0,pady=5)
+    game_path = tk.StringVar()
+    game_path.set(get_config("gamepath"))
+    game_text = ttk.Entry(allframe,width=40,textvariable=game_path)
+    game_text.grid(row=5,column=1,columnspan=3,pady=5)
     ttk.Button(allframe,text='开始',width=10,command=enter_function_all).grid(columnspan=4,pady=5)
+    ttk.Button(allframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
     t1 = threading.Thread(name='btn_close',target=btn_close_window)

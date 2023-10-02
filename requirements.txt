@@ -1,6 +1,7 @@
-cnocr
 loguru
 numpy
+whl\Polygon3-3.0.9-cp311-cp311-win_amd64.whl
+cnocr>=2.2.2.3
 opencv_python==4.8.0.76
 opencv_python_headless==4.8.0.74
 Pillow==10.0.0
