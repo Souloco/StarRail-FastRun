@@ -418,12 +418,20 @@ class Calculated:
         time.sleep(7)   # 缓冲
         self.wait_main_interface()
 
-    def interaction(self,mode=1):
+    def interaction(self,mode:str = ["w","a","s","d"]):
         """
         说明:
             等待传送结束
         """
         log.info("执行交互---传送")
+        start_time = time.time()    # 开始计算等待时间
+        while not self.img_check("interaction.jpg",(1000,580,1100,660),1):
+            self.Keyboard.press(mode)
+            time.sleep(0.1)
+            self.Keyboard.release(mode)
+            # 超时中断
+            if time.time() - start_time > 30:
+                return False
         time.sleep(0.5)
         self.Keyboard.press("f")
         time.sleep(0.05)
