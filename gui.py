@@ -92,15 +92,18 @@ def Enter_map():
     if auto_map.calculated.hwnd == 0:
         log.warning("未检测到游戏运行,请启动游戏")
     else:
-        auto_map.calculated.img_log_value = img_log_Var.get()   # 是否启用截图记录
-        auto_map.calculated.set_windowsize()
+        # 配置启用
+        auto_map.calculated.img_log_value = img_log_Var.get()
+        auto_map.team_change = team_change_var.get()
+        auto_map.teamid = teamid_sets.get()
+        auto_map.id = id_sets.get()
+        auto_map.commission = commission_var.get()
+        auto_map.close_game = close_game_var.get()
+        auto_map.nums = auto_map_nums.get()
+        # 激活窗口
         auto_map.calculated.active_window()
-        if commission_var.get():
-            auto_map.calculated.commission()
-        if team_change_var.get():
-            auto_map.calculated.change_team(teamid=teamid_sets.get(),id=id_sets.get())
-        auto_map.map_init()
-        t = threading.Thread(name='chudi',target=auto_map.Enter_map_all,args=(map_use_list,auto_map_use_list,close_game_var.get(),auto_map_nums.get()))
+        # 线程启动
+        t = threading.Thread(name='chudi',target=auto_map.start,args=(map_use_list,auto_map_use_list,))
         t.daemon = True
         t.start()
 # 副本线程

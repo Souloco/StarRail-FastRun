@@ -8,6 +8,12 @@ from pyautogui import drag
 class Map:
     def __init__(self):
         self.calculated = Calculated()
+        self.team_change = False
+        self.teamid = 1
+        self.id = 1
+        self.commission = False
+        self.close_game = False
+        self.nums = 0
 
     def Enter_map_start(self,mapjson):
         """
@@ -162,3 +168,24 @@ class Map:
         self.calculated.Keyboard.press("m")
         self.calculated.Keyboard.release("m")
         time.sleep(1)
+
+    def start(self,map_list,auto_map_list):
+        log.info("游戏初始化设置")
+        self.calculated.set_windowsize()
+        if self.commission:
+            log.info("清委托")
+            self.calculated.commission()
+        if self.team_change:
+            log.info("锄大地---切换队伍")
+            self.calculated.change_team(self.teamid,self.id)
+        log.info("锄大地---地图初始化")
+        self.map_init()
+        log.info("锄大地---必跑路线")
+        self.Enter_map_jsonlist(map_list)
+        log.info("锄大地---重跑路线")
+        for i in range(self.nums):
+            self.Enter_map_jsonlist(auto_map_list)
+        if self.close_game:
+            log.info("锄大地---自动关机")
+            self.calculated.close_game()
+        log.info("锄大地---执行完毕")
