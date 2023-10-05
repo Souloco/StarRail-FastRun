@@ -51,7 +51,7 @@ This software is open source, free of charge and for learning and exchange purpo
         - 自动关机需打开```自动关机```
     - 快速启动---用于定时执行|自动开机执行
         - 在多功能执行页面```配置```
-        - 执行顺序```启动游戏-清委托-清体力-锄大地-自动关机```
+        - 执行顺序```启动游戏-清体力-清委托-锄大地-自动关机```
         - 以管理员身份运行```FastStart.exe```
 - 进阶使用
     - 定时执行
