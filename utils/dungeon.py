@@ -8,6 +8,9 @@ from pynput.keyboard import Key
 class Dungeon:
     def __init__(self):
         self.calculated = Calculated()
+        self.team_change = False
+        self.teamid = 1
+        self.id = 1
 
     def open_dungeon(self):
         self.calculated.check_main_interface()
@@ -69,11 +72,16 @@ class Dungeon:
         self.calculated.img_click("dungeon_exit.jpg")
         self.calculated.wait_fight_end()
 
-    def enter_dungeon_list(self,dungeonlist):
-        log.info("清体力开始")
+    def start(self,dungeonlist):
+        log.info("游戏初始化设置")
+        self.calculated.set_windowsize()
+        if self.team_change:
+            log.info("清体力---切换队伍")
+            self.calculated.change_team(self.teamid,self.id)
+        log.info("清体力---开始")
         for dungeon in dungeonlist:
             for key,value in dungeon.items():
-                log.info(f"执行副本{key}---{value}")
+                log.info(f"清体力---执行副本{key}---{value}")
                 dungeonpath = read_json_info("dungeon.json",key,prepath="dungeon")
                 self.enter_dungeon(dungeonpath,value)
-        log.info("清体力结束")
+        log.info("清体力---执行完毕")

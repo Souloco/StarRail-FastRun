@@ -144,17 +144,6 @@ class Map:
         for mapjson in jsonlist:
             self.Enter_map_onejson(mapjson)
 
-    def Enter_map_all(self,map_list,auto_map_list,close_game:bool = False,nums:int = 0):
-        log.info("锄大地---执行开始")
-        self.Enter_map_jsonlist(map_list)
-        log.info("锄大地---捡漏阶段")
-        for i in range(nums):
-            self.Enter_map_jsonlist(auto_map_list)
-        log.info("锄大地---执行完毕")
-        if close_game:
-            self.calculated.close_game()
-            log.info("锄大地---自动关机")
-
     def map_init(self):
         log.info("地图初始化")
         self.calculated.Keyboard.press("m")
@@ -189,3 +178,9 @@ class Map:
             log.info("锄大地---自动关机")
             self.calculated.close_game()
         log.info("锄大地---执行完毕")
+
+    def check_map(self):
+        log.info("锄大地---打开背包")
+        self.calculated.Keyboard.press('b')
+        self.calculated.Keyboard.release("b")
+        self.calculated.img_click("check1.jpg",(0,0,1300,950),overtime=2)

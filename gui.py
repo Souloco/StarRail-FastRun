@@ -5,7 +5,6 @@ from tkinter import ttk
 from utils.config import read_map,read_maplist_name,set_config,get_config,save_dungeon_info,read_json_info
 from utils.map import Map
 from utils.dungeon import Dungeon
-from utils.cdk import CDK
 import os
 import logging
 from utils.log import log
@@ -86,13 +85,13 @@ def Enter_allframe():
     root.update()
 # 锄地线程
 def Enter_map():
-    map_use_list = get_map_list(map_value_list)
-    auto_map_use_list = get_map_list(auto_map_value_list)
     auto_map.calculated.get_hwnd()
     if auto_map.calculated.hwnd == 0:
         log.warning("未检测到游戏运行,请启动游戏")
     else:
         # 配置启用
+        map_use_list = get_map_list(map_value_list)
+        auto_map_use_list = get_map_list(auto_map_value_list)
         auto_map.calculated.img_log_value = img_log_Var.get()
         auto_map.team_change = team_change_var.get()
         auto_map.teamid = teamid_sets.get()
@@ -112,42 +111,48 @@ def enter_dungeon_all():
     if auto_dungeon.calculated.hwnd == 0:
         log.warning("未检测到游戏运行,请启动游戏")
     else:
-        auto_dungeon.calculated.active_window()
-        auto_dungeon.calculated.set_windowsize()
-        if team_change_var.get():
-            auto_map.calculated.change_team(teamid=dungeon_teamid_sets.get(),id=dungeon_id_sets.get())
+        # 配置启用
+        auto_dungeon.team_change = team_change_var.get()
+        auto_dungeon.teamid = dungeon_teamid_sets.get()
+        auto_dungeon.id = dungeon_id_sets.get()
+        # 激活窗口
+        auto_map.calculated.active_window()
+        # 线程启动
         id = dungeon_notebook.index("current")
-        t = threading.Thread(name='dungeon',target=auto_dungeon.enter_dungeon_list,args=(dungeon_config_list[id],))
+        t = threading.Thread(name='dungeon',target=auto_dungeon.start,args=(dungeon_config_list[id],))
         t.daemon = True
         t.start()
 
 # 多功能执行
 def enter_function():
-    # 清体力执行
-    auto_dungeon.calculated.active_window()
-    auto_dungeon.calculated.set_windowsize()
-    if commission_var.get():
-        auto_dungeon.calculated.commission()
-    if team_change_var.get():
-        auto_dungeon.calculated.change_team(teamid=dungeon_teamid_sets.get(),id=dungeon_id_sets.get())
-    id = dungeon_notebook.index("current")
-    auto_dungeon.enter_dungeon_list(dungeon_config_list[id])
-    # 锄地执行
+    # 锄大地配置启用
     map_use_list = get_map_list(map_value_list)
     auto_map_use_list = get_map_list(auto_map_value_list)
-    auto_map.calculated.img_log_value = img_log_Var.get()   # 是否启用截图记录
-    auto_map.calculated.set_windowsize()
-    auto_map.calculated.active_window()
-    if team_change_var.get():
-        auto_map.calculated.change_team(teamid=teamid_sets.get(),id=id_sets.get())
-    auto_map.map_init()
-    auto_map.Enter_map_all(map_use_list,auto_map_use_list,close_game_var.get(),auto_map_nums.get())
+    auto_map.calculated.img_log_value = img_log_Var.get()
+    auto_map.team_change = team_change_var.get()
+    auto_map.teamid = teamid_sets.get()
+    auto_map.id = id_sets.get()
+    auto_map.commission = commission_var.get()
+    auto_map.close_game = close_game_var.get()
+    auto_map.nums = auto_map_nums.get()
+    # 清体力配置启用
+    auto_dungeon.team_change = team_change_var.get()
+    auto_dungeon.teamid = dungeon_teamid_sets.get()
+    auto_dungeon.id = dungeon_id_sets.get()
+    # 清体力执行
+    id = dungeon_notebook.index("current")
+    auto_dungeon.start(dungeon_config_list[id])
+    # 锄地执行
+    auto_map.start(map_use_list,auto_map_use_list)
 # 多功能执行线程
 def enter_function_all():
     auto_map.calculated.get_hwnd()
+    auto_dungeon.calculated.get_hwnd()
     if auto_map.calculated.hwnd == 0:
         log.warning("未检测到游戏运行,请启动游戏")
     else:
+        # 激活窗口
+        auto_map.calculated.active_window()
         t = threading.Thread(name='allfunction',target=enter_function)
         t.daemon = True
         t.start()
