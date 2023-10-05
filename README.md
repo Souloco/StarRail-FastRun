@@ -44,7 +44,7 @@ This software is open source, free of charge and for learning and exchange purpo
     - 清体力
         - 默认执行```当前选中配置```
     - 多功能执行
-        - 执行顺序```清委托-清体力-锄大地-自动关机```
+        - 执行顺序```清体力-清委托-锄大地-自动关机```
         - 清委托执行需打开```委托开关```
         - 清体力默认执行```配置1```
         - 锄大地默认执行```必跑路线```
