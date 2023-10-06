@@ -161,6 +161,7 @@ class Map:
     def start(self,map_list,auto_map_list):
         log.info("游戏初始化设置")
         self.calculated.set_windowsize()
+        self.calculated.check_main_interface()
         if self.commission:
             log.info("清委托")
             self.calculated.commission()

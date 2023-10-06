@@ -424,6 +424,7 @@ class Calculated:
             等待传送结束
         """
         log.info("执行交互---传送")
+        time.sleep(1)   # 截图识别延时性修复
         start_time = time.time()    # 开始计算等待时间
         while not self.img_check("interaction.jpg",(1000,580,1100,660),1):
             self.Keyboard.press(mode)

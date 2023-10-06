@@ -21,6 +21,8 @@ TITLE_NAME = 'StarRail-FastRun'
 VER = get_config("version")
 # 版本更新提示
 ver_update = False
+# 线程变量
+t = threading.Thread()
 # 用于日志文本框
 class TextboxHandler(logging.Handler):
     def __init__(self, textbox:tk.Text):
@@ -69,9 +71,17 @@ def save_config():
     set_config("auto_map_nums",auto_map_nums.get())
     set_config("commission",commission_var.get())
 # 进入日志页面
-def Enter_logframe():
+def Enter_logframe(logmode:int = 1):
     hoe_frame.pack_forget()
+    dungeonframe.pack_forget()
+    allframe.pack_forget()
     logframe.pack()
+    if logmode == 1:
+        logstart.configure(command=Enter_map)
+    elif logmode == 2:
+        logstart.configure(command=enter_dungeon_all)
+    elif logmode == 3:
+        logstart.configure(command=enter_function_all)
     root.update()
 # 进入清体力页面
 def Enter_dungeonframe():
@@ -102,9 +112,13 @@ def Enter_map():
         # 激活窗口
         auto_map.calculated.active_window()
         # 线程启动
-        t = threading.Thread(name='chudi',target=auto_map.start,args=(map_use_list,auto_map_use_list,))
-        t.daemon = True
-        t.start()
+        global t
+        if not t.is_alive():
+            t = threading.Thread(name='chudi',target=auto_map.start,args=(map_use_list,auto_map_use_list,))
+            t.daemon = True
+            t.start()
+        else:
+            log.warning("线程已存在")
 # 副本线程
 def enter_dungeon_all():
     auto_dungeon.calculated.get_hwnd()
@@ -119,9 +133,13 @@ def enter_dungeon_all():
         auto_map.calculated.active_window()
         # 线程启动
         id = dungeon_notebook.index("current")
-        t = threading.Thread(name='dungeon',target=auto_dungeon.start,args=(dungeon_config_list[id],))
-        t.daemon = True
-        t.start()
+        global t
+        if not t.is_alive():
+            t = threading.Thread(name='dungeon',target=auto_dungeon.start,args=(dungeon_config_list[id],))
+            t.daemon = True
+            t.start()
+        else:
+            log.warning("线程已存在")
 
 # 多功能执行
 def enter_function():
@@ -153,9 +171,13 @@ def enter_function_all():
     else:
         # 激活窗口
         auto_map.calculated.active_window()
-        t = threading.Thread(name='allfunction',target=enter_function)
-        t.daemon = True
-        t.start()
+        global t
+        if not t.is_alive():
+            t = threading.Thread(name='allfunction',target=enter_function)
+            t.daemon = True
+            t.start()
+        else:
+            log.warning("线程已存在")
 # 添加副本配置项
 def add_dungeon_config():
     id = dungeon_notebook.index("current")
@@ -234,7 +256,7 @@ if __name__ == '__main__':
     root.tk.call("source", "./tkinter/azure.tcl")
     root.tk.call("set_theme", "light")
     root.iconbitmap('./favicon.ico')
-    # root.geometry('800x800+100+100')
+    # root.geometry("+{}+{}".format(int(root.winfo_screenwidth()/4),int(root.winfo_screenheight()/4)))
     root.title(TITLE_NAME)
     root.resizable(True,True)
     # 主页面
@@ -365,14 +387,15 @@ if __name__ == '__main__':
     ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=1,pady=5)
     ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=9,column=2,pady=5)
     # 按钮
-    ttk.Button(hoe_frame,text='确定',width=10,command=Enter_logframe).grid(row=8,column=3)
+    ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=3)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=3)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=3)
 
     # 日志页面
     logframe = ttk.Frame(root)
     ttk.Label(logframe, text='实时日志', font=('Arial Black', 16)).pack(anchor='nw')   # justify控制对其方向，anchor控制位置 共同使文本靠左
-    ttk.Button(logframe, text='开始',width=5,command=Enter_map).place(relx=0.60,rely=0)
+    logstart = ttk.Button(logframe, text='开始',width=5,command=Enter_map)
+    logstart.place(relx=0.60,rely=0)
     ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.70,rely=0)
     ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.80,rely=0)
     ttk.Button(logframe, text='返回',width=5,command=Enter_mainframe).place(relx=0.90,rely=0)
@@ -435,9 +458,10 @@ if __name__ == '__main__':
             dungeon_config_lable[j].pack(anchor='center')
         dungeon_config_lable_list.append(dungeon_config_lable)
     dungeon_notebook.grid(columnspan=4)
-    ttk.Button(dungeonframe,text='开始',width=10,command=enter_dungeon_all).grid(columnspan=4,pady=5)
+    ttk.Button(dungeonframe,text='确定',width=10,command=lambda:Enter_logframe(2)).grid(columnspan=4,pady=5)
     ttk.Button(dungeonframe,text='保存',width=10,command=save_dungeon_config).grid(columnspan=4,pady=5)
     ttk.Button(dungeonframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
+
     # 多功能合一执行页面
     allframe = ttk.Frame(root)
     ttk.Label(allframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
@@ -457,7 +481,7 @@ if __name__ == '__main__':
     game_path.set(get_config("gamepath"))
     game_text = ttk.Entry(allframe,width=40,textvariable=game_path)
     game_text.grid(row=5,column=1,columnspan=3,pady=5)
-    ttk.Button(allframe,text='开始',width=10,command=enter_function_all).grid(columnspan=4,pady=5)
+    ttk.Button(allframe,text='确定',width=10,command=lambda:Enter_logframe(3)).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
