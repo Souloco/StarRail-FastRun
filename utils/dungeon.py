@@ -11,6 +11,7 @@ class Dungeon:
         self.team_change = False
         self.teamid = 1
         self.id = 1
+        self.stop = False
 
     def open_dungeon(self):
         self.calculated.check_main_interface()
@@ -59,6 +60,8 @@ class Dungeon:
             self.calculated.fighting(2)
         while nums > 1:
             while not self.calculated.img_check("dungeon_again.jpg",overtime=2):
+                if self.stop:
+                    return True
                 time.sleep(5)
             if self.calculated.has_red((1085,930,1120,960)):
                 self.calculated.img_click("dungeon_exit.jpg")
@@ -68,20 +71,27 @@ class Dungeon:
             time.sleep(2)
             nums = nums - 1
         while not self.calculated.img_check("dungeon_again.jpg",overtime=2):
+            if self.stop:
+                return True
             time.sleep(5)
         self.calculated.img_click("dungeon_exit.jpg")
         self.calculated.wait_fight_end()
 
     def start(self,dungeonlist):
         log.info("游戏初始化设置")
+        self.stop = False
         self.calculated.set_windowsize()
         if self.team_change:
             log.info("清体力---切换队伍")
             self.calculated.change_team(self.teamid,self.id)
         log.info("清体力---开始")
         for dungeon in dungeonlist:
+            if self.stop:
+                log.info("清体力---暂停成功")
+                return True
             for key,value in dungeon.items():
                 log.info(f"清体力---执行副本{key}---{value}")
                 dungeonpath = read_json_info("dungeon.json",key,prepath="dungeon")
                 self.enter_dungeon(dungeonpath,value)
         log.info("清体力---执行完毕")
+        self.stop = False

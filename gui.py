@@ -161,6 +161,8 @@ def enter_function():
     id = dungeon_notebook.index("current")
     auto_dungeon.start(dungeon_config_list[id])
     # 锄地执行
+    if auto_map.stop:
+        return True
     auto_map.start(map_use_list,auto_map_use_list)
 # 多功能执行线程
 def enter_function_all():
@@ -223,6 +225,10 @@ def btn_close_window():
     def on_press(key):
         if key == keyboard.Key.f8:
             close_window()
+        if key == keyboard.Key.f10:
+            log.info("暂停")
+            auto_map.stop = True
+            auto_dungeon.stop = True
     with keyboard.Listener(on_press=on_press) as listener:  # 创建按键监听线程
         listener.join()  # 等待按键监听线程结束
 # map_value_list的值初始化
