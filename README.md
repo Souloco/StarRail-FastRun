@@ -70,7 +70,7 @@ This software is open source, free of charge and for learning and exchange purpo
 - [x] 锄大地
 - [x] 清体力
 - [x] 清委托
+- [x] 多功能合一执行
 - [ ] 捡漏
-- [ ] 多功能合一执行
 # Star History
 [![Star History Chart](https://api.star-history.com/svg?repos=Souloco/StarRail-FastRun&type=Date)](https://star-history.com/#Souloco/StarRail-FastRun&Date)

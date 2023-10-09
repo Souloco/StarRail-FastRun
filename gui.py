@@ -35,10 +35,14 @@ class TextboxHandler(logging.Handler):
         self.textbox.see("end")
 # 事件
 # 进入锄大地页面
-def Enter_frame2():
-    mainframe.pack_forget()
-    hoe_frame.pack()
-    root.update()
+def Enter_hoeframe():
+    if not t.is_alive():
+        logframe.pack_forget()
+        mainframe.pack_forget()
+        hoe_frame.pack()
+        root.update()
+    else:
+        log.warning("功能线程还在运行！")
 # 进入主页面
 def Enter_mainframe():
     logframe.pack_forget()
@@ -78,21 +82,32 @@ def Enter_logframe(logmode:int = 1):
     logframe.pack()
     if logmode == 1:
         logstart.configure(command=Enter_map)
+        logreturn.configure(command=Enter_hoeframe)
     elif logmode == 2:
         logstart.configure(command=enter_dungeon_all)
+        logreturn.configure(command=Enter_dungeonframe)
     elif logmode == 3:
         logstart.configure(command=enter_function_all)
+        logreturn.configure(command=Enter_allframe)
     root.update()
 # 进入清体力页面
 def Enter_dungeonframe():
-    mainframe.pack_forget()
-    dungeonframe.pack()
-    root.update()
+    if not t.is_alive():
+        logframe.pack_forget()
+        mainframe.pack_forget()
+        dungeonframe.pack()
+        root.update()
+    else:
+        log.warning("功能线程还在运行！")
 # 进入多功能合一执行页面
 def Enter_allframe():
-    mainframe.pack_forget()
-    allframe.pack()
-    root.update()
+    if not t.is_alive():
+        logframe.pack_forget()
+        mainframe.pack_forget()
+        allframe.pack()
+        root.update()
+    else:
+        log.warning("功能线程还在运行！")
 # 锄地线程
 def Enter_map():
     auto_map.calculated.get_hwnd()
@@ -262,14 +277,14 @@ if __name__ == '__main__':
     root.tk.call("source", "./tkinter/azure.tcl")
     root.tk.call("set_theme", "light")
     root.iconbitmap('./favicon.ico')
-    # root.geometry("+{}+{}".format(int(root.winfo_screenwidth()/4),int(root.winfo_screenheight()/4)))
+    root.geometry("+{}+{}".format(int(root.winfo_screenwidth()/4),int(root.winfo_screenheight()/8)))
     root.title(TITLE_NAME)
     root.resizable(True,True)
     # 主页面
     mainframe = ttk.Frame(root)
     ttk.Label(mainframe,text=TITLE_NAME,font=('Arial Black', 24)).grid()
     ttk.Label(mainframe,text=VER,font=('Arial Black', 16)).grid()
-    ttk.Button(mainframe,text='锄大地',width=10,command=Enter_frame2).grid(pady=5,ipady=10)
+    ttk.Button(mainframe,text='锄大地',width=10,command=Enter_hoeframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='清体力',width=10,command=Enter_dungeonframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='多功能执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
@@ -401,17 +416,17 @@ if __name__ == '__main__':
     logframe = ttk.Frame(root)
     ttk.Label(logframe, text='实时日志', font=('Arial Black', 16)).pack(anchor='nw')   # justify控制对其方向，anchor控制位置 共同使文本靠左
     logstart = ttk.Button(logframe, text='开始',width=5,command=Enter_map)
-    logstart.place(relx=0.60,rely=0)
-    ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.70,rely=0)
-    ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.80,rely=0)
-    ttk.Button(logframe, text='返回',width=5,command=Enter_mainframe).place(relx=0.90,rely=0)
+    logstart.place(relx=0.52,rely=0)
+    ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.64,rely=0)
+    ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.76,rely=0)
+    logreturn = ttk.Button(logframe, text='返回',width=5,command=Enter_mainframe)
+    logreturn.place(relx=0.88,rely=0)
     s2 = ttk.Scrollbar(logframe)      # 设置垂直滚动条
     b2 = ttk.Scrollbar(logframe, orient='horizontal')    # 水平滚动条
     s2.pack(side='right', fill='y')     # 靠右，充满Y轴
     b2.pack(side='bottom', fill='x')    # 靠下，充满x轴
     logtext = tk.Text(logframe,font=('Consolas', 9),undo=True, autoseparators=False,wrap='none', xscrollcommand=b2.set, yscrollcommand=s2.set)  # , state=DISABLED, wrap='none'表示不自动换行
     logtext.pack(fill='both', expand='yes')
-    logtext.insert('end', 'Successfully connected to log\n')
     s2.config(command=logtext.yview)  # Text随着滚动条移动被控制移动
     b2.config(command=logtext.xview)
     handler = TextboxHandler(logtext)
