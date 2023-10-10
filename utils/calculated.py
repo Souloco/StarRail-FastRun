@@ -1,5 +1,4 @@
 from win32 import win32api,win32gui
-from PIL import ImageGrab
 import time
 import cv2 as cv
 import numpy as np
@@ -10,6 +9,7 @@ import os
 import ctypes
 from pynput import mouse, keyboard
 from pynput.keyboard import Key
+from .screenhoot import Screenhoot
 class Calculated:
     def __init__(self):
         # 获取窗口句柄
@@ -25,6 +25,8 @@ class Calculated:
         # 键鼠控制
         self.Mouse = mouse.Controller()
         self.Keyboard = keyboard.Controller()
+        # 截图控制
+        self.screenshot = Screenhoot()
         # 列表比较
         self.compare_lists = lambda a, b: all(x <= y for x, y in zip(a, b))
         # 图片logs是否记录
@@ -64,16 +66,14 @@ class Calculated:
     def take_screenshot(self,points=(0,0,0,0)):
         """
         说明:
-            返回RGB图像
+            返回BGR图像
         参数:
             points: 图像截取范围
         """
         left, top, right, bottom = self.get_WindowRect(self.hwnd)
-        screenshot = ImageGrab.grab((left, top, right, bottom))
+        screenshot = self.screenshot.grab(left,top)
         if points != (0,0,0,0):
-            screenshot = screenshot.crop(points)
-        screenshot = np.array(screenshot)
-        screenshot = cv.cvtColor(screenshot, cv.COLOR_BGR2RGB)
+            return screenshot[points[1]:points[3],points[0]:points[2]]
         return screenshot
 
     def save_screenshot(self,name:str):
@@ -85,8 +85,8 @@ class Calculated:
         """
         if self.img_log_value:
             left, top, right, bottom = self.get_WindowRect(self.hwnd)
-            screenshot = ImageGrab.grab((left, top, right, bottom))
-            screenshot.save(f"./logs/image/{name}.jpg")
+            screenshot = self.screenshot.grab(left,top)
+            cv.imwrite(f"./logs/image/{name}.jpg",screenshot,[cv.IMWRITE_JPEG_QUALITY, 25])
 
     def img_match(self,img,templeimg):
         """
