@@ -535,3 +535,35 @@ class Calculated:
             self.Mouse.position = self.mouse_pos((950,900))
             self.Mouse.click(mouse.Button.left)
             time.sleep(1)
+
+    def map_pos(self,mappath:str):
+        """
+        说明:
+            返回识别到地图坐标
+        """
+        # 获取小地图
+        img = self.take_screenshot((80,90,200,210))
+        w = img.shape[1]
+        h = img.shape[0]
+        img = img.copy()
+        # 中心蓝色箭头处理
+        for i in range(45,75):
+            for j in range(45,75):
+                color = img[i,j]
+                if color[1] - color[0] > 5 and color[2] < 100:
+                    img[i,j] = [52,52,52]
+        # 蓝色圆点处理
+        for i in range(w):
+            for j in range(h):
+                color = img[i,j]
+                if color[0] > 170 and color[2] < 130 and color[2] > 80 and color[1] - color[0] > 15 and color[1] > 160:
+                    img[i,j] = [52,52,52]
+        mapimg = read_picture(mappath)
+        res = cv.matchTemplate(mapimg,img,cv.TM_CCOEFF_NORMED)
+        min_val,max_val,min_loc,loc = cv.minMaxLoc(res)
+        realx = loc[0]+60
+        realy = loc[1]+60
+        # cv.circle(mapimg,(realx,realy),2,(0,0,255),-1)
+        # cv.imshow("result",mapimg)
+        # cv.waitKey(5)
+        return (realx,realy)

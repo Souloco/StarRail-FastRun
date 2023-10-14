@@ -2,7 +2,6 @@ import numpy as np
 import win32gui
 import win32ui
 import win32con
-import cv2
 class Screenhoot():
     def __init__(self):
         # 根据窗口句柄获取窗口的设备上下文DC（Divice Context）

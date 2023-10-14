@@ -336,56 +336,66 @@ if __name__ == '__main__':
     map_notebook = ttk.Notebook(hoe_frame)
     map_tab_list = []
     map_value_list = []
+    map_planet_value_list = []
     map_checkbutton_list = []
     map_list_data = get_config("map_list_data")
     map_allname_list1 = read_maplist_name()
     for i in range(len(map_title)):
         map_tab_list.append(ttk.Frame(map_notebook))
         map_notebook.add(map_tab_list[i],text=map_title[i][0])
+        map_planet_value_list.append([])
 
     for i in range(len(map_list)):
         planet_id = map_list[i][map_list[i].index('_') + 1:map_list[i].index('-')]
         map_id = map_list[i][map_list[i].index('-') + 1:map_list[i].index('_',5)]
         index_id = map_list[i][map_list[i].index('_',5) + 1:map_list[i].index('.')]
         map_value_list.append(tk.IntVar(value=0))
+        map_planet_value_list[int(planet_id)-1].append(map_value_list[i])
         if map_list[i] in map_list_data:
             map_value_list[i].set(1)
         map_checkbutton_list.append(ttk.Checkbutton(map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=map_value_list[i],onvalue=1, offvalue=0,width=10))
         map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     map_notebook.grid(columnspan=4)
     # 按钮
-    ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=4,column=0,columnspan=2)
-    ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=2,columnspan=2)
+    ttk.Button(hoe_frame,text='单页全择',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],1)).grid(row=4,column=0)
+    ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=4,column=1)
+    ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],0)).grid(row=4,column=2)
+    ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=3)
     # auto_notebook地图选项
     ttk.Label(hoe_frame,text='重跑路线',font=('Arial Black', 16)).grid(columnspan=4)
     auto_map_notebook = ttk.Notebook(hoe_frame)
     auto_map_tab_list = []
     auto_map_value_list = []
+    auto_map_planet_value_list = []
     auto_map_checkbutton_list = []
     auto_map_list_data = get_config("auto_map_list_data")
     for i in range(len(map_title)):
         auto_map_tab_list.append(ttk.Frame(auto_map_notebook))
         auto_map_notebook.add(auto_map_tab_list[i],text=map_title[i][0])
+        auto_map_planet_value_list.append([])
     for i in range(len(map_list)):
         planet_id = map_list[i][map_list[i].index('_') + 1:map_list[i].index('-')]
         map_id = map_list[i][map_list[i].index('-') + 1:map_list[i].index('_',5)]
         index_id = map_list[i][map_list[i].index('_',5) + 1:map_list[i].index('.')]
         auto_map_value_list.append(tk.IntVar(value=0))
+        auto_map_planet_value_list[int(planet_id)-1].append(auto_map_value_list[i])
         if map_list[i] in auto_map_list_data:
             auto_map_value_list[i].set(1)
         auto_map_checkbutton_list.append(ttk.Checkbutton(auto_map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=auto_map_value_list[i],onvalue=1, offvalue=0,width=10))
         auto_map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     auto_map_notebook.grid(columnspan=4)
     # 按钮
-    ttk.Button(hoe_frame,text='全选',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=7,column=0)
-    ttk.Button(hoe_frame,text='清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=7,column=1)
+    ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],1)).grid(row=7,column=0,pady=5)
+    ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=7,column=1,pady=5)
+    ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],0)).grid(row=7,column=2,pady=5)
+    ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=7,column=3,pady=5)
     # 锄大地配置
     # 重跑次数
-    ttk.Label(hoe_frame,text='重跑次数:',font=('', 12)).grid(row=7,column=2)
+    ttk.Label(hoe_frame,text='重跑次数:',font=('', 12)).grid(row=8,column=1)
     auto_map_nums = tk.IntVar()
     auto_map_nums.set(get_config("auto_map_nums"))
     auto_map_spinbox = ttk.Spinbox(hoe_frame,from_=0, to=10, increment=1,textvariable=auto_map_nums)
-    auto_map_spinbox.grid(row=7,column=3)
+    auto_map_spinbox.grid(row=8,column=2)
     # 切换队伍
     teamid_sets = tk.IntVar()
     teamid_option_list = [1,2,3,4,5,6]
@@ -403,10 +413,10 @@ if __name__ == '__main__':
     commission_var = tk.BooleanVar()
     commission_var.set(get_config("commission"))
     # 配置开关
-    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=8,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=8,column=2,pady=5)
-    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=9,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=9,column=1,pady=5)
+    ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=9,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1,pady=5)
+    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=10,column=2,pady=5)
     # 按钮
     ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=3)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=3)
