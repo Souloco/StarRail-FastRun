@@ -14,6 +14,8 @@ import requests
 import time
 import win32console
 import win32gui
+import inspect
+import ctypes
 # 全局属性
 # 标题
 TITLE_NAME = 'StarRail-FastRun'
@@ -23,6 +25,8 @@ VER = get_config("version")
 ver_update = False
 # 线程变量
 t = threading.Thread()
+# 日志开始标志符
+logstart_flag = 0
 # 用于日志文本框
 class TextboxHandler(logging.Handler):
     def __init__(self, textbox:tk.Text):
@@ -41,6 +45,8 @@ def Enter_hoeframe():
         mainframe.pack_forget()
         hoe_frame.pack()
         root.update()
+        global logstart_flag
+        logstart_flag = 0
     else:
         log.warning("功能线程还在运行！")
 # 进入主页面
@@ -80,6 +86,8 @@ def Enter_logframe(logmode:int = 1):
     dungeonframe.pack_forget()
     allframe.pack_forget()
     logframe.pack()
+    global logstart_flag
+    logstart_flag = logmode
     if logmode == 1:
         logstart.configure(command=Enter_map)
         logreturn.configure(command=Enter_hoeframe)
@@ -97,6 +105,8 @@ def Enter_dungeonframe():
         mainframe.pack_forget()
         dungeonframe.pack()
         root.update()
+        global logstart_flag
+        logstart_flag = 0
     else:
         log.warning("功能线程还在运行！")
 # 进入多功能合一执行页面
@@ -106,6 +116,8 @@ def Enter_allframe():
         mainframe.pack_forget()
         allframe.pack()
         root.update()
+        global logstart_flag
+        logstart_flag = 0
     else:
         log.warning("功能线程还在运行！")
 # 锄地线程
@@ -176,8 +188,6 @@ def enter_function():
     id = dungeon_notebook.index("current")
     auto_dungeon.start(dungeon_config_list[id])
     # 锄地执行
-    if auto_map.stop:
-        return True
     auto_map.start(map_use_list,auto_map_use_list)
 # 多功能执行线程
 def enter_function_all():
@@ -232,20 +242,45 @@ def clear_imglog():
 
 # 关闭程序
 def close_window():
-    root.destroy()
     auto_map.calculated.release_mouse_keyboard()
+    root.destroy()
 
-# 按键关闭程序
+# 按键监听线程
 def btn_close_window():
     def on_press(key):
-        if key == keyboard.Key.f8:
-            close_window()
+        if key == keyboard.Key.f7:
+            global logstart_flag
+            if logstart_flag == 1:
+                Enter_map()
+            if logstart_flag == 2:
+                enter_dungeon_all()
+            if logstart_flag == 3:
+                enter_function_all()
         if key == keyboard.Key.f10:
-            log.info("暂停")
-            auto_map.stop = True
-            auto_dungeon.stop = True
+            close_window()
+        if key == keyboard.Key.f8:
+            log.info("停止")
+            stop_thread(t)
+            auto_map.calculated.release_mouse_keyboard()
     with keyboard.Listener(on_press=on_press) as listener:  # 创建按键监听线程
         listener.join()  # 等待按键监听线程结束
+# 线程关闭
+def _async_raise(tid, exctype):
+    """raises the exception, performs cleanup if needed"""
+    tid = ctypes.c_long(tid)
+    if not inspect.isclass(exctype):
+        exctype = type(exctype)
+    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, ctypes.py_object(exctype))
+    if res == 0:
+        raise ValueError("invalid thread id")
+    elif res != 1:
+        # """if it returns a number greater than one, you're in trouble,
+        # and you should call it again with exc=NULL to revert the effect"""
+        ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
+        raise SystemError("PyThreadState_SetAsyncExc failed")
+def stop_thread(thread:threading.Thread):
+    _async_raise(thread.ident,SystemExit)
+
 # map_value_list的值初始化
 def set_map_value_list(map_value_list,value):
     for map_value in map_value_list:
@@ -357,7 +392,7 @@ if __name__ == '__main__':
         map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     map_notebook.grid(columnspan=4)
     # 按钮
-    ttk.Button(hoe_frame,text='单页全择',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],1)).grid(row=4,column=0)
+    ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],1)).grid(row=4,column=0)
     ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=4,column=1)
     ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],0)).grid(row=4,column=2)
     ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=3)
@@ -385,17 +420,17 @@ if __name__ == '__main__':
         auto_map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     auto_map_notebook.grid(columnspan=4)
     # 按钮
-    ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],1)).grid(row=7,column=0,pady=5)
-    ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=7,column=1,pady=5)
-    ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],0)).grid(row=7,column=2,pady=5)
-    ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=7,column=3,pady=5)
+    ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],1)).grid(row=7,column=0)
+    ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=7,column=1)
+    ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],0)).grid(row=7,column=2)
+    ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=7,column=3)
     # 锄大地配置
     # 重跑次数
-    ttk.Label(hoe_frame,text='重跑次数:',font=('', 12)).grid(row=8,column=1)
+    ttk.Label(hoe_frame,text='重跑次数:',font=('', 12)).grid(row=8,column=1,pady=5)
     auto_map_nums = tk.IntVar()
     auto_map_nums.set(get_config("auto_map_nums"))
     auto_map_spinbox = ttk.Spinbox(hoe_frame,from_=0, to=10, increment=1,textvariable=auto_map_nums)
-    auto_map_spinbox.grid(row=8,column=2)
+    auto_map_spinbox.grid(row=8,column=2,pady=5)
     # 切换队伍
     teamid_sets = tk.IntVar()
     teamid_option_list = [1,2,3,4,5,6]
@@ -415,11 +450,11 @@ if __name__ == '__main__':
     # 配置开关
     ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=9,column=1,pady=5)
     ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=9,column=2,pady=5)
-    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=10,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1)
+    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=10,column=2)
     # 按钮
-    ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=3)
-    ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=3)
+    ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=3,pady=5)
+    ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=3,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=3)
 
     # 日志页面
@@ -507,7 +542,7 @@ if __name__ == '__main__':
     ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=4,column=1,pady=5)
     ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=4,column=2,pady=5)
     ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=4,column=3,pady=5)
-    ttk.Label(allframe,text='(.\Game\StarRail.exe)游戏路径:').grid(row=5,column=0,pady=5)
+    ttk.Label(allframe,text='游戏路径:').grid(row=5,column=0,pady=5)
     game_path = tk.StringVar()
     game_path.set(get_config("gamepath"))
     game_text = ttk.Entry(allframe,width=40,textvariable=game_path)

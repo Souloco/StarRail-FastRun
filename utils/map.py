@@ -14,7 +14,6 @@ class Map:
         self.commission = False
         self.close_game = False
         self.nums = 0
-        self.stop = False
 
     def Enter_map_start(self,mapjson):
         """
@@ -28,8 +27,6 @@ class Map:
         map_name = read_json_info(mapjson,"name",prepath="map").split("-")[0]
         planet_id = int(mapjson[mapjson.index('_') + 1:mapjson.index('-')])
         for start in start_list:
-            if self.stop:
-                return True
             for key,value in start.items():
                 if key == "map":
                     # 激活窗口
@@ -110,8 +107,6 @@ class Map:
         map_name = mapjson[0:mapjson.index(".")]
         operate_list = read_json_info(mapjson,"map",prepath="map")
         for operate in operate_list:
-            if self.stop:
-                return True
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
@@ -147,9 +142,6 @@ class Map:
         """
         for mapjson in jsonlist:
             self.Enter_map_onejson(mapjson)
-            if self.stop:
-                log.info("锄大地---暂停成功")
-                return True
 
     def map_init(self):
         log.info("地图初始化")
@@ -167,7 +159,6 @@ class Map:
 
     def start(self,map_list,auto_map_list):
         log.info("游戏初始化设置")
-        self.stop = False
         self.calculated.set_windowsize()
         self.calculated.check_main_interface()
         if self.commission:
@@ -187,7 +178,6 @@ class Map:
             log.info("锄大地---自动关机")
             self.calculated.close_game()
         log.info("锄大地---执行完毕")
-        self.stop = False
 
     def check_map(self):
         log.info("锄大地---打开背包")

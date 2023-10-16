@@ -457,7 +457,7 @@ class Calculated:
             释放键鼠操作
         """
         self.Mouse.release(mouse.Button.left)
-        for key in ["w","a","s","d","f",Key.esc,Key.alt_l]:
+        for key in ["w","a","s","d","f",Key.esc,Key.shift_l]:
             self.Keyboard.release(key)
         return True
 
@@ -541,23 +541,26 @@ class Calculated:
         说明:
             返回识别到地图坐标
         """
+        CenterBlue = [255,220,0]
+        CenterBlue1 = [200,170,10]
+        CenterBlue2 = [250,210,60]
+        CircleBlue = [220,200,120]
         # 获取小地图
         img = self.take_screenshot((80,90,200,210))
         w = img.shape[1]
         h = img.shape[0]
-        img = img.copy()
-        # 中心蓝色箭头处理
-        for i in range(45,75):
-            for j in range(45,75):
+        # 去除中心蓝色
+        img = cv.bitwise_and(img,img)
+        mask_img = img[45:75,45:75]
+        mask_img[abs(np.sum(mask_img-CenterBlue,axis=-1)) < 50] = [55,55,55]
+        mask_img[abs(np.sum(mask_img-CenterBlue1,axis=-1)) < 30] = [55,55,55]
+        mask_img[abs(np.sum(mask_img-CenterBlue2,axis=-1)) < 20] = [55,55,55]
+        # 去除蓝色圆点
+        for i in range(h):
+            for j in range(w):
                 color = img[i,j]
-                if color[1] - color[0] > 5 and color[2] < 100:
-                    img[i,j] = [52,52,52]
-        # 蓝色圆点处理
-        for i in range(w):
-            for j in range(h):
-                color = img[i,j]
-                if color[0] > 170 and color[2] < 130 and color[2] > 80 and color[1] - color[0] > 15 and color[1] > 160:
-                    img[i,j] = [52,52,52]
+                if abs(color[0]-CircleBlue[0]) < 10 and abs(color[1]-CircleBlue[1]) < 10 and abs(color[2]-CircleBlue[2]) < 10:
+                    img[i,j] = [55,55,55]
         mapimg = read_picture(mappath)
         res = cv.matchTemplate(mapimg,img,cv.TM_CCOEFF_NORMED)
         min_val,max_val,min_loc,loc = cv.minMaxLoc(res)
