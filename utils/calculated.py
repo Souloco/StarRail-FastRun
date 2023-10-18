@@ -371,7 +371,7 @@ class Calculated:
             log.info("打怪")
             self.Mouse.click(mouse.Button.left)
             time.sleep(1)
-            if self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),2):
+            if self.img_check("liaotian.png",(1735,1025,1920,1080),2):
                 if self.has_red((50,68,230,245)):
                     self.wait_fight_end()
                     return True
@@ -389,7 +389,7 @@ class Calculated:
             if self.img_click("fighting_lost.jpg",(700,140,1200,400),2):
                 log.info("战斗失败")
                 break
-            if self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),2):
+            if self.img_check("liaotian.png",(20,900,80,970),2):
                 break
             time.sleep(3)
             if time.time() - start_time > 600:
@@ -399,10 +399,10 @@ class Calculated:
 
     def check_main_interface(self):
         log.info("强制在主界面")
-        if self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),10):
+        if self.img_check("liaotian.png",(20,900,80,970),10):
             time.sleep(2)   # 等待人物模型出现
         else:
-            while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):
+            while not self.img_check("liaotian.png",(20,900,80,970),1):
                 self.Keyboard.press(Key.esc)
                 time.sleep(0.05)
                 self.Keyboard.release(Key.esc)
@@ -520,7 +520,7 @@ class Calculated:
         while self.img_click('red_notice.jpg',overtime=5,rates=0.80):
             if self.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
                 self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
-        while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):
+        while not self.img_check("liaotian.png",(20,900,80,970),1):
             self.Keyboard.press(Key.esc)
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
@@ -531,7 +531,7 @@ class Calculated:
             登录功能
         """
         log.info("登录界面")
-        while not self.img_check("finish_fighting.jpg",(1735,1025,1920,1080),1):
+        while not self.img_check("liaotian.png",(20,900,80,970),1):
             self.Mouse.position = self.mouse_pos((950,900))
             self.Mouse.click(mouse.Button.left)
             time.sleep(1)

@@ -56,9 +56,9 @@ def Enter_mainframe():
     allframe.pack_forget()
     hoe_frame.pack_forget()
     dungeonframe.pack_forget()
+    configframe.pack_forget()
     mainframe.pack()
     root.update()
-
 # 打包地图列表
 def get_map_list(map_value_list):
     map_use_list = []
@@ -120,6 +120,11 @@ def Enter_allframe():
         logstart_flag = 0
     else:
         log.warning("功能线程还在运行！")
+# 进入编辑配置页面
+def Enter_configframe():
+    mainframe.pack_forget()
+    configframe.pack()
+    root.update()
 # 锄地线程
 def Enter_map():
     auto_map.calculated.get_hwnd()
@@ -323,18 +328,18 @@ if __name__ == '__main__':
     ttk.Button(mainframe,text='清体力',width=10,command=Enter_dungeonframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='多功能执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
-    # ttk.Button(mainframe,text='编辑配置',width=10).grid(pady=5,ipady=10)
+    # ttk.Button(mainframe,text='编辑配置',width=10,command=Enter_configframe).grid(pady=5,ipady=10)
 
     # 公告页面
     announce_frame = ttk.Frame(root)
     ttk.Label(announce_frame,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=2)
     ttk.Label(announce_frame,text=VER,font=('Arial Black', 16)).grid(columnspan=2)
-    ttk.Label(announce_frame,text='项目地址:',font=('Arial Black', 16)).grid(column=0,row=2)
+    ttk.Label(announce_frame,text='项目地址:').grid(column=0,row=2)
     repo_url = "https://github.com/Souloco/StarRail-FastRun"
     repo_url_text = ttk.Entry(announce_frame,width=40)
     repo_url_text.insert(0,repo_url)
     repo_url_text.grid(column=1,row=2)
-    ttk.Label(announce_frame,text='公告',font=('Arial Black', 16)).grid(columnspan=2)
+    ttk.Label(announce_frame,text='公告').grid(columnspan=2)
     s = ttk.Scrollbar(announce_frame)
     announce_text = tk.Text(announce_frame,font=('',16),undo=True, autoseparators=False,wrap='none', yscrollcommand=s.set)
     # 获取信息
@@ -426,7 +431,7 @@ if __name__ == '__main__':
     ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=7,column=3)
     # 锄大地配置
     # 重跑次数
-    ttk.Label(hoe_frame,text='重跑次数:',font=('', 12)).grid(row=8,column=1,pady=5)
+    ttk.Label(hoe_frame,text='重跑次数:').grid(row=8,column=1,pady=5)
     auto_map_nums = tk.IntVar()
     auto_map_nums.set(get_config("auto_map_nums"))
     auto_map_spinbox = ttk.Spinbox(hoe_frame,from_=0, to=10, increment=1,textvariable=auto_map_nums)
@@ -459,7 +464,7 @@ if __name__ == '__main__':
 
     # 日志页面
     logframe = ttk.Frame(root)
-    ttk.Label(logframe, text='实时日志', font=('Arial Black', 16)).pack(anchor='nw')   # justify控制对其方向，anchor控制位置 共同使文本靠左
+    ttk.Label(logframe, text='实时日志', font=('Arial Black',16)).pack(anchor='nw')   # justify控制对其方向，anchor控制位置 共同使文本靠左
     logstart = ttk.Button(logframe, text='开始',width=5,command=Enter_map)
     logstart.place(relx=0.52,rely=0)
     ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.64,rely=0)
@@ -481,20 +486,20 @@ if __name__ == '__main__':
     dungeonframe = ttk.Frame(root)
     ttk.Label(dungeonframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
     ttk.Label(dungeonframe,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
-    ttk.Label(dungeonframe,text='副本类型:',font=('helvetica', 12)).grid(row=2,column=0)
+    ttk.Label(dungeonframe,text='副本类型:').grid(row=2,column=0)
     index_dungeon_list = read_json_info("dungeon.json","indexname",prepath="dungeon")
     index_dungeon_choose = tk.StringVar()
     index_dungeon_choose.set(index_dungeon_list[0])
     index_dungeon_box = ttk.Combobox(dungeonframe,textvariable=index_dungeon_choose,values=index_dungeon_list,width=25)
     index_dungeon_box.bind("<<ComboboxSelected>>",index_dungeon_change)
     index_dungeon_box.grid(row=2,column=1)
-    ttk.Label(dungeonframe,text='具体副本:',font=('helvetica', 12)).grid(row=2,column=2)
+    ttk.Label(dungeonframe,text='具体副本:').grid(row=2,column=2)
     dungeon_list = read_json_info("dungeon.json",index_dungeon_choose.get(),prepath="dungeon")
     dungeon_choose = tk.StringVar()
     dungeon_choose.set(dungeon_list[0])
     dungeon_box = ttk.Combobox(dungeonframe,textvariable=dungeon_choose,values=dungeon_list,width=25)
     dungeon_box.grid(row=2,column=3)
-    ttk.Label(dungeonframe,text='执行次数:',font=('helvetica', 12)).grid(row=3,column=0)
+    ttk.Label(dungeonframe,text='执行次数:').grid(row=3,column=0)
     dungeon_nums = tk.IntVar()
     dungeon_nums.set(1)
     dungeon_spinbox = ttk.Spinbox(dungeonframe,from_=1, to=100, increment=1,textvariable=dungeon_nums)
@@ -550,6 +555,15 @@ if __name__ == '__main__':
     ttk.Button(allframe,text='确定',width=10,command=lambda:Enter_logframe(3)).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
+    # 编辑配置页面
+    configframe = ttk.Frame(root)
+    ttk.Label(configframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
+    ttk.Label(configframe,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
+    # font_names = tkfont.families()
+    # font_sets = tk.StringVar()
+    # ttk.OptionMenu(configframe,font_sets,font_names[0],*font_names).grid(row=2,column=0,pady=5)
+    ttk.Button(configframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
+    ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
     t1 = threading.Thread(name='btn_close',target=btn_close_window)
     t1.daemon = True
