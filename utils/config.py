@@ -124,3 +124,16 @@ def get_config(info:str):
         data = json.load(f)
         info_list = data[info]
         return info_list
+class Config():
+    auto_map_list_data = []
+    auto_map_nums = 0
+    character_id = 4
+    dungeon_character_id = 1
+    close_game = False
+    img_log = False
+    map_list_data = []
+    team_change = False
+    team_id = 1
+    dungeon_team_id = 1
+    commission = False
+    gamepath = ""

@@ -371,7 +371,7 @@ class Calculated:
             log.info("打怪")
             self.Mouse.click(mouse.Button.left)
             time.sleep(1)
-            if self.img_check("liaotian.png",(1735,1025,1920,1080),2):
+            if self.img_check("liaotian.png",(20,900,80,970),2):
                 if self.has_red((50,68,230,245)):
                     self.wait_fight_end()
                     return True
