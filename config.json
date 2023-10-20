@@ -70,7 +70,8 @@
   "team_change": false,
   "team_id": 1,
   "dungeon_team_id": 1,
-  "version": "V1.3.7",
+  "version": "V1.3.8",
   "commission": true,
-  "gamepath": "G:\\Star Rail\\Game\\StarRail.exe"
+  "gamepath": "G:\\Star Rail\\Game\\StarRail.exe",
+  "fontsize":12
 }

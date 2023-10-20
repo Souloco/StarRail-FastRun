@@ -2,6 +2,7 @@ import threading
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
+import tkinter.font as tkfont
 from utils.config import read_map,read_maplist_name,set_config,get_config,save_dungeon_info,read_json_info
 from utils.map import Map
 from utils.dungeon import Dungeon
@@ -232,11 +233,20 @@ def save_dungeon_config():
     set_config("dungeon_team_id",dungeon_teamid_sets.get())
     set_config("dungeon_character_id",dungeon_id_sets.get())
     set_config("team_change",team_change_var.get())
-# 保存所有配置项
+# 保存多脚本执行配置项
 def save_all_config():
     save_dungeon_config()
     save_config()
     set_config("gamepath",game_path.get())
+# 保存gui配置项
+def save_gui_config():
+    set_config("fontsize",font_sizes.get())
+# 应用gui配置项
+def sure_gui_config():
+    defaultfont.configure(size=font_sizes.get())
+    titlefont.configure(size=font_sizes.get()+8)
+    versionfont.configure(size=font_sizes.get()+4)
+    root.update()
 # 清理图片log
 def clear_imglog():
     logpath = "./logs/image"
@@ -320,20 +330,27 @@ if __name__ == '__main__':
     root.geometry("+{}+{}".format(int(root.winfo_screenwidth()/4),int(root.winfo_screenheight()/8)))
     root.title(TITLE_NAME)
     root.resizable(True,True)
+    # 字体设置
+    defaultfontsize = get_config("fontsize")
+    defaultfont = tkfont.Font(family="宋体",size=defaultfontsize)
+    titlefont = tkfont.Font(family="黑体",size=defaultfontsize+8,weight='bold')
+    versionfont = tkfont.Font(family="黑体",size=defaultfontsize+4,weight='bold')
+    ttk.Style().configure(".",font=defaultfont)
+    root.option_add("*Font",defaultfont)
     # 主页面
     mainframe = ttk.Frame(root)
-    ttk.Label(mainframe,text=TITLE_NAME,font=('Arial Black', 24)).grid()
-    ttk.Label(mainframe,text=VER,font=('Arial Black', 16)).grid()
+    ttk.Label(mainframe,text=TITLE_NAME,font=titlefont).grid()
+    ttk.Label(mainframe,text=VER,font=versionfont).grid()
     ttk.Button(mainframe,text='锄大地',width=10,command=Enter_hoeframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='清体力',width=10,command=Enter_dungeonframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='多功能执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
-    # ttk.Button(mainframe,text='编辑配置',width=10,command=Enter_configframe).grid(pady=5,ipady=10)
+    ttk.Button(mainframe,text='编辑配置',width=10,command=Enter_configframe).grid(pady=5,ipady=10)
 
     # 公告页面
     announce_frame = ttk.Frame(root)
-    ttk.Label(announce_frame,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=2)
-    ttk.Label(announce_frame,text=VER,font=('Arial Black', 16)).grid(columnspan=2)
+    ttk.Label(announce_frame,text=TITLE_NAME,font=titlefont).grid(columnspan=2)
+    ttk.Label(announce_frame,text=VER,font=versionfont).grid(columnspan=2)
     ttk.Label(announce_frame,text='项目地址:').grid(column=0,row=2)
     repo_url = "https://github.com/Souloco/StarRail-FastRun"
     repo_url_text = ttk.Entry(announce_frame,width=40)
@@ -341,7 +358,7 @@ if __name__ == '__main__':
     repo_url_text.grid(column=1,row=2)
     ttk.Label(announce_frame,text='公告').grid(columnspan=2)
     s = ttk.Scrollbar(announce_frame)
-    announce_text = tk.Text(announce_frame,font=('',16),undo=True, autoseparators=False,wrap='none', yscrollcommand=s.set)
+    announce_text = tk.Text(announce_frame,undo=True, autoseparators=False,wrap='none', yscrollcommand=s.set)
     # 获取信息
     repos_url = 'https://api.github.com/repos/Souloco/StarRail-FastRun/releases/latest'
     # 请求版本最新信息
@@ -367,9 +384,9 @@ if __name__ == '__main__':
 
     # 锄大地页面
     hoe_frame = ttk.Frame(root)
-    ttk.Label(hoe_frame,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
-    ttk.Label(hoe_frame,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
-    ttk.Label(hoe_frame,text='必跑路线',font=('Arial Black', 16)).grid(columnspan=4)
+    ttk.Label(hoe_frame,text=TITLE_NAME,font=titlefont).grid(columnspan=4)
+    ttk.Label(hoe_frame,text=VER,font=versionfont).grid(columnspan=4)
+    ttk.Label(hoe_frame,text='必跑路线',font=versionfont).grid(columnspan=4)
     # notebook地图选项
     map_list = read_map()
     map_title = [('空间站「黑塔」',1),('雅利洛-VI',2),('仙舟「罗浮」',3),('匹诺康尼',4)]    # 星球选项
@@ -402,7 +419,7 @@ if __name__ == '__main__':
     ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],0)).grid(row=4,column=2)
     ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=3)
     # auto_notebook地图选项
-    ttk.Label(hoe_frame,text='重跑路线',font=('Arial Black', 16)).grid(columnspan=4)
+    ttk.Label(hoe_frame,text='重跑路线',font=versionfont).grid(columnspan=4)
     auto_map_notebook = ttk.Notebook(hoe_frame)
     auto_map_tab_list = []
     auto_map_value_list = []
@@ -484,8 +501,8 @@ if __name__ == '__main__':
 
     # 清体力页面
     dungeonframe = ttk.Frame(root)
-    ttk.Label(dungeonframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
-    ttk.Label(dungeonframe,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
+    ttk.Label(dungeonframe,text=TITLE_NAME,font=titlefont).grid(columnspan=4)
+    ttk.Label(dungeonframe,text=VER,font=versionfont).grid(columnspan=4)
     ttk.Label(dungeonframe,text='副本类型:').grid(row=2,column=0)
     index_dungeon_list = read_json_info("dungeon.json","indexname",prepath="dungeon")
     index_dungeon_choose = tk.StringVar()
@@ -535,8 +552,8 @@ if __name__ == '__main__':
 
     # 多功能合一执行页面
     allframe = ttk.Frame(root)
-    ttk.Label(allframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
-    ttk.Label(allframe,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
+    ttk.Label(allframe,text=TITLE_NAME,font=titlefont).grid(columnspan=4)
+    ttk.Label(allframe,text=VER,font=versionfont).grid(columnspan=4)
     ttk.Label(allframe,text='清体力队伍/人物编号:').grid(row=2,column=0,pady=5)
     ttk.OptionMenu(allframe,dungeon_teamid_sets,get_config("dungeon_team_id"),*teamid_option_list).grid(row=2,column=1,pady=5)
     ttk.OptionMenu(allframe,dungeon_id_sets,get_config("dungeon_character_id"),*id_option_list).grid(row=2,column=2,pady=5)
@@ -557,12 +574,14 @@ if __name__ == '__main__':
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 编辑配置页面
     configframe = ttk.Frame(root)
-    ttk.Label(configframe,text=TITLE_NAME,font=('Arial Black', 24)).grid(columnspan=4)
-    ttk.Label(configframe,text=VER,font=('Arial Black', 16)).grid(columnspan=4)
-    # font_names = tkfont.families()
-    # font_sets = tk.StringVar()
-    # ttk.OptionMenu(configframe,font_sets,font_names[0],*font_names).grid(row=2,column=0,pady=5)
-    ttk.Button(configframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
+    ttk.Label(configframe,text=TITLE_NAME,font=titlefont).grid(columnspan=4)
+    ttk.Label(configframe,text=VER,font=versionfont).grid(columnspan=4)
+    ttk.Label(configframe,text='字体大小:').grid(row=2,column=0,columnspan=2,pady=5)
+    font_sizes = tk.IntVar()
+    font_sizes.set(get_config("fontsize"))
+    ttk.Spinbox(configframe,from_=5, to=100, increment=1,textvariable=font_sizes).grid(row=2,column=2,columnspan=2,pady=5)
+    ttk.Button(configframe,text='确定',width=10,command=sure_gui_config).grid(columnspan=4,pady=5)
+    ttk.Button(configframe,text='保存',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
     t1 = threading.Thread(name='btn_close',target=btn_close_window)
