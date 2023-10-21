@@ -70,8 +70,12 @@
   "team_change": false,
   "team_id": 1,
   "dungeon_team_id": 1,
-  "version": "V1.3.8",
+  "version": "V1.3.9",
   "commission": true,
-  "gamepath": "G:\\Star Rail\\Game\\StarRail.exe",
-  "fontsize":12
+  "fontsize": 10,
+  "fontfamily": "Microsoft YaHei UI",
+  "gamepath": "",
+  "配置1": [],
+  "配置2": [],
+  "配置3": []
 }

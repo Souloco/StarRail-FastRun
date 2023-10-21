@@ -72,20 +72,6 @@ def read_json_info(path,info,prepath=""):
         info_list = data[info]
     return info_list
 
-def save_dungeon_info(dungeon,info,value):
-    """
-    说明：
-        保存单个dungeon的info字段信息
-    参数：
-        dungeon：地图json
-        info:信息字段
-    """
-    with open(os.path.join(dungeon_dir,dungeon),"r",encoding='utf-8') as f:
-        data = json.load(f)
-        data[info] = value
-    with open(os.path.join(dungeon_dir,dungeon), "w", encoding="utf-8") as f:
-        json.dump(data,f,indent=2,ensure_ascii=False)
-
 def read_maplist_name():
     """
     说明：
@@ -137,3 +123,15 @@ class Config():
     dungeon_team_id = 1
     commission = False
     gamepath = ""
+    fontsize = 10
+    fontfamily = "Microsoft YaHei UI"
+    配置1 = []
+    配置2 = []
+    配置3 = []
+def check_config():
+    with open(os.path.join(root_dir,CONFIG_FILE_NAME),"r",encoding='utf-8') as f:
+        data = json.load(f)
+    for key,item in Config.__dict__.items():
+        if '__' not in key and key not in data:
+            set_config(key,item)
+    return True

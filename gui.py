@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import tkinter.font as tkfont
-from utils.config import read_map,read_maplist_name,set_config,get_config,save_dungeon_info,read_json_info
+from utils.config import read_map,read_maplist_name,set_config,get_config,read_json_info,check_config
 from utils.map import Map
 from utils.dungeon import Dungeon
 import os
@@ -229,7 +229,7 @@ def delete_dungeon_config():
 # 保存副本配置项
 def save_dungeon_config():
     id = dungeon_notebook.index("current")
-    save_dungeon_info("dungeon.json",dungeon_title[id],dungeon_config_list[id])
+    set_config(dungeon_title[id],dungeon_config_list[id])
     set_config("dungeon_team_id",dungeon_teamid_sets.get())
     set_config("dungeon_character_id",dungeon_id_sets.get())
     set_config("team_change",team_change_var.get())
@@ -241,11 +241,12 @@ def save_all_config():
 # 保存gui配置项
 def save_gui_config():
     set_config("fontsize",font_sizes.get())
+    set_config("fontfamily",fontfamilt_sets.get())
 # 应用gui配置项
 def sure_gui_config():
-    defaultfont.configure(size=font_sizes.get())
-    titlefont.configure(size=font_sizes.get()+8)
-    versionfont.configure(size=font_sizes.get()+4)
+    defaultfont.configure(family=fontfamilt_sets.get(),size=font_sizes.get())
+    titlefont.configure(family=fontfamilt_sets.get(),size=font_sizes.get()+12)
+    versionfont.configure(family=fontfamilt_sets.get(),size=font_sizes.get()+6)
     root.update()
 # 清理图片log
 def clear_imglog():
@@ -259,7 +260,11 @@ def clear_imglog():
 def close_window():
     auto_map.calculated.release_mouse_keyboard()
     root.destroy()
-
+# 停止
+def stop():
+    log.info("停止")
+    stop_thread(t)
+    auto_map.calculated.release_mouse_keyboard()
 # 按键监听线程
 def btn_close_window():
     def on_press(key):
@@ -274,9 +279,7 @@ def btn_close_window():
         if key == keyboard.Key.f10:
             close_window()
         if key == keyboard.Key.f8:
-            log.info("停止")
-            stop_thread(t)
-            auto_map.calculated.release_mouse_keyboard()
+            stop()
     with keyboard.Listener(on_press=on_press) as listener:  # 创建按键监听线程
         listener.join()  # 等待按键监听线程结束
 # 线程关闭
@@ -318,6 +321,8 @@ if __name__ == '__main__':
         pyuac.runAsAdmin()
         # messagebox.showerror("运行错误", "请以管理员权限运行")
         # raise Exception("请以管理员身份运行")
+    # 配置检查
+    check_config()
     # 锄大地实例
     auto_map = Map()
     # 清体力实例
@@ -331,10 +336,11 @@ if __name__ == '__main__':
     root.title(TITLE_NAME)
     root.resizable(True,True)
     # 字体设置
+    defaultfontfamily = get_config("fontfamily")
     defaultfontsize = get_config("fontsize")
-    defaultfont = tkfont.Font(family="宋体",size=defaultfontsize)
-    titlefont = tkfont.Font(family="黑体",size=defaultfontsize+8,weight='bold')
-    versionfont = tkfont.Font(family="黑体",size=defaultfontsize+4,weight='bold')
+    defaultfont = tkfont.Font(family=defaultfontfamily,size=defaultfontsize)
+    titlefont = tkfont.Font(family=defaultfontfamily,size=defaultfontsize+12,weight='bold')
+    versionfont = tkfont.Font(family=defaultfontfamily,size=defaultfontsize+6,weight='bold')
     ttk.Style().configure(".",font=defaultfont)
     root.option_add("*Font",defaultfont)
     # 主页面
@@ -483,9 +489,10 @@ if __name__ == '__main__':
     logframe = ttk.Frame(root)
     ttk.Label(logframe, text='实时日志', font=('Arial Black',16)).pack(anchor='nw')   # justify控制对其方向，anchor控制位置 共同使文本靠左
     logstart = ttk.Button(logframe, text='开始',width=5,command=Enter_map)
-    logstart.place(relx=0.52,rely=0)
-    ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.64,rely=0)
-    ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.76,rely=0)
+    logstart.place(relx=0.40,rely=0)
+    ttk.Button(logframe, text='停止',width=5,command=stop).place(relx=0.52,rely=0)
+    ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.64,rely=0)
+    ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.76,rely=0)
     logreturn = ttk.Button(logframe, text='返回',width=5,command=Enter_mainframe)
     logreturn.place(relx=0.88,rely=0)
     s2 = ttk.Scrollbar(logframe)      # 设置垂直滚动条
@@ -539,7 +546,7 @@ if __name__ == '__main__':
     for i in range(len(dungeon_title)):
         dungeon_tab_list.append(ttk.Frame(dungeon_notebook))
         dungeon_notebook.add(dungeon_tab_list[i],text=dungeon_title[i])
-        dungeon_config_list.append(read_json_info("dungeon.json",dungeon_title[i],prepath="dungeon"))
+        dungeon_config_list.append(get_config(dungeon_title[i]))
         dungeon_config_lable = []
         for j in range(len(dungeon_config_list[i])):
             dungeon_config_lable.append(ttk.Label(dungeon_tab_list[i],text=f"{dungeon_config_list[i][j]}",font=('', 12)))
@@ -576,10 +583,15 @@ if __name__ == '__main__':
     configframe = ttk.Frame(root)
     ttk.Label(configframe,text=TITLE_NAME,font=titlefont).grid(columnspan=4)
     ttk.Label(configframe,text=VER,font=versionfont).grid(columnspan=4)
-    ttk.Label(configframe,text='字体大小:').grid(row=2,column=0,columnspan=2,pady=5)
+    # 字体设置
+    ttk.Label(configframe,text='字体设置:').grid(row=2,column=0,columnspan=2,pady=5)
+    font_names = tkfont.families()
+    fontfamilt_sets = tk.StringVar()
+    ttk.OptionMenu(configframe,fontfamilt_sets,defaultfontfamily,*font_names).grid(row=2,column=2,columnspan=2,pady=5)
+    ttk.Label(configframe,text='字体大小:').grid(row=3,column=0,columnspan=2,pady=5)
     font_sizes = tk.IntVar()
     font_sizes.set(get_config("fontsize"))
-    ttk.Spinbox(configframe,from_=5, to=100, increment=1,textvariable=font_sizes).grid(row=2,column=2,columnspan=2,pady=5)
+    ttk.Spinbox(configframe,from_=5, to=100, increment=1,textvariable=font_sizes).grid(row=3,column=2,columnspan=2,pady=5)
     ttk.Button(configframe,text='确定',width=10,command=sure_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='保存',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)

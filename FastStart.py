@@ -14,7 +14,7 @@ auto_dungeon = Dungeon()
 map_list_data = get_config("map_list_data")
 auto_map_list_data = get_config("auto_map_list_data")
 gamepath = get_config("gamepath")
-dungeon_config = read_json_info("dungeon.json","配置1",prepath="dungeon")
+dungeon_config = get_config("配置1")
 # 配置启用
 auto_map.calculated.img_log_value = get_config("img_log")
 auto_map.team_change = get_config("team_change")
