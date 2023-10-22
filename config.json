@@ -43,6 +43,7 @@
     "map_3-2_3.json",
     "map_3-2_4.json",
     "map_3-2_5.json",
+    "map_3-2_6.json",
     "map_3-3_1.json",
     "map_3-3_2.json",
     "map_3-3_3.json",
@@ -70,12 +71,15 @@
   "team_change": false,
   "team_id": 1,
   "dungeon_team_id": 1,
-  "version": "V1.3.9",
-  "commission": true,
+  "commission": false,
   "fontsize": 10,
   "fontfamily": "Microsoft YaHei UI",
   "gamepath": "",
-  "配置1": [],
+  "配置1": [
+    {
+      "毁灭之蕾·拟造花萼(赤)": 4
+    }
+  ],
   "配置2": [],
   "配置3": []
 }

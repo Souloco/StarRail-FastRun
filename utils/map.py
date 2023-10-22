@@ -149,7 +149,7 @@ class Map:
         self.calculated.Keyboard.release("m")
         self.calculated.img_check("map_navigation.jpg",(40,40,100,100),2)
         self.calculated.img_click("map_init_2.jpg",(600,970,660,1000))
-        while not self.calculated.img_check("map_init_1.jpg",(660,970,695,1000),2):
+        while not self.calculated.img_check("map_init_1.jpg",(660,970,695,1000),0.5):
             self.calculated.Mouse.press(mouse.Button.left)
             time.sleep(2)
             self.calculated.Mouse.release(mouse.Button.left)

@@ -21,7 +21,7 @@ import ctypes
 # 标题
 TITLE_NAME = 'StarRail-FastRun'
 # 版本号
-VER = get_config("version")
+VER = read_json_info('version.json','version')
 # 版本更新提示
 ver_update = False
 # 线程变量
@@ -357,12 +357,11 @@ if __name__ == '__main__':
     announce_frame = ttk.Frame(root)
     ttk.Label(announce_frame,text=TITLE_NAME,font=titlefont).grid(columnspan=2)
     ttk.Label(announce_frame,text=VER,font=versionfont).grid(columnspan=2)
-    ttk.Label(announce_frame,text='项目地址:').grid(column=0,row=2)
+    ttk.Label(announce_frame,text='项目地址:',font=versionfont).grid(column=0,row=2)
     repo_url = "https://github.com/Souloco/StarRail-FastRun"
     repo_url_text = ttk.Entry(announce_frame,width=40)
     repo_url_text.insert(0,repo_url)
     repo_url_text.grid(column=1,row=2)
-    ttk.Label(announce_frame,text='公告').grid(columnspan=2)
     s = ttk.Scrollbar(announce_frame)
     announce_text = tk.Text(announce_frame,undo=True, autoseparators=False,wrap='none', yscrollcommand=s.set)
     # 获取信息
