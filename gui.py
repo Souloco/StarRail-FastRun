@@ -147,8 +147,7 @@ def Enter_map():
         # 线程启动
         global t
         if not t.is_alive():
-            t = threading.Thread(name='chudi',target=auto_map.start,args=(map_use_list,auto_map_use_list,))
-            t.daemon = True
+            t = threading.Thread(name='chudi',target=auto_map.start,args=(map_use_list,auto_map_use_list,),daemon=True)
             t.start()
         else:
             log.warning("线程已存在")
@@ -168,8 +167,7 @@ def enter_dungeon_all():
         id = dungeon_notebook.index("current")
         global t
         if not t.is_alive():
-            t = threading.Thread(name='dungeon',target=auto_dungeon.start,args=(dungeon_config_list[id],))
-            t.daemon = True
+            t = threading.Thread(name='dungeon',target=auto_dungeon.start,args=(dungeon_config_list[id],),daemon=True)
             t.start()
         else:
             log.warning("线程已存在")
@@ -206,8 +204,7 @@ def enter_function_all():
         auto_map.calculated.active_window()
         global t
         if not t.is_alive():
-            t = threading.Thread(name='allfunction',target=enter_function)
-            t.daemon = True
+            t = threading.Thread(name='allfunction',target=enter_function,daemon=True)
             t.start()
         else:
             log.warning("线程已存在")
@@ -595,8 +592,7 @@ if __name__ == '__main__':
     ttk.Button(configframe,text='保存',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
-    t1 = threading.Thread(name='btn_close',target=btn_close_window)
-    t1.daemon = True
+    t1 = threading.Thread(name='btn_close',target=btn_close_window,daemon=True)
     t1.start()
     # 版本更新
     if ver_update:

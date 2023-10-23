@@ -135,3 +135,7 @@ def check_config():
         if '__' not in key and key not in data:
             set_config(key,item)
     return True
+def message(msg:str):
+    with open(os.path.join(root_dir,"logs","message.txt"),"w",encoding='utf-8') as f:
+        f.write(f"{msg}")
+    return True

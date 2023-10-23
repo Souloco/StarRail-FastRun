@@ -1,6 +1,6 @@
 import time
 from .calculated import Calculated
-from .config import read_json_info
+from .config import read_json_info,message
 from .log import log
 from pynput import mouse
 from pyautogui import drag
@@ -85,3 +85,4 @@ class Dungeon:
                 dungeonpath = read_json_info("dungeon.json",key,prepath="dungeon")
                 self.enter_dungeon(dungeonpath,value)
         log.info("清体力---执行完毕")
+        message("清体力---执行完毕")

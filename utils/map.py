@@ -1,6 +1,6 @@
 import win32gui
 import time
-from .config import read_json_info
+from .config import read_json_info,message
 from .calculated import Calculated
 from .log import log
 from pynput import mouse
@@ -178,7 +178,7 @@ class Map:
             log.info("锄大地---自动关机")
             self.calculated.close_game()
         log.info("锄大地---执行完毕")
-
+        message("锄大地---执行完毕")
     def check_map(self):
         log.info("锄大地---打开背包")
         self.calculated.Keyboard.press('b')
