@@ -36,7 +36,7 @@ def listen():
             with open(file_path,'r',encoding='utf-8') as file:
                 content = file.read()
             notify(content)
-        time.sleep(5)
+        time.sleep(60)
 t = threading.Thread(name='notify',target=listen,daemon=True)
 t.start()
 icon.run()

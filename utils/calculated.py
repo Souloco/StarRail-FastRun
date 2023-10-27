@@ -371,13 +371,8 @@ class Calculated:
             log.info("打怪")
             self.Mouse.click(mouse.Button.left)
             time.sleep(1)
-            if self.img_check("liaotian.png",(20,900,80,970),2):
-                if self.has_red((50,68,230,245)):
-                    self.wait_fight_end()
-                    return True
-            else:
-                self.wait_fight_end()
-                return True
+            self.wait_fight_end()
+            return True
         else:   # 打障碍物
             self.Mouse.click(mouse.Button.left)
             time.sleep(0.7)
@@ -386,10 +381,10 @@ class Calculated:
     def wait_main_interface(self):
         start_time = time.time()    # 开始计算等待时间
         while True:
-            if self.img_click("fighting_lost.jpg",(700,140,1200,400),2):
+            if self.img_click("fighting_lost.jpg",(700,140,1200,400),0.5):
                 log.info("战斗失败")
                 break
-            if self.img_check("liaotian.png",(20,900,80,970),2):
+            if self.img_check("liaotian.png",(20,900,80,970),0.5):
                 break
             time.sleep(3)
             if time.time() - start_time > 600:
@@ -414,9 +409,17 @@ class Calculated:
         说明:
             等待战斗结束
         """
-        log.info("等待战斗结束")
-        time.sleep(7)   # 缓冲
-        self.wait_main_interface()
+        start_time = time.time()
+        while self.img_check("liaotian.png",(20,900,80,970),1):
+            if self.has_red((50,68,230,245)):
+                time.sleep(1)
+            else:
+                break
+            if time.time() - start_time > 5:
+                break
+        if not self.img_check("liaotian.png",(20,900,80,970),0.5):
+            log.info("等待战斗结束")
+            self.wait_main_interface()
 
     def interaction(self,mode:str = ["w","a","s","d"]):
         """
@@ -521,7 +524,7 @@ class Calculated:
             if self.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
                 self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
         while not self.img_check("liaotian.png",(20,900,80,970),1):
-            self.Keyboard.press(Key.esc)
+            self.Keyboard.press(Key.esc)  
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
 
@@ -535,6 +538,22 @@ class Calculated:
             self.Mouse.position = self.mouse_pos((950,900))
             self.Mouse.click(mouse.Button.left)
             time.sleep(1)
+
+    def use_skill(self):
+        """
+        说明:
+            使用秘技
+        """
+        log.info("使用秘技")
+        self.Keyboard.press('e')
+        time.sleep(0.5)
+        self.Keyboard.release('e')
+        if self.img_click("sure.jpg",overtime=0.5):
+            self.img_click("exit3.jpg")
+            if self.img_check("liaotian.png",(20,900,80,970),1):
+                self.Keyboard.press('e')
+                time.sleep(0.5)
+                self.Keyboard.release('e')
 
     def map_pos(self,mappath:str):
         """

@@ -92,7 +92,9 @@ class Map:
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
                 elif key == "transfer":
                     log.info("进行传送")
-                    self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value)
+                    if not self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value):
+                        self.calculated.img_click("transfer1.jpg",overtime=value)
+                        self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value)
                     self.calculated.check_main_interface()
                 else:
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
@@ -179,6 +181,7 @@ class Map:
             self.calculated.close_game()
         log.info("锄大地---执行完毕")
         message("锄大地---执行完毕")
+
     def check_map(self):
         log.info("锄大地---打开背包")
         self.calculated.Keyboard.press('b')
