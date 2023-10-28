@@ -14,6 +14,7 @@ class Map:
         self.commission = False
         self.close_game = False
         self.nums = 0
+        self.skill = True
 
     def Enter_map_start(self,mapjson):
         """
@@ -112,6 +113,9 @@ class Map:
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
+                elif key == "e" and self.skill:
+                    if not self.calculated.use_skill():
+                        self.skill = False
                 elif key == "fighting":
                     self.calculated.fighting(value)
                 elif key == "mouse_move":

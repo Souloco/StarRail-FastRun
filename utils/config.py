@@ -125,6 +125,7 @@ class Config():
     gamepath = ""
     fontsize = 10
     fontfamily = "Microsoft YaHei UI"
+    skill = False
     配置1 = []
     配置2 = []
     配置3 = []

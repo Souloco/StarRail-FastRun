@@ -549,11 +549,15 @@ class Calculated:
         time.sleep(0.5)
         self.Keyboard.release('e')
         if self.img_click("sure.jpg",overtime=0.5):
-            self.img_click("exit3.jpg")
+            self.img_click("exit3.jpg",overtime=0.5)
             if self.img_check("liaotian.png",(20,900,80,970),1):
                 self.Keyboard.press('e')
                 time.sleep(0.5)
                 self.Keyboard.release('e')
+        if self.img_click("exit3.jpg",overtime=0.5):
+            self.img_check("liaotian.png",(20,900,80,970),1)
+            return False
+        return True
 
     def map_pos(self,mappath:str):
         """
