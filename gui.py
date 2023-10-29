@@ -94,10 +94,10 @@ def Enter_logframe(logmode:int = 1):
         logstart.configure(command=Enter_map)
         logreturn.configure(command=Enter_hoeframe)
     elif logmode == 2:
-        logstart.configure(command=enter_dungeon_all)
+        logstart.configure(command=enter_dungeon)
         logreturn.configure(command=Enter_dungeonframe)
     elif logmode == 3:
-        logstart.configure(command=enter_function_all)
+        logstart.configure(command=enter_function)
         logreturn.configure(command=Enter_allframe)
     root.update()
 # 进入清体力页面
@@ -127,56 +127,8 @@ def Enter_configframe():
     mainframe.pack_forget()
     configframe.pack()
     root.update()
-# 锄地线程
-def Enter_map():
-    auto_map.calculated.get_hwnd()
-    if auto_map.calculated.hwnd == 0:
-        log.warning("未检测到游戏运行,请启动游戏")
-    else:
-        # 配置启用
-        map_use_list = get_map_list(map_value_list)
-        auto_map_use_list = get_map_list(auto_map_value_list)
-        auto_map.calculated.img_log_value = img_log_Var.get()
-        auto_map.team_change = team_change_var.get()
-        auto_map.teamid = teamid_sets.get()
-        auto_map.id = id_sets.get()
-        auto_map.commission = commission_var.get()
-        auto_map.close_game = close_game_var.get()
-        auto_map.nums = auto_map_nums.get()
-        auto_map.skill = skill_var.get()
-        # 激活窗口
-        auto_map.calculated.active_window()
-        # 线程启动
-        global t
-        if not t.is_alive():
-            t = threading.Thread(name='chudi',target=auto_map.start,args=(map_use_list,auto_map_use_list,),daemon=True)
-            t.start()
-        else:
-            log.warning("线程已存在")
-# 副本线程
-def enter_dungeon_all():
-    auto_dungeon.calculated.get_hwnd()
-    if auto_dungeon.calculated.hwnd == 0:
-        log.warning("未检测到游戏运行,请启动游戏")
-    else:
-        # 配置启用
-        auto_dungeon.team_change = team_change_var.get()
-        auto_dungeon.teamid = dungeon_teamid_sets.get()
-        auto_dungeon.id = dungeon_id_sets.get()
-        # 激活窗口
-        auto_map.calculated.active_window()
-        # 线程启动
-        id = dungeon_notebook.index("current")
-        global t
-        if not t.is_alive():
-            t = threading.Thread(name='dungeon',target=auto_dungeon.start,args=(dungeon_config_list[id],),daemon=True)
-            t.start()
-        else:
-            log.warning("线程已存在")
-
-# 多功能执行
-def enter_function():
-    # 锄大地配置启用
+# 锄地配置启用
+def map_config():
     map_use_list = get_map_list(map_value_list)
     auto_map_use_list = get_map_list(auto_map_value_list)
     auto_map.calculated.img_log_value = img_log_Var.get()
@@ -186,27 +138,82 @@ def enter_function():
     auto_map.commission = commission_var.get()
     auto_map.close_game = close_game_var.get()
     auto_map.nums = auto_map_nums.get()
-    # 清体力配置启用
+    auto_map.skill = skill_var.get()
+    auto_map.skill_use = skill_var.get()
+    return map_use_list,auto_map_use_list
+# 线程启动函数
+def Enter_map_all():
+    # 配置启用
+    map_use_list,auto_map_use_list = map_config()
+    # 激活窗口
+    auto_map.calculated.active_window()
+    # 锄地启动
+    auto_map.start(map_use_list,auto_map_use_list)
+# 锄地线程
+def Enter_map():
+    auto_map.calculated.get_hwnd()
+    if auto_map.calculated.hwnd == 0:
+        log.warning("未检测到游戏运行,请启动游戏")
+    else:
+        # 线程启动
+        global t
+        if not t.is_alive():
+            t = threading.Thread(name='chudi',target=Enter_map_all,daemon=True)
+            t.start()
+        else:
+            log.warning("线程已存在")
+# 副本配置启用
+def dungeon_config():
     auto_dungeon.team_change = team_change_var.get()
     auto_dungeon.teamid = dungeon_teamid_sets.get()
     auto_dungeon.id = dungeon_id_sets.get()
+
+# 副本线程启动函数
+def enter_dungeon_all():
+    # 配置启用
+    dungeon_config()
+    # 激活窗口
+    auto_map.calculated.active_window()
+    # 线程启动
+    id = dungeon_notebook.index("current")
+    auto_dungeon.start(dungeon_config_list[id])
+# 副本线程
+def enter_dungeon():
+    auto_dungeon.calculated.get_hwnd()
+    if auto_dungeon.calculated.hwnd == 0:
+        log.warning("未检测到游戏运行,请启动游戏")
+    else:
+        global t
+        if not t.is_alive():
+            t = threading.Thread(name='dungeon',target=enter_dungeon_all,daemon=True)
+            t.start()
+        else:
+            log.warning("线程已存在")
+
+# 多功能执行
+def enter_function_all():
+    # 锄大地配置启用
+    map_use_list,auto_map_use_list = map_config()
+    # 清体力配置启用
+    dungeon_config()
+    # 激活窗口
+    auto_map.calculated.active_window()
     # 清体力执行
     id = dungeon_notebook.index("current")
     auto_dungeon.start(dungeon_config_list[id])
     # 锄地执行
     auto_map.start(map_use_list,auto_map_use_list)
+
 # 多功能执行线程
-def enter_function_all():
+def enter_function():
     auto_map.calculated.get_hwnd()
     auto_dungeon.calculated.get_hwnd()
     if auto_map.calculated.hwnd == 0:
         log.warning("未检测到游戏运行,请启动游戏")
     else:
-        # 激活窗口
-        auto_map.calculated.active_window()
         global t
         if not t.is_alive():
-            t = threading.Thread(name='allfunction',target=enter_function,daemon=True)
+            t = threading.Thread(name='allfunction',target=enter_function_all,daemon=True)
             t.start()
         else:
             log.warning("线程已存在")
@@ -272,9 +279,9 @@ def btn_close_window():
             if logstart_flag == 1:
                 Enter_map()
             if logstart_flag == 2:
-                enter_dungeon_all()
+                enter_dungeon()
             if logstart_flag == 3:
-                enter_function_all()
+                enter_function()
         if key == keyboard.Key.f10:
             close_window()
         if key == keyboard.Key.f8:
