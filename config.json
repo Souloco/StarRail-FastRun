@@ -83,5 +83,6 @@
   ],
   "配置2": [],
   "配置3": [],
-  "skill": false
+  "skill": false,
+  "auto_map_hide": false
 }

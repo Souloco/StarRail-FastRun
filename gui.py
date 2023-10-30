@@ -322,6 +322,25 @@ def hide_cmd():
         win32gui.ShowWindow(CMD, 0)  # 隐藏命令行窗口
     else:
         win32gui.ShowWindow(CMD, 1)  # 显示命令行窗口
+# 显隐重跑路线
+def hide_auto_map():
+    if auto_map_notebook.winfo_ismapped():
+        auto_map_label.grid_forget()
+        auto_map_notebook.grid_forget()
+        auto_map_btn1.grid_forget()
+        auto_map_btn2.grid_forget()
+        auto_map_btn3.grid_forget()
+        auto_map_btn4.grid_forget()
+        set_config("auto_map_hide",False)
+    else:
+        auto_map_label.grid(row=5,columnspan=5)
+        auto_map_notebook.grid(row=6,columnspan=5)
+        auto_map_btn1.grid(row=7,column=0)
+        auto_map_btn2.grid(row=7,column=1)
+        auto_map_btn3.grid(row=7,column=3)
+        auto_map_btn4.grid(row=7,column=4)
+        set_config("auto_map_hide",True)
+    root.update()
 if __name__ == '__main__':
     if not pyuac.isUserAdmin():
         pyuac.runAsAdmin()
@@ -429,8 +448,9 @@ if __name__ == '__main__':
     ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=4,column=1)
     ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],0)).grid(row=4,column=3)
     ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=4)
+    ttk.Button(hoe_frame,text='显隐重跑路线',width=10,command=hide_auto_map).grid(row=4,column=2)
     # auto_notebook地图选项
-    ttk.Label(hoe_frame,text='重跑路线',font=versionfont).grid(columnspan=5)
+    auto_map_label = ttk.Label(hoe_frame,text='重跑路线',font=versionfont)
     auto_map_notebook = ttk.Notebook(hoe_frame)
     auto_map_tab_list = []
     auto_map_value_list = []
@@ -451,12 +471,13 @@ if __name__ == '__main__':
             auto_map_value_list[i].set(1)
         auto_map_checkbutton_list.append(ttk.Checkbutton(auto_map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=auto_map_value_list[i],onvalue=1, offvalue=0,width=10))
         auto_map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
-    auto_map_notebook.grid(columnspan=5)
     # 按钮
-    ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],1)).grid(row=7,column=0)
-    ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(auto_map_value_list,1)).grid(row=7,column=1)
-    ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],0)).grid(row=7,column=3)
-    ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0)).grid(row=7,column=4)
+    auto_map_btn1 = ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],1))
+    auto_map_btn2 = ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(auto_map_value_list,1))
+    auto_map_btn3 = ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],0))
+    auto_map_btn4 = ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0))
+    if get_config("auto_map_hide"):
+        hide_auto_map()
     # 锄大地配置
     # 重跑次数
     ttk.Label(hoe_frame,text='重跑次数:').grid(row=8,column=1,pady=5)

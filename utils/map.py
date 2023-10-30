@@ -95,9 +95,16 @@ class Map:
                 elif key == "transfer":
                     log.info("进行传送")
                     if not self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value):
-                        self.calculated.img_click("transfer1.jpg",overtime=value)
+                        self.calculated.img_click("transfer1.jpg",overtime=0.5)
+                        self.calculated.img_click("transfer2.jpg",overtime=0.5)
+                        self.calculated.img_click("transfer3.jpg",overtime=0.5)
                         self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value)
                     self.calculated.check_main_interface()
+                    # 复活切换远程角色
+                    if self.team_change:
+                        self.calculated.Keyboard.press(str(self.id))
+                        time.sleep(0.05)
+                        self.calculated.Keyboard.release(str(self.id))
                 else:
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
 

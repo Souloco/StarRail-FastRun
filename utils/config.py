@@ -126,6 +126,7 @@ class Config():
     fontsize = 10
     fontfamily = "Microsoft YaHei UI"
     skill = False
+    auto_map_hide = True
     配置1 = []
     配置2 = []
     配置3 = []
