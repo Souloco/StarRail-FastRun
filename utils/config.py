@@ -8,7 +8,7 @@ if getattr(sys, 'frozen', False):
 elif __file__:
     root_dir = os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
 # map路径
-map_dir = os.path.join(root_dir,"map")
+map_dir = os.path.join(root_dir,"maps\\map")
 # picture路径
 picture_dir = os.path.join(root_dir,"picture")
 # model路径
@@ -17,21 +17,6 @@ model_dir = os.path.join(root_dir,"model")
 dungeon_dir = os.path.join(root_dir,"dungeon")
 # 配置文件名字
 CONFIG_FILE_NAME = "config.json"
-def set_dir(root_path):
-    """
-    说明：
-        刷新路径
-    参数：
-        root_path：替换后的根路径
-    """
-    global root_dir
-    global picture_dir
-    global map_dir
-    global model_dir
-    root_dir = root_path
-    map_dir = os.path.join(root_path,"map")
-    picture_dir = os.path.join(root_path,"picture")
-    model_dir = os.path.join(root_path,"model")
 def read_map():
     """
     说明：

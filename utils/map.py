@@ -16,6 +16,7 @@ class Map:
         self.nums = 0
         self.skill = True
         self.skill_use = True
+        self.mappath = "maps\\map"
 
     def Enter_map_start(self,mapjson):
         """
@@ -24,9 +25,9 @@ class Map:
         参数:
             mapjson:路线json名
         """
-        start_list = read_json_info(mapjson,"start",prepath="map")
+        start_list = read_json_info(mapjson,"start",prepath=self.mappath)
         map_name_dir = mapjson[0:mapjson.index("_",5)] + ".jpg"
-        map_name = read_json_info(mapjson,"name",prepath="map").split("-")[0]
+        map_name = read_json_info(mapjson,"name",prepath=self.mappath).split("-")[0]
         planet_id = int(mapjson[mapjson.index('_') + 1:mapjson.index('-')])
         for start in start_list:
             for key,value in start.items():
@@ -116,7 +117,7 @@ class Map:
             mapjson:路线json名
         """
         map_name = mapjson[0:mapjson.index(".")]
-        operate_list = read_json_info(mapjson,"map",prepath="map")
+        operate_list = read_json_info(mapjson,"map",prepath=self.mappath)
         for operate in operate_list:
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
@@ -144,7 +145,7 @@ class Map:
         参数:
             mapjson:路线json名
         """
-        map_name = read_json_info(mapjson,"name",prepath="map")
+        map_name = read_json_info(mapjson,"name",prepath=self.mappath)
         log.info(f"当前执行路线:{map_name}")
         self.Enter_map_start(mapjson)
         self.Enter_map_fighting(mapjson)
