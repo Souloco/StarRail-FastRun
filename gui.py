@@ -139,7 +139,7 @@ def map_config():
     auto_map.close_game = close_game_var.get()
     auto_map.nums = auto_map_nums.get()
     auto_map.skill = skill_var.get()
-    auto_map.skill_use = skill_var.get()
+    auto_map.skill_food = skill_var.get()
     return map_use_list,auto_map_use_list
 # 线程启动函数
 def Enter_map_all():

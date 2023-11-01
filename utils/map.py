@@ -15,7 +15,7 @@ class Map:
         self.close_game = False
         self.nums = 0
         self.skill = True
-        self.skill_use = True
+        self.skill_food = True
         self.mappath = "maps\\map"
 
     def Enter_map_start(self,mapjson):
@@ -122,13 +122,10 @@ class Map:
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
-                elif key == "e" and self.skill and self.skill_use:
-                    if not self.calculated.use_skill():
-                        self.skill_use = False
+                elif key == "e" and self.skill:
+                    self.skill_food = self.calculated.use_skill(self.skill_food,value)
                 elif key == "fighting":
                     self.calculated.fighting(value)
-                    if value == 3:
-                        self.skill_use = True
                 elif key == "mouse_move":
                     self.calculated.mouse_move(value)
                 elif key == "f":

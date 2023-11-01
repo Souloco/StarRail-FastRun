@@ -1,0 +1,26 @@
+{
+    "name": "基座舱段-1",
+    "author": "Souloco",
+    "start": [
+        {"map": ""},
+        {"map_1_point_1.png": 1.5},
+        {"transfer": 1.5}
+    ],
+    "map": [
+        {
+            "mouse_move":-1500
+        },
+        {
+            "fighting": 3
+        },
+        {
+            "e": 0.05
+        },
+        {
+            "a": 1.5
+        },
+        {
+            "fighting": 1
+        }
+    ]
+}

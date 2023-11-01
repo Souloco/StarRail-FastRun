@@ -329,10 +329,25 @@ class Calculated:
         mask2 = cv.inRange(hsv_img, lower_red2, upper_red2)
         mask = cv.bitwise_or(mask1, mask2)
         # 统计掩膜中的像素数目
-        red_pixel_count = cv.countNonZero(mask)
-        print(red_pixel_count)
-        return red_pixel_count > 50
+        pixel_count = cv.countNonZero(mask)
+        return pixel_count > 50
 
+    def has_purple(self, points=(0,0,0,0)):
+        """
+        说明:
+            判断游戏指定位置是否有紫色
+        参数:
+            points: 图像截取范围
+        """
+        img = self.take_screenshot(points)
+        hsv_img = cv.cvtColor(img, cv.COLOR_BGR2HSV)
+        lower = np.array([125, 43, 46])
+        upper = np.array([175, 255, 255])
+        mask = cv.inRange(hsv_img,lower,upper)
+        # 统计掩膜中的像素数目
+        pixel_count = cv.countNonZero(mask)
+        return pixel_count > 500
+    
     def get_whiteimg(self,img):
         """
         说明:
@@ -539,24 +554,35 @@ class Calculated:
             self.Mouse.click(mouse.Button.left)
             time.sleep(1)
 
-    def use_skill(self):
+    def use_skill(self,food:bool = True,skill_time=1):
         """
         说明:
             使用秘技
         """
         log.info("使用秘技")
-        self.Keyboard.press('e')
-        time.sleep(0.5)
-        self.Keyboard.release('e')
-        if self.img_click("sure.jpg",overtime=0.5):
-            self.img_click("exit3.jpg",overtime=0.5)
-            if self.img_check("liaotian.png",(20,900,80,970),1):
+        if self.has_purple((1710,840,1755,890)):
+            if food:
                 self.Keyboard.press('e')
-                time.sleep(0.5)
+                time.sleep(0.05)
                 self.Keyboard.release('e')
-        if self.img_click("exit3.jpg",overtime=0.5):
-            self.img_check("liaotian.png",(20,900,80,970),1)
+                if self.img_click("sure.jpg",overtime=0.5):
+                    self.img_click("exit3.jpg",overtime=0.5)
+                    self.img_check("liaotian.png",(20,900,80,970),1)
+                    self.Keyboard.press('e')
+                    time.sleep(0.05)
+                    self.Keyboard.release('e')
+                    time.sleep(skill_time)
+                    return True
+                else:
+                    self.img_click("exit3.jpg",overtime=0.5)
+                    self.img_check("liaotian.png",(20,900,80,970),1)
+                    return False
             return False
+        else:
+            self.Keyboard.press('e')
+            time.sleep(0.05)
+            self.Keyboard.release('e')
+            time.sleep(skill_time)
         return True
 
     def map_pos(self,mappath:str):
