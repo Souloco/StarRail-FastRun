@@ -577,13 +577,12 @@ class Calculated:
                     self.img_click("exit3.jpg",overtime=0.5)
                     self.img_check("liaotian.png",(20,900,80,970),1)
                     return False
-            return False
         else:
             self.Keyboard.press('e')
             time.sleep(0.05)
             self.Keyboard.release('e')
             time.sleep(skill_time)
-        return True
+        return food
 
     def map_pos(self,mappath:str):
         """

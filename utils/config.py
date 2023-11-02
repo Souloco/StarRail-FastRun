@@ -7,8 +7,6 @@ if getattr(sys, 'frozen', False):
     root_dir = os.path.dirname(sys.executable)
 elif __file__:
     root_dir = os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
-# map路径
-map_dir = os.path.join(root_dir,"maps\\map")
 # picture路径
 picture_dir = os.path.join(root_dir,"picture")
 # model路径
@@ -17,32 +15,14 @@ model_dir = os.path.join(root_dir,"model")
 dungeon_dir = os.path.join(root_dir,"dungeon")
 # 配置文件名字
 CONFIG_FILE_NAME = "config.json"
-def read_map():
+def read_map(map_type="map"):
     """
     说明：
         读取地图文件
     """
-    map_list = os.listdir(map_dir)
+    map_list = os.listdir(os.path.join(root_dir,f"maps\\{map_type}"))
     return map_list
-def read_map_name():
-    """
-    说明：
-        读取地图文件名字，返回列表
-    """
-    map_list = read_map()
-    map_name_list = []
-    map_planet_list = []
-    for map in map_list:
-        planet_id = int(map[map.index('_') + 1:map.index('-')])
-        with open(os.path.join(map_dir,map),encoding='utf-8') as f:
-            data = json.load(f)
-            map_name = data["name"]
-            if len(map_name_list) < planet_id:
-                map_name_list.append([])
-                map_planet_list.append([])
-            map_name_list[planet_id-1].append(map_name)
-            map_planet_list[planet_id-1].append(map)
-    return map_name_list,map_planet_list
+
 def read_json_info(path,info,prepath=""):
     """
     说明：
@@ -57,7 +37,7 @@ def read_json_info(path,info,prepath=""):
         info_list = data[info]
     return info_list
 
-def read_maplist_name():
+def read_maplist_name(map_type="map"):
     """
     说明：
         读取map列表的info字段信息，返回列表
@@ -65,10 +45,10 @@ def read_maplist_name():
         map：地图json名字
         info:信息字段
     """
-    map_list = read_map()
+    map_list = read_map(map_type)
     map_name_list = []
     for map in map_list:
-        with open(os.path.join(map_dir,map),encoding='utf-8') as f:
+        with open(os.path.join(root_dir,f"maps\\{map_type}\\{map}"),encoding='utf-8') as f:
             data = json.load(f)
             map_name = data["name"]
         map_name_list.append(map_name)
@@ -112,6 +92,7 @@ class Config():
     fontfamily = "Microsoft YaHei UI"
     skill = False
     auto_map_hide = True
+    map_type = "map"
     配置1 = []
     配置2 = []
     配置3 = []

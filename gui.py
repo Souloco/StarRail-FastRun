@@ -248,6 +248,7 @@ def save_all_config():
 def save_gui_config():
     set_config("fontsize",font_sizes.get())
     set_config("fontfamily",fontfamilt_sets.get())
+    set_config("map_type",map_type_sets.get())
 # 应用gui配置项
 def sure_gui_config():
     defaultfont.configure(family=fontfamilt_sets.get(),size=font_sizes.get())
@@ -416,9 +417,10 @@ if __name__ == '__main__':
     hoe_frame = ttk.Frame(root)
     ttk.Label(hoe_frame,text=TITLE_NAME,font=titlefont).grid(columnspan=5)
     ttk.Label(hoe_frame,text=VER,font=versionfont).grid(columnspan=5)
-    ttk.Label(hoe_frame,text='必跑路线',font=versionfont).grid(columnspan=5)
+    map_type = get_config("map_type")
+    ttk.Label(hoe_frame,text=f'必跑路线---{map_type}',font=versionfont).grid(columnspan=5)
     # notebook地图选项
-    map_list = read_map()
+    map_list = read_map(map_type)
     map_title = [('空间站「黑塔」',1),('雅利洛-VI',2),('仙舟「罗浮」',3),('匹诺康尼',4)]    # 星球选项
     map_notebook = ttk.Notebook(hoe_frame)
     map_tab_list = []
@@ -426,7 +428,7 @@ if __name__ == '__main__':
     map_planet_value_list = []
     map_checkbutton_list = []
     map_list_data = get_config("map_list_data")
-    map_allname_list1 = read_maplist_name()
+    map_allname_list1 = read_maplist_name(map_type)
     for i in range(len(map_title)):
         map_tab_list.append(ttk.Frame(map_notebook))
         map_notebook.add(map_tab_list[i],text=map_title[i][0])
@@ -621,6 +623,11 @@ if __name__ == '__main__':
     font_sizes = tk.IntVar()
     font_sizes.set(get_config("fontsize"))
     ttk.Spinbox(configframe,from_=5, to=100, increment=1,textvariable=font_sizes).grid(row=3,column=2,columnspan=2,pady=5)
+    ttk.Label(configframe,text='锄地路线:').grid(row=4,column=0,columnspan=2,pady=5)
+    map_types = os.listdir("./maps")
+    map_type_sets = tk.StringVar()
+    map_type_sets.set(map_type)
+    ttk.OptionMenu(configframe,map_type_sets,map_type,*map_types).grid(row=4,column=2,columnspan=2,pady=5)
     ttk.Button(configframe,text='确定',width=10,command=sure_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='保存',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
