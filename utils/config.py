@@ -93,6 +93,7 @@ class Config():
     skill = False
     auto_map_hide = True
     map_type = "map"
+    proxy = "https://gh-proxy.com/"
     配置1 = []
     配置2 = []
     配置3 = []
