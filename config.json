@@ -85,6 +85,6 @@
   "配置3": [],
   "skill": false,
   "auto_map_hide": false,
-  "map_type": "map",
+  "map_type": "yukongmap",
   "proxy": "https://gh-proxy.com/"
 }

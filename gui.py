@@ -304,7 +304,8 @@ def _async_raise(tid, exctype):
         ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
         raise SystemError("PyThreadState_SetAsyncExc failed")
 def stop_thread(thread:threading.Thread):
-    _async_raise(thread.ident,SystemExit)
+    if thread.is_alive():
+        _async_raise(thread.ident,SystemExit)
 
 # map_value_list的值初始化
 def set_map_value_list(map_value_list,value):
