@@ -575,8 +575,8 @@ class Calculated:
                     return True
                 else:
                     self.img_click("exit3.jpg",overtime=0.5)
-                    self.img_check("liaotian.png",(20,900,80,970),1)
-                    return False
+                    if self.img_check("liaotian.png",(20,900,80,970),1):
+                        return False
         else:
             self.Keyboard.press('e')
             time.sleep(0.05)

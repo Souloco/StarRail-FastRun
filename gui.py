@@ -249,6 +249,7 @@ def save_gui_config():
     set_config("fontsize",font_sizes.get())
     set_config("fontfamily",fontfamilt_sets.get())
     set_config("map_type",map_type_sets.get())
+    set_config("proxy",proxy_text.get())
 # 应用gui配置项
 def sure_gui_config():
     defaultfont.configure(family=fontfamilt_sets.get(),size=font_sizes.get())
@@ -630,6 +631,11 @@ if __name__ == '__main__':
     map_type_sets = tk.StringVar()
     map_type_sets.set(map_type)
     ttk.OptionMenu(configframe,map_type_sets,map_type,*map_types).grid(row=4,column=2,columnspan=2,pady=5)
+    ttk.Label(configframe,text='更新代理:').grid(row=5,column=0,columnspan=2,pady=5)
+    proxy_text = ttk.Entry(configframe)
+    proxy_text.grid(row=5,column=2,columnspan=2,pady=5)
+    proxy_text.insert(0,get_config("proxy"))
+
     ttk.Button(configframe,text='确定',width=10,command=sure_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='保存',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
