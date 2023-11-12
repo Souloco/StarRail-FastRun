@@ -623,7 +623,7 @@ class Calculated:
         bigmap = cv.imread(mappath)
         bigmapedge = cv.Canny(bigmap, 15, 50)
         # 缩放匹配
-        scale_list = [1.00, 1.05, 1.10, 1.15, 1.20, 1.25]
+        scale_list = [0.95,1.00, 1.05, 1.10, 1.15, 1.20, 1.25,1.30]
         best_scale = 1.00
         best_val = 0.00
         for scale in scale_list:

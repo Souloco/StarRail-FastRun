@@ -17,6 +17,7 @@ class Map:
         self.skill = True
         self.skill_food = True
         self.mappath = "maps\\map"
+        self.planetid = 0
 
     def Enter_map_start(self,mapjson):
         """
@@ -39,18 +40,20 @@ class Map:
                         # 进入地图
                         self.calculated.open_map()
                         # 进入星球
-                        log.info("进入星球")
-                        for i in range(3):
-                            if self.calculated.img_check("planet_navigation.jpg",(40,40,100,100),2):
-                                break
-                            else:
-                                self.calculated.img_click("Enter_planet.jpg",(1440,115,1870,160))
-                        planet_img = "orientation_{planet_id}.png".format(planet_id=planet_id)
-                        for i in range(3):
-                            if self.calculated.img_check("map_navigation.jpg",(40,40,100,100),2):
-                                break
-                            else:
-                                self.calculated.img_click(planet_img)
+                        if self.planetid != planet_id:
+                            self.planetid = planet_id
+                            log.info("进入星球")
+                            for i in range(3):
+                                if self.calculated.img_check("planet_navigation.jpg",(40,40,100,100),2):
+                                    break
+                                else:
+                                    self.calculated.img_click("Enter_planet.jpg",(1440,115,1870,160))
+                            planet_img = "orientation_{planet_id}.png".format(planet_id=planet_id)
+                            for i in range(3):
+                                if self.calculated.img_check("map_navigation.jpg",(40,40,100,100),2):
+                                    break
+                                else:
+                                    self.calculated.img_click(planet_img)
                         # 进入地名
                         log.info("进入地名")
                         # 滚动寻找
