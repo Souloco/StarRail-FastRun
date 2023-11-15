@@ -176,7 +176,10 @@ def enter_dungeon_all():
     # 激活窗口
     auto_map.calculated.active_window()
     # 线程启动
-    id = dungeon_notebook.index("current")
+    if dungeon_time_flag.get():
+        id = dungeon_title.index(dungeon_time[today_id])
+    else:
+        id = dungeon_notebook.index("current")
     auto_dungeon.start(dungeon_config_list[id])
 # 副本线程
 def enter_dungeon():
@@ -200,7 +203,10 @@ def enter_function_all():
     # 激活窗口
     auto_map.calculated.active_window()
     # 清体力执行
-    id = dungeon_notebook.index("current")
+    if dungeon_time_flag.get():
+        id = dungeon_title.index(dungeon_time[today_id])
+    else:
+        id = dungeon_notebook.index("current")
     auto_dungeon.start(dungeon_config_list[id])
     # 锄地执行
     auto_map.start(map_use_list,auto_map_use_list)
@@ -235,11 +241,13 @@ def delete_dungeon_config():
     root.update()
 # 保存副本配置项
 def save_dungeon_config():
-    id = dungeon_notebook.index("current")
-    set_config(dungeon_title[id],dungeon_config_list[id])
+    for id in range(len(dungeon_title)):
+        set_config(dungeon_title[id],dungeon_config_list[id])
     set_config("dungeon_team_id",dungeon_teamid_sets.get())
     set_config("dungeon_character_id",dungeon_id_sets.get())
     set_config("team_change",team_change_var.get())
+    set_config("dungeon_time",dungeon_time)
+    set_config("dungeon_time_flag",dungeon_time_flag.get())
 # 保存多脚本执行配置项
 def save_all_config():
     save_dungeon_config()
@@ -540,7 +548,6 @@ if __name__ == '__main__':
     b2.config(command=logtext.xview)
     handler = TextboxHandler(logtext)
     log.add(handler,format="{time:HH:mm:ss} " + "|{level}| " + "{module}.{function}:{line} - {message}")
-
     # 清体力页面
     dungeonframe = ttk.Frame(root)
     ttk.Label(dungeonframe,text=TITLE_NAME,font=titlefont).grid(columnspan=4)
@@ -549,21 +556,21 @@ if __name__ == '__main__':
     index_dungeon_list = read_json_info("dungeon.json","indexname",prepath="dungeon")
     index_dungeon_choose = tk.StringVar()
     index_dungeon_choose.set(index_dungeon_list[0])
-    index_dungeon_box = ttk.Combobox(dungeonframe,textvariable=index_dungeon_choose,values=index_dungeon_list,width=25)
+    index_dungeon_box = ttk.Combobox(dungeonframe,textvariable=index_dungeon_choose,values=index_dungeon_list)
     index_dungeon_box.bind("<<ComboboxSelected>>",index_dungeon_change)
     index_dungeon_box.grid(row=2,column=1)
     ttk.Label(dungeonframe,text='具体副本:').grid(row=2,column=2)
     dungeon_list = read_json_info("dungeon.json",index_dungeon_choose.get(),prepath="dungeon")
     dungeon_choose = tk.StringVar()
     dungeon_choose.set(dungeon_list[0])
-    dungeon_box = ttk.Combobox(dungeonframe,textvariable=dungeon_choose,values=dungeon_list,width=25)
+    dungeon_box = ttk.Combobox(dungeonframe,textvariable=dungeon_choose,values=dungeon_list)
     dungeon_box.grid(row=2,column=3)
     ttk.Label(dungeonframe,text='执行次数:').grid(row=3,column=0)
     dungeon_nums = tk.IntVar()
     dungeon_nums.set(1)
     dungeon_spinbox = ttk.Spinbox(dungeonframe,from_=1, to=100, increment=1,textvariable=dungeon_nums)
     dungeon_spinbox.grid(row=3,column=1)
-    ttk.Button(dungeonframe,text='添加',command=add_dungeon_config).grid(row=3,column=2)
+    ttk.Button(dungeonframe,text='添加',command=add_dungeon_config).grid(row=3,column=2,padx=5)
     ttk.Button(dungeonframe,text='删除',command=delete_dungeon_config).grid(row=3,column=3)
     # 切换队伍
     dungeon_teamid_sets = tk.IntVar()
@@ -572,9 +579,39 @@ if __name__ == '__main__':
     ttk.OptionMenu(dungeonframe,dungeon_teamid_sets,get_config("dungeon_team_id"),*teamid_option_list).grid(row=4,column=1,pady=5)
     ttk.OptionMenu(dungeonframe,dungeon_id_sets,get_config("dungeon_character_id"),*id_option_list).grid(row=4,column=2,pady=5)
     ttk.Checkbutton(dungeonframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=4,column=3,pady=5)
+    # 时间条件执行
+    days_title = ["周日","周一","周二","周三","周四","周五","周六"]
+    today_id = int(time.strftime("%w", time.localtime()))
+    index_days_choose = tk.StringVar()
+    index_days_choose.set(days_title[today_id])
+    index_days_box = ttk.Combobox(dungeonframe,textvariable=index_days_choose,values=days_title)
+
+    def index_days_change(event):
+        days_id = index_days_box.current()
+        if days_id != -1:
+            dungeon_days_choose.set(dungeon_time[days_id])
+
+    index_days_box.bind("<<ComboboxSelected>>",index_days_change)
+    index_days_box.grid(row=5,column=0)
+
+    dungeon_title = read_json_info("dungeon.json","configname",prepath="dungeon")
+    dungeon_time = get_config("dungeon_time")
+    dungeon_days_choose = tk.StringVar()
+    dungeon_days_choose.set(dungeon_time[today_id])
+    days_box = ttk.Combobox(dungeonframe,textvariable=dungeon_days_choose,values=dungeon_title)
+
+    def days_change(event):
+        days_id = index_days_box.current()
+        if days_id != -1:
+            dungeon_time[days_id] = dungeon_days_choose.get()
+
+    days_box.bind("<<ComboboxSelected>>",days_change)
+    days_box.grid(row=5,column=1)
+    dungeon_time_flag = tk.BooleanVar()
+    dungeon_time_flag.set(get_config("dungeon_time_flag"))
+    ttk.Checkbutton(dungeonframe,text="时间条件",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=dungeon_time_flag).grid(row=5,column=2,padx=5,pady=5)
     # notebook副本配置
     dungeon_notebook = ttk.Notebook(dungeonframe)
-    dungeon_title = read_json_info("dungeon.json","configname",prepath="dungeon")
     dungeon_tab_list = []
     dungeon_config_list = []
     dungeon_config_lable_list = []

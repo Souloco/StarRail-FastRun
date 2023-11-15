@@ -97,6 +97,10 @@ class Config():
     配置1 = []
     配置2 = []
     配置3 = []
+    配置4 = []
+    配置5 = []
+    dungeon_time = ["配置1","配置1","配置1","配置1","配置1","配置1","配置1"]
+    dungeon_time_flag = False
 def check_config():
     with open(os.path.join(root_dir,CONFIG_FILE_NAME),"r",encoding='utf-8') as f:
         data = json.load(f)

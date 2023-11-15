@@ -103,6 +103,7 @@ class Map:
                         self.calculated.img_click("transfer2.jpg",overtime=0.5)
                         self.calculated.img_click("transfer3.jpg",overtime=0.5)
                         self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value)
+                    time.sleep(3)
                     self.calculated.check_main_interface()
                     # 复活切换远程角色
                     if self.team_change:

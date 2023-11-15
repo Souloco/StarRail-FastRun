@@ -14,7 +14,12 @@ auto_dungeon = Dungeon()
 map_list_data = get_config("map_list_data")
 auto_map_list_data = get_config("auto_map_list_data")
 gamepath = get_config("gamepath")
-dungeon_config = get_config("配置1")
+if get_config("dungeon_time_flag"):
+    today_id = int(time.strftime("%w", time.localtime()))
+    dungeon_time = get_config("dungeon_time")
+    dungeon_config = dungeon_time[today_id]
+else:
+    dungeon_config = get_config("配置1")
 # 配置启用
 auto_map.calculated.img_log_value = get_config("img_log")
 auto_map.team_change = get_config("team_change")

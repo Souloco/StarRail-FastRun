@@ -1,0 +1,41 @@
+{
+  "name": "绥园-1",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": ""
+    },
+    {
+      "map_3-7_point_1.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "mouse_move": 700
+    },
+    {
+      "s": 4.5
+    },
+    {
+      "e": 1
+    },
+    {
+      "fighting": 1
+    },
+    {
+      "fighting": 2
+    },
+    {
+      "s": 1.0
+    },
+    {
+      "e": 1
+    },
+    {
+      "fighting": 1
+    }
+  ]
+}
