@@ -1,11 +1,17 @@
 {
-    "name": "太卜司-3",
-    "author": "Souloco",
-    "start": [
-        {"map": "2"},
-        {"map_3-3_point_5.png": 1.5},
-        {"transfer": 1.5}
-    ],
+  "name": "太卜司-3",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "2"
+    },
+    {
+      "map_3-3_point_5.png": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
   "map": [
     {
       "s": 7.831011600006605

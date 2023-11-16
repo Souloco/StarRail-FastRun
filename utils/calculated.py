@@ -506,24 +506,32 @@ class Calculated:
         说明:
             切换队伍
         """
-        log.info("切换队伍")
-        self.Keyboard.press('t')
-        time.sleep(0.5)
-        self.Keyboard.release('t')
-        time.sleep(1)   # 缓冲
-        teamid = '0' + str(teamid)
-        self.ocr_click(text=teamid,points=(550,0,1300,130),overtime=2)
-        self.img_click("team_sure.png",points=(1500,950,1920,1080),overtime=2)
-        time.sleep(2)   # 缓冲
-        self.Keyboard.press(Key.esc)
-        time.sleep(0.05)
-        self.Keyboard.release(Key.esc)
-        self.check_main_interface()
+        if teamid > 0 and teamid <= 6:
+            log.info("切换队伍")
+            self.Keyboard.press('t')
+            time.sleep(0.5)
+            self.Keyboard.release('t')
+            time.sleep(1)   # 缓冲
+            teamid = '0' + str(teamid)
+            self.ocr_click(text=teamid,points=(550,0,1300,130),overtime=2)
+            self.img_click("team_sure.png",points=(1500,950,1920,1080),overtime=2)
+            time.sleep(2)   # 缓冲
+            self.Keyboard.press(Key.esc)
+            time.sleep(0.05)
+            self.Keyboard.release(Key.esc)
+            self.check_main_interface()
         if id >= 1 and id <= 4:
+            log.info("切换角色")
             id = str(id)
             self.Keyboard.press(id)
             time.sleep(0.05)
             self.Keyboard.release(id)
+            if self.img_click("sure.jpg",overtime=0.5):
+                self.img_click("exit3.jpg",overtime=0.5)
+                self.check_main_interface()
+                self.Keyboard.press(id)
+                time.sleep(0.05)
+                self.Keyboard.release(id)
 
     def commission(self):
         """

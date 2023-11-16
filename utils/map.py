@@ -107,9 +107,7 @@ class Map:
                     self.calculated.check_main_interface()
                     # 复活切换远程角色
                     if self.team_change:
-                        self.calculated.Keyboard.press(str(self.id))
-                        time.sleep(0.05)
-                        self.calculated.Keyboard.release(str(self.id))
+                        self.calculated.change_team(0,self.id)
                 else:
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
 
