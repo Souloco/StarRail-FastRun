@@ -410,7 +410,7 @@ class Calculated:
     def check_main_interface(self):
         log.info("强制在主界面")
         if self.img_check("liaotian.png",(20,900,80,970),10):
-            time.sleep(3)   # 等待人物模型出现
+            time.sleep(2)   # 等待人物模型出现
         else:
             while not self.img_check("liaotian.png",(20,900,80,970),1):
                 self.Keyboard.press(Key.esc)
