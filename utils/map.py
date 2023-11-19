@@ -101,7 +101,7 @@ class Map:
                     if not self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value):
                         self.calculated.img_click("transfer1.jpg",overtime=0.5)
                         self.calculated.img_click("transfer2.jpg",overtime=0.5)
-                        self.calculated.img_click("transfer3.jpg",overtime=0.5)
+                        self.calculated.img_click("transfer3.png",overtime=0.5)
                         self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value)
                     time.sleep(3)
                     self.calculated.check_main_interface()
