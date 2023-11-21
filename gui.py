@@ -269,6 +269,7 @@ def sure_gui_config():
 def clear_imglog():
     logpath = "./logs/image"
     imglog_list = os.listdir(logpath)
+    log.info("图片log清理开始")
     for img in imglog_list:
         os.remove(os.path.join(logpath,img))
     log.info("图片log清理完毕")

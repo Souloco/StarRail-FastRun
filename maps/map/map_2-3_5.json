@@ -1,11 +1,17 @@
 {
-    "name": "残响回廊-5",
-    "author": "Souloco",
-    "start": [
-        {"map": ""},
-        {"map_2-3_point_5.jpg": 1.5},
-        {"transfer": 1.5}
-    ],
+  "name": "残响回廊-5",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": ""
+    },
+    {
+      "map_2-3_point_5.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
   "map": [
     {
       "fighting": 3
@@ -15,6 +21,9 @@
     },
     {
       "s": 5.0638420999981463
+    },
+    {
+      "fighting": 1
     },
     {
       "a": 3.2669950999843422
