@@ -139,7 +139,7 @@ def map_config():
     auto_map.close_game = close_game_var.get()
     auto_map.nums = auto_map_nums.get()
     auto_map.skill = skill_var.get()
-    auto_map.skill_food = skill_var.get()
+    auto_map.skill_food = skill_food_var.get()
     auto_map.planetid = 0
     return map_use_list,auto_map_use_list
 # 线程启动函数
@@ -518,12 +518,15 @@ if __name__ == '__main__':
     commission_var.set(get_config("commission"))
     skill_var = tk.BooleanVar()
     skill_var.set(get_config("skill"))
+    skill_food_var = tk.BooleanVar()
+    skill_food_var.set(get_config("skill_food"))
     # 配置开关
     ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=9,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=9,column=2,pady=5)
-    ttk.Checkbutton(hoe_frame,text="秘技使用",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_var).grid(row=9,column=3,pady=5)
+    ttk.Checkbutton(hoe_frame,text="秘技使用",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_var).grid(row=9,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=9,column=3,pady=5)
     ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1)
-    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=10,column=2)
+    ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var).grid(row=10,column=2)
+    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=10,column=3)
     # 按钮
     ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=4,pady=5)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=4,pady=5)

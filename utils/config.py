@@ -91,6 +91,7 @@ class Config():
     fontsize = 10
     fontfamily = "Microsoft YaHei UI"
     skill = False
+    skill_food = False
     auto_map_hide = True
     map_type = "map"
     proxy = "https://gh-proxy.com/"

@@ -100,5 +100,6 @@
   ],
   "dungeon_time_flag": false,
   "配置4": [],
-  "配置5": []
+  "配置5": [],
+  "skill_food": false
 }
