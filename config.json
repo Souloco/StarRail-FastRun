@@ -39,6 +39,7 @@
     "map_3-1_3.json",
     "map_3-1_4.json",
     "map_3-1_5.json",
+    "map_3-1_6.json",
     "map_3-2_1.json",
     "map_3-2_2.json",
     "map_3-2_3.json",
@@ -101,5 +102,8 @@
   "dungeon_time_flag": false,
   "配置4": [],
   "配置5": [],
-  "skill_food": false
+  "skill_food": false,
+  "universe_bonus": 0,
+  "universe_nums": 5,
+  "auto_universe": false
 }

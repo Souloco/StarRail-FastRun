@@ -17,6 +17,8 @@ import win32console
 import win32gui
 import inspect
 import ctypes
+import subprocess
+import sys
 # 全局属性
 # 标题
 TITLE_NAME = 'StarRail-FastRun'
@@ -26,6 +28,8 @@ VER = read_json_info('version.json','version')
 ver_update = False
 # 线程变量
 t = threading.Thread()
+# 进程变量
+u = None
 # 日志开始标志符
 logstart_flag = 0
 # 用于日志文本框
@@ -54,6 +58,7 @@ def Enter_hoeframe():
 def Enter_mainframe():
     logframe.pack_forget()
     announce_frame.pack_forget()
+    universe_frame.pack_forget()
     allframe.pack_forget()
     hoe_frame.pack_forget()
     dungeonframe.pack_forget()
@@ -68,7 +73,29 @@ def get_map_list(map_value_list):
         if value == 1:
             map_use_list.append(map_list[i])
     return map_use_list
-# 保存
+# 模拟宇宙
+def Enter_Universe():
+    global u
+    log.info("模拟宇宙运行中")
+    command = ["python","states.py",f"--bonus={universe_bonus.get()}",f"--nums={universe_nums.get()}"]
+    u = subprocess.Popen(command,text=True,cwd="./Auto_Simulated_Universe-main")
+
+# 模拟宇宙
+def Enter_Universeframe():
+    if not t.is_alive():
+        logframe.pack_forget()
+        mainframe.pack_forget()
+        universe_frame.pack()
+        root.update()
+        global logstart_flag
+        logstart_flag = 0
+    else:
+        log.warning("功能线程还在运行！")
+# 保存模拟宇宙配置
+def save_universe_config():
+    set_config("universe_bonus",universe_bonus.get())
+    set_config("universe_nums",universe_nums.get())
+# 保存配置
 def save_config():
     map_use_list = get_map_list(map_value_list)
     auto_map_use_list = get_map_list(auto_map_value_list)
@@ -86,6 +113,7 @@ def save_config():
 def Enter_logframe(logmode:int = 1):
     hoe_frame.pack_forget()
     dungeonframe.pack_forget()
+    universe_frame.pack_forget()
     allframe.pack_forget()
     logframe.pack()
     global logstart_flag
@@ -99,6 +127,9 @@ def Enter_logframe(logmode:int = 1):
     elif logmode == 3:
         logstart.configure(command=enter_function)
         logreturn.configure(command=Enter_allframe)
+    elif logmode == 4:
+        logstart.configure(command=Enter_Universe)
+        logreturn.configure(command=Enter_Universeframe)
     root.update()
 # 进入清体力页面
 def Enter_dungeonframe():
@@ -210,7 +241,11 @@ def enter_function_all():
     auto_dungeon.start(dungeon_config_list[id])
     # 锄地执行
     auto_map.start(map_use_list,auto_map_use_list)
-
+    # 模拟宇宙执行
+    if os.path.isdir("./Auto_Simulated_Universe-main") and auto_universe_var.get():
+        auto_dungeon.open_dungeon()
+        auto_dungeon.calculated.dungeon_img_click("universe.jpg")
+        Enter_Universe()
 # 多功能执行线程
 def enter_function():
     auto_map.calculated.get_hwnd()
@@ -277,11 +312,15 @@ def clear_imglog():
 # 关闭程序
 def close_window():
     auto_map.calculated.release_mouse_keyboard()
+    if u is not None:
+        u.kill()
     root.destroy()
 # 停止
 def stop():
     log.info("停止")
     stop_thread(t)
+    if u is not None:
+        u.kill()
     auto_map.calculated.release_mouse_keyboard()
 # 按键监听线程
 def btn_close_window():
@@ -294,6 +333,8 @@ def btn_close_window():
                 enter_dungeon()
             if logstart_flag == 3:
                 enter_function()
+            if logstart_flag == 4:
+                Enter_Universe()
         if key == keyboard.Key.f10:
             close_window()
         if key == keyboard.Key.f8:
@@ -387,6 +428,8 @@ if __name__ == '__main__':
     ttk.Label(mainframe,text=VER,font=versionfont).grid()
     ttk.Button(mainframe,text='锄大地',width=10,command=Enter_hoeframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='清体力',width=10,command=Enter_dungeonframe).grid(pady=5,ipady=10)
+    if os.path.isdir("./Auto_Simulated_Universe-main"):
+        ttk.Button(mainframe,text='模拟宇宙',command=Enter_Universeframe,width=10).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='多功能执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='编辑配置',width=10,command=Enter_configframe).grid(pady=5,ipady=10)
@@ -424,6 +467,22 @@ if __name__ == '__main__':
     announce_text.grid(columnspan=2,padx=5,pady=5)
     ttk.Button(announce_frame,text='确认',width=10,command=Enter_mainframe).grid(columnspan=2)
     announce_frame.pack()
+
+    # 模拟宇宙页面
+    universe_frame = ttk.Frame(root)
+    ttk.Label(universe_frame,text=TITLE_NAME,font=titlefont).grid(columnspan=4)
+    ttk.Label(universe_frame,text=VER,font=versionfont).grid(columnspan=4)
+    ttk.Label(universe_frame,text="执行次数:").grid(columnspan=2,row=2,column=0)
+    universe_nums = tk.IntVar()
+    universe_nums.set(get_config("universe_nums"))
+    universe_spinbox = ttk.Spinbox(universe_frame,from_=1, to=34, increment=1,textvariable=universe_nums)
+    universe_spinbox.grid(columnspan=2,row=2,column=2)
+    universe_bonus = tk.IntVar()
+    universe_bonus.set(get_config("universe_bonus"))
+    ttk.Checkbutton(universe_frame,text="沉浸奖励",style="Switch.TCheckbutton",onvalue=1,offvalue=0,variable=universe_bonus).grid(columnspan=4,pady=5)
+    ttk.Button(universe_frame,text='确定',width=10,command=lambda:Enter_logframe(4)).grid(columnspan=4,pady=5)
+    ttk.Button(universe_frame,text='保存',width=10,command=save_universe_config).grid(columnspan=4,pady=5)
+    ttk.Button(universe_frame,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
 
     # 锄大地页面
     hoe_frame = ttk.Frame(root)
@@ -643,7 +702,12 @@ if __name__ == '__main__':
     ttk.Label(allframe,text='锄大地队伍/人物编号:').grid(row=3,column=0,pady=5)
     ttk.OptionMenu(allframe,teamid_sets,get_config("team_id"),*teamid_option_list).grid(row=3,column=1,pady=5)
     ttk.OptionMenu(allframe,id_sets,get_config("character_id"),*id_option_list).grid(row=3,column=2,pady=5)
+
+    auto_universe_var = tk.BooleanVar()
+    auto_universe_var.set(get_config("auto_universe"))
     ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=4,column=0,pady=5)
+    if os.path.isdir("./Auto_Simulated_Universe-main"):
+        ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=3,column=3,pady=5)
     ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=4,column=1,pady=5)
     ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=4,column=2,pady=5)
     ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=4,column=3,pady=5)
