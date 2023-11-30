@@ -539,18 +539,21 @@ class Calculated:
             委托功能
         """
         log.info("清委托")
-        self.Keyboard.press(Key.esc)
-        time.sleep(0.05)
-        self.Keyboard.release(Key.esc)
-        self.ocr_click(text='委托',points=(1700,400,1755,425))
-        while self.img_click('red_notice.jpg',overtime=5,rates=0.80):
+        starttime = time.time()
+        maxtime = 100
+        while not self.ocr_check(text='委托',points=(100,0,170,70),overtime=1) and time.time() - starttime < maxtime:
+            self.Keyboard.press(Key.esc)
+            time.sleep(0.05)
+            self.Keyboard.release(Key.esc)
+            self.ocr_click(text='委托',points=(1700,400,1755,425))
+        while self.ocr_check(text='委托',points=(100,0,170,70),overtime=2) and self.img_click('red_notice.jpg',overtime=5,rates=0.80) and time.time() - starttime < maxtime:
             if self.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
                 self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
         while not self.img_check("liaotian.png",(20,900,80,970),1):
             self.Keyboard.press(Key.esc)
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
-
+    
     def login(self):
         """
         说明:

@@ -58,17 +58,19 @@ class Map:
                         log.info("进入地名")
                         # 滚动寻找
                         # 向下滚动寻找
-                        for i in range(5):
+                        for i in range(4):
                             if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
                                 self.calculated.Mouse.position = self.calculated.mouse_pos((1750,250))
-                                self.calculated.Mouse.scroll(0,-200)
+                                for j in range(2):
+                                    self.calculated.Mouse.scroll(0,-200)
                             else:
                                 break
                         # 向上滚动寻找
-                        for i in range(5):
+                        for i in range(4):
                             if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
                                 self.calculated.Mouse.position = self.calculated.mouse_pos((1750,250))
-                                self.calculated.Mouse.scroll(0,200)
+                                for j in range(2):
+                                    self.calculated.Mouse.scroll(0,200)
                             else:
                                 break
                         self.calculated.img_click(map_name_dir,(1420,180,1890,1020),2)

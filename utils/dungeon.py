@@ -14,10 +14,13 @@ class Dungeon:
 
     def open_dungeon(self):
         self.calculated.check_main_interface()
-        self.calculated.Keyboard.press(Key.f4)
-        time.sleep(0.05)
-        self.calculated.Keyboard.release(Key.f4)
-        self.calculated.img_click("dungeon_main.png",overtime=2)
+        starttime = time.time()
+        maxtime = 100
+        while not self.calculated.img_check("universe.jpg",overtime=1) and time.time() - starttime < maxtime:
+            self.calculated.Keyboard.press(Key.f4)
+            time.sleep(0.05)
+            self.calculated.Keyboard.release(Key.f4)
+            self.calculated.img_click("dungeon_main.png",overtime=2)
 
     def enter_dungeon(self,dungeonpath:str,nums=1):
         self.open_dungeon()
