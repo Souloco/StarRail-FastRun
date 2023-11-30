@@ -76,6 +76,9 @@ This software is open source, free of charge and for learning and exchange purpo
     - 桌面通知
         - 运行```notify.exe```
 - 进阶使用
+    - 调用模拟宇宙(https://github.com/CHNZYX/Auto_Simulated_Universe)
+        - 点击Code---Download ZIP---下载Auto_Simulated_Universe-main.zip
+        - 在本项目下解压成Auto_Simulated_Universe-main文件夹
     - 定时执行
         - ```计算机管理-任务计划程序-创建任务```
         - 常规-```使用最高权限运行|配置```
