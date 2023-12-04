@@ -2,25 +2,28 @@
     "name": "机械聚落-1",
     "author": "Souloco",
     "start": [
-        {"map": "2"},
-        {"map_2-7_point_1.png": 1.5},
-        {"transfer": 1.5}
+        {
+            "map": "2"
+        },
+        {
+            "map_2-7_point_2.jpg": 1.5
+        },
+        {
+            "transfer": 1.5
+        }
     ],
     "map": [
         {
-            "w": 2.5387712999945506
+            "s": 0.75
         },
         {
-            "d": 0.8910094999882858
+            "mouse_move": 1500
         },
         {
             "e": 1
         },
         {
             "fighting": 1
-        },
-        {
-            "fighting": 2
         }
     ]
 }

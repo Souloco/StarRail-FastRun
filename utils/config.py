@@ -106,11 +106,18 @@ class Config():
     universe_nums = 34
     auto_universe = False
 def check_config():
-    with open(os.path.join(root_dir,CONFIG_FILE_NAME),"r",encoding='utf-8') as f:
+    config_path = os.path.join(root_dir,CONFIG_FILE_NAME)
+    # 如果不存在先创建空白json
+    if not os.path.exists(config_path):
+        with open(config_path,"w",encoding='utf-8') as f:
+            json.dump({},f)
+            f.close()
+    # 缺少配置补充默认值
+    with open(config_path,"r",encoding='utf-8') as f:
         data = json.load(f)
-    for key,item in Config.__dict__.items():
-        if '__' not in key and key not in data:
-            set_config(key,item)
+        for key,item in Config.__dict__.items():
+            if '__' not in key and key not in data:
+                set_config(key,item)
     return True
 def message(msg:str):
     with open(os.path.join(root_dir,"logs","message.txt"),"w",encoding='utf-8') as f:

@@ -28,8 +28,10 @@ VER = read_json_info('version.json','version')
 ver_update = False
 # 线程变量
 t = threading.Thread()
-# 进程变量
+# 模拟宇宙进程变量
 u = None
+# 模拟宇宙标志符
+u_flag = os.path.isdir("./Auto_Simulated_Universe-main")
 # 日志开始标志符
 logstart_flag = 0
 # 用于日志文本框
@@ -242,7 +244,7 @@ def enter_function_all():
     # 锄地执行
     auto_map.start(map_use_list,auto_map_use_list)
     # 模拟宇宙执行
-    if os.path.isdir("./Auto_Simulated_Universe-main") and auto_universe_var.get():
+    if u_flag and auto_universe_var.get():
         auto_dungeon.open_dungeon()
         auto_dungeon.calculated.dungeon_img_click("universe.jpg")
         Enter_Universe()
@@ -428,7 +430,7 @@ if __name__ == '__main__':
     ttk.Label(mainframe,text=VER,font=versionfont).grid()
     ttk.Button(mainframe,text='锄大地',width=10,command=Enter_hoeframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='清体力',width=10,command=Enter_dungeonframe).grid(pady=5,ipady=10)
-    if os.path.isdir("./Auto_Simulated_Universe-main"):
+    if u_flag:
         ttk.Button(mainframe,text='模拟宇宙',command=Enter_Universeframe,width=10).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='多功能执行',width=10,command=Enter_allframe).grid(pady=5,ipady=10)
     ttk.Button(mainframe,text='显隐cmd',width=10,command=hide_cmd).grid(pady=5,ipady=10)
@@ -706,7 +708,7 @@ if __name__ == '__main__':
     auto_universe_var = tk.BooleanVar()
     auto_universe_var.set(get_config("auto_universe"))
     ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=4,column=0,pady=5)
-    if os.path.isdir("./Auto_Simulated_Universe-main"):
+    if u_flag:
         ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=3,column=3,pady=5)
     ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=4,column=1,pady=5)
     ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=4,column=2,pady=5)

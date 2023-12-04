@@ -118,7 +118,7 @@ class Calculated:
             img = self.take_screenshot(points)
             val,loc = self.img_match(img,templeimg)
             time.sleep(0.05)
-        log.info(f"图片点击-{val}")
+        # log.info(f"图片点击-{val}")
         if val >= rates:
             w = templeimg.shape[1]
             h = templeimg.shape[0]
@@ -132,7 +132,7 @@ class Calculated:
             self.Mouse.release(mouse.Button.left)
             return True
         else:
-            log.info("识别超时")
+            # log.info("识别超时")
             return False
 
     def img_check(self,templepath,points=(0,0,0,0),overtime=5.0,rates=0.90):
@@ -177,7 +177,7 @@ class Calculated:
             img = self.take_screenshot(points)
             val,loc = self.img_match(img,templeimg)
             time.sleep(0.05)
-        log.info(f"图片点击-{val}")
+        # log.info(f"图片点击-{val}")
         if val >= rates:
             h = templeimg.shape[0]
             print((0,loc[1],1920,loc[1]+h))
@@ -238,7 +238,7 @@ class Calculated:
             pos,rate = self.ocr_match(img,text,mode)
             time.sleep(0.05)
         if rate >= rates:
-            log.info(f"OCR点击-{rate}")
+            # log.info(f"OCR点击-{rate}")
             left, top, right, bottom = self.get_WindowRect(self.hwnd)
             x = left + points[0] + pos[0]
             y = top + points[1] + pos[1]
@@ -271,10 +271,8 @@ class Calculated:
             pos,rate = self.ocr_match(img,text,mode)
             time.sleep(0.05)
         if rate >= rates:
-            log.info(f"OCR检测-{rate}")
             return True
         else:
-            log.warning(f"OCR检测-{rate}")
             return False
 
     def mouse_pos(self,points):
@@ -553,7 +551,7 @@ class Calculated:
             self.Keyboard.press(Key.esc)
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
-    
+
     def login(self):
         """
         说明:
