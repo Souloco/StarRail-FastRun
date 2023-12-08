@@ -111,6 +111,7 @@ def save_config():
     set_config("auto_map_nums",auto_map_nums.get())
     set_config("commission",commission_var.get())
     set_config("skill",skill_var.get())
+    set_config("run_change",run_change_var.get())
 # 进入日志页面
 def Enter_logframe(logmode:int = 1):
     hoe_frame.pack_forget()
@@ -173,6 +174,7 @@ def map_config():
     auto_map.nums = auto_map_nums.get()
     auto_map.skill = skill_var.get()
     auto_map.skill_food = skill_food_var.get()
+    auto_map.run_change = run_change_var.get()
     auto_map.planetid = 0
     return map_use_list,auto_map_use_list
 # 线程启动函数
@@ -581,7 +583,10 @@ if __name__ == '__main__':
     skill_var.set(get_config("skill"))
     skill_food_var = tk.BooleanVar()
     skill_food_var.set(get_config("skill_food"))
+    run_change_var = tk.BooleanVar()
+    run_change_var.set(get_config("run_change"))
     # 配置开关
+    ttk.Checkbutton(hoe_frame,text="疾跑切换",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=run_change_var).grid(row=8,column=3,pady=5)
     ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=9,column=1,pady=5)
     ttk.Checkbutton(hoe_frame,text="秘技使用",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_var).grid(row=9,column=2,pady=5)
     ttk.Checkbutton(hoe_frame,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=9,column=3,pady=5)

@@ -593,6 +593,38 @@ class Calculated:
             time.sleep(skill_time)
         return food
 
+    def run_change(self,mode:int = 1):
+        """
+        说明:
+            疾跑切换模式
+        """
+        starttime = time.time()
+        maxtime = 100
+        while not self.img_check("exit1.png",overtime=1.5) and time.time() - starttime < maxtime:
+            self.Keyboard.press(Key.esc)
+            time.sleep(0.05)
+            self.Keyboard.release(Key.esc)
+        self.img_click("setting1.jpg",overtime=2)
+        self.img_click("setting2.jpg",overtime=2)
+        time.sleep(1)
+        for i in range(8):
+            self.Mouse.position = self.mouse_pos((1300,360))
+            for j in range(3):
+                self.Mouse.scroll(0,-200)
+        time.sleep(1)
+        self.Mouse.position = self.mouse_pos((1300,360))
+        self.Mouse.press(mouse.Button.left)
+        time.sleep(0.5)
+        self.Mouse.release(mouse.Button.left)
+        if mode == 0:
+            self.ocr_click(text='通过按钮切换',points=(1400,410,1600,550),overtime=3,mode=2)
+        if mode == 1:
+            self.ocr_click(text='长按进入疾跑状态',points=(1400,410,1600,550),overtime=3,mode=2)
+        while not self.img_check("liaotian.png",(20,900,80,970),overtime=1.5) and time.time() - starttime < maxtime:
+            self.Keyboard.press(Key.esc)
+            time.sleep(0.05)
+            self.Keyboard.release(Key.esc)
+
     def map_pos(self,mappath:str):
         """
         说明:

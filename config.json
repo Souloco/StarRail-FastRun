@@ -105,5 +105,6 @@
   "skill_food": false,
   "universe_bonus": 0,
   "universe_nums": 5,
-  "auto_universe": false
+  "auto_universe": false,
+  "run_change": false
 }

@@ -18,6 +18,7 @@ class Map:
         self.skill_food = True
         self.mappath = "maps\\map"
         self.planetid = 0
+        self.run_change = False
 
     def Enter_map_start(self,mapjson):
         """
@@ -179,6 +180,9 @@ class Map:
         log.info("游戏初始化设置")
         self.calculated.set_windowsize()
         self.calculated.check_main_interface()
+        if self.run_change:
+            log.info("锄大地---疾跑模式切换")
+            self.calculated.run_change(1)
         if self.commission:
             log.info("清委托")
             self.calculated.commission()
@@ -192,6 +196,9 @@ class Map:
         log.info("锄大地---重跑路线")
         for i in range(self.nums):
             self.Enter_map_jsonlist(auto_map_list)
+        if self.run_change:
+            log.info("锄大地---疾跑模式切换")
+            self.calculated.run_change(0)
         if self.close_game:
             log.info("锄大地---自动关机")
             self.calculated.close_game()
