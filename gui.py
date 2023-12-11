@@ -238,13 +238,15 @@ def enter_function_all():
     # 激活窗口
     auto_map.calculated.active_window()
     # 清体力执行
-    if dungeon_time_flag.get():
-        id = dungeon_title.index(dungeon_time[today_id])
-    else:
-        id = dungeon_notebook.index("current")
-    auto_dungeon.start(dungeon_config_list[id])
+    if auto_dungeon_var.get():
+        if dungeon_time_flag.get():
+            id = dungeon_title.index(dungeon_time[today_id])
+        else:
+            id = dungeon_notebook.index("current")
+        auto_dungeon.start(dungeon_config_list[id])
     # 锄地执行
-    auto_map.start(map_use_list,auto_map_use_list)
+    if auto_map_var.get():
+        auto_map.start(map_use_list,auto_map_use_list)
     # 模拟宇宙执行
     if u_flag and auto_universe_var.get():
         auto_dungeon.open_dungeon()
@@ -291,19 +293,21 @@ def save_dungeon_config():
 def save_all_config():
     save_dungeon_config()
     save_config()
-    set_config("gamepath",game_path.get())
-# 保存gui配置项
+    set_config("auto_map",auto_map_var.get())
+    set_config("auto_dungeon",auto_dungeon_var.get())
+    set_config("auto_universe",auto_universe_var.get())
+# 应用与保存gui配置项
 def save_gui_config():
-    set_config("fontsize",font_sizes.get())
-    set_config("fontfamily",fontfamilt_sets.get())
-    set_config("map_type",map_type_sets.get())
-    set_config("proxy",proxy_text.get())
-# 应用gui配置项
-def sure_gui_config():
     defaultfont.configure(family=fontfamilt_sets.get(),size=font_sizes.get())
     titlefont.configure(family=fontfamilt_sets.get(),size=font_sizes.get()+12)
     versionfont.configure(family=fontfamilt_sets.get(),size=font_sizes.get()+6)
     root.update()
+    set_config("fontsize",font_sizes.get())
+    set_config("fontfamily",fontfamilt_sets.get())
+    set_config("map_type",map_type_sets.get())
+    set_config("proxy",proxy_text.get())
+    set_config("gamepath",game_path.get())
+
 # 清理图片log
 def clear_imglog():
     logpath = "./logs/image"
@@ -712,17 +716,18 @@ if __name__ == '__main__':
 
     auto_universe_var = tk.BooleanVar()
     auto_universe_var.set(get_config("auto_universe"))
-    ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=4,column=0,pady=5)
+    auto_map_var = tk.BooleanVar()
+    auto_map_var.set(get_config("auto_map"))
+    auto_dungeon_var = tk.BooleanVar()
+    auto_dungeon_var.set(get_config("auto_dungeon"))
+    ttk.Checkbutton(allframe,text="锄大地",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_map_var).grid(row=2,column=3,pady=5)
+    ttk.Checkbutton(allframe,text="清体力",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_dungeon_var).grid(row=3,column=3,pady=5)
     if u_flag:
-        ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=3,column=3,pady=5)
-    ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=4,column=1,pady=5)
-    ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=4,column=2,pady=5)
-    ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=4,column=3,pady=5)
-    ttk.Label(allframe,text='游戏路径:').grid(row=5,column=0,pady=5)
-    game_path = tk.StringVar()
-    game_path.set(get_config("gamepath"))
-    game_text = ttk.Entry(allframe,width=40,textvariable=game_path)
-    game_text.grid(row=5,column=1,columnspan=3,pady=5)
+        ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=4,column=0,pady=5)
+    ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=5,column=0,pady=5)
+    ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=commission_var).grid(row=5,column=1,pady=5)
+    ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=5,column=2,pady=5)
+    ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=5,column=3,pady=5)
     ttk.Button(allframe,text='确定',width=10,command=lambda:Enter_logframe(3)).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
@@ -748,9 +753,12 @@ if __name__ == '__main__':
     proxy_text = ttk.Entry(configframe)
     proxy_text.grid(row=5,column=2,columnspan=2,pady=5)
     proxy_text.insert(0,get_config("proxy"))
-
-    ttk.Button(configframe,text='确定',width=10,command=sure_gui_config).grid(columnspan=4,pady=5)
-    ttk.Button(configframe,text='保存',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
+    ttk.Label(configframe,text='游戏路径:').grid(row=6,column=0,columnspan=2,pady=5)
+    game_path = tk.StringVar()
+    game_path.set(get_config("gamepath"))
+    game_text = ttk.Entry(configframe,textvariable=game_path)
+    game_text.grid(row=6,column=2,columnspan=2,pady=5)
+    ttk.Button(configframe,text='确定',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
     t1 = threading.Thread(name='btn_close',target=btn_close_window,daemon=True)

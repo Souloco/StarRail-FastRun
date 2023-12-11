@@ -105,6 +105,8 @@ class Config():
     universe_bonus = 0
     universe_nums = 34
     auto_universe = False
+    auto_map = False
+    auto_dungeon = False
     run_change = False
 def check_config():
     config_path = os.path.join(root_dir,CONFIG_FILE_NAME)

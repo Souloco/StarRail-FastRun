@@ -106,5 +106,7 @@
   "universe_bonus": 0,
   "universe_nums": 5,
   "auto_universe": false,
-  "run_change": false
+  "run_change": false,
+  "auto_map": false,
+  "auto_dungeon": false
 }
