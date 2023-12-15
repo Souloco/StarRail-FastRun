@@ -47,10 +47,12 @@ This software is open source, free of charge and for learning and exchange purpo
         - ```远程角色```带队最佳
         - 路线测试角色```佩拉|驭空|青雀|艾丝妲|符玄|娜塔莎|托帕```
         - 切换锄地路线---```编辑配置下切换|通用路线|驭空路线---全程秘技跑---暂未完善```
-        - 秘技使用---```部分路线打地图上的秘技点|会消耗食物|托帕不必准备食物,地图上秘技点够用```
+        - 秘技使用---```部分路线打地图上的秘技点|托帕不必准备食物,地图上秘技点够用```
+        - 秘技食物---```消耗补充秘技点的食物```
         - 截图记录---```存放至logs\image下|日志页面清理按钮可清空图片log|不对路线有所改动不必打开```
         - 自动关机---```关闭游戏|关闭程序|执行强制关机指令```
         - 重跑路线---```捡漏代替选项|后续捡漏功能实装时会删除|重跑次数为0不执行```
+        - 疾跑切换---```执行前切换疾跑模式为长按进入疾跑状态|执行完毕后切换后短按|与模拟宇宙跑步模式适配```
         - 委托开关
         - 切换队伍
     - 清体力
@@ -61,8 +63,8 @@ This software is open source, free of charge and for learning and exchange purpo
         - 自动关机需打开```自动关机```
     - 快速启动---用于定时执行|自动开机执行
         - 在多功能执行页面```配置```
-        - 清体力默认执行```配置1```
-        - 游戏路径设置成本体路径```Game/StarRail.exe```
+        - 清体力支持时间条件执行|默认执行```配置1```
+        - 编辑配置页面---游戏路径设置成本体路径```Game/StarRail.exe```
         - 执行顺序```启动游戏-清体力-清委托-锄大地-自动关机```
         - 以管理员身份运行```FastStart.exe```
     - 快捷键---在日志界面触发
@@ -73,12 +75,15 @@ This software is open source, free of charge and for learning and exchange purpo
         - gui字体设置
         - gui字体大小
         - 切换锄地路线---```自定义锄地路线请仿造maps下的文件夹格式```
+        - 更新代理---更新不成功自行更换可用的代理网址末尾需带有```/```
+        - 游戏路径
     - 桌面通知
         - 运行```notify.exe```
 - 进阶使用
-    - 调用模拟宇宙(https://github.com/CHNZYX/Auto_Simulated_Universe)
+    - 调用模拟宇宙(https://github.com/CHNZYX/Auto_Simulated_Universe)     
         - 点击Code---Download ZIP---下载Auto_Simulated_Universe-main.zip
         - 在本项目下解压成Auto_Simulated_Universe-main文件夹
+        - 模拟宇宙详细配置请使用模拟宇宙本体gui
     - 定时执行
         - ```计算机管理-任务计划程序-创建任务```
         - 常规-```使用最高权限运行|配置```
