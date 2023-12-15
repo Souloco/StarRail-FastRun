@@ -720,8 +720,8 @@ if __name__ == '__main__':
     auto_map_var.set(get_config("auto_map"))
     auto_dungeon_var = tk.BooleanVar()
     auto_dungeon_var.set(get_config("auto_dungeon"))
-    ttk.Checkbutton(allframe,text="锄大地",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_map_var).grid(row=2,column=3,pady=5)
-    ttk.Checkbutton(allframe,text="清体力",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_dungeon_var).grid(row=3,column=3,pady=5)
+    ttk.Checkbutton(allframe,text="清体力",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_dungeon_var).grid(row=2,column=3,pady=5)
+    ttk.Checkbutton(allframe,text="锄大地",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_map_var).grid(row=3,column=3,pady=5)
     if u_flag:
         ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=4,column=0,pady=5)
     ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=5,column=0,pady=5)

@@ -1,4 +1,4 @@
-from utils.config import get_config,read_json_info
+from utils.config import get_config
 from utils.map import Map
 from utils.dungeon import Dungeon
 from utils.log import log
@@ -21,6 +21,7 @@ if get_config("dungeon_time_flag"):
 else:
     dungeon_config = get_config("配置1")
 # 配置启用
+# 锄大地配置
 auto_map.calculated.img_log_value = get_config("img_log")
 auto_map.team_change = get_config("team_change")
 auto_map.teamid = get_config("team_id")
@@ -28,9 +29,16 @@ auto_map.id = get_config("character_id")
 auto_map.commission = get_config("commission")
 auto_map.close_game = get_config("close_game")
 auto_map.nums = get_config("auto_map_nums")
+auto_map.skill = get_config("skill")
+auto_map.skill_food = get_config("skill_food")
+auto_map.run_change = get_config("run_change")
+# 清体力配置
 auto_dungeon.team_change = get_config("team_change")
 auto_dungeon.teamid = get_config("dungeon_team_id")
 auto_dungeon.id = get_config("dungeon_character_id")
+# 单项功能是否执行
+auto_map_flag = get_config("auto_map")
+auto_dungeon_flag = get_config("auto_dungeon")
 # 启动游戏
 os.startfile(gamepath)
 time.sleep(10)
@@ -44,7 +52,9 @@ else:
     # 登录
     auto_map.calculated.login()
     # 清体力
-    auto_dungeon.start(dungeon_config)
+    if auto_dungeon_flag:
+        auto_dungeon.start(dungeon_config)
     # 锄大地
-    auto_map.start(map_list_data,auto_map_list_data)
+    if auto_map_flag:
+        auto_map.start(map_list_data,auto_map_list_data)
 time.sleep(5)

@@ -1,23 +1,32 @@
 {
-    "name": "鳞渊境-6",
-    "author": "Souloco",
-    "start": [
-        {"map": ""},
-        {"map_3-6_point_4.png": 1.5},
-        {"transfer": 1.5}
-    ],
+  "name": "鳞渊境-6",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": ""
+    },
+    {
+      "map_3-6_point_4.png": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
   "map": [
     {
-      "a": 3.265681900000118
+      "mouse_move": -1400
     },
     {
-      "w": 0.8279989999998634
+      "w": 7.2
     },
     {
-      "a": 5.228962899999942
+      "a": 0.6
     },
     {
       "e": 1
+    },
+    {
+      "fighting": 1
     },
     {
       "fighting": 1
