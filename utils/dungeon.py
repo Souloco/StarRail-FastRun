@@ -11,6 +11,22 @@ class Dungeon:
         self.team_change = False
         self.teamid = 1
         self.id = 1
+        self.index_find_nums,self.dungeon_find_nums = self.dungeon_find_init()
+
+    def dungeon_find_init(self):
+        """
+        说明:
+            配置的副本数量搜寻次数初始化
+        """
+        dungeon_indexlist = read_json_info("dungeon.json","indexname",prepath="dungeon")
+        index_find_nums = len(dungeon_indexlist) // 2
+        dungeon_find_nums = 0
+        for name in dungeon_indexlist:
+            dungeon_list = read_json_info("dungeon.json",name,prepath="dungeon")
+            nums = len(dungeon_list) // 2
+            if dungeon_find_nums < nums:
+                dungeon_find_nums = nums
+        return index_find_nums,dungeon_find_nums
 
     def open_dungeon(self):
         self.calculated.check_main_interface()
@@ -27,12 +43,13 @@ class Dungeon:
         dungeon_id = dungeonpath[dungeonpath.index("_")+1:dungeonpath.index("-")]
         dungeon_name_dir = dungeonpath[0:dungeonpath.index("-")] + ".jpg"
         # 向下滚动寻找
-        if not self.calculated.img_check(dungeon_name_dir,(0,0,0,0),1):
-            self.calculated.Mouse.position = self.calculated.mouse_pos((450,400))
-            drag(0,-150, 1,button='left')
+        for i in range(self.index_find_nums):
+            if not self.calculated.img_check(dungeon_name_dir,(0,0,0,0),1):
+                self.calculated.Mouse.position = self.calculated.mouse_pos((450,400))
+                drag(0,-150, 1,button='left')
         self.calculated.img_click(dungeon_name_dir)
         # 向下滚动寻找
-        for i in range(5):
+        for i in range(self.dungeon_find_nums):
             if not self.calculated.img_check(dungeonpath,(0,0,0,0),1):
                 self.calculated.Mouse.position = self.calculated.mouse_pos((1200,900))
                 drag(0,-300, 1,button='left')

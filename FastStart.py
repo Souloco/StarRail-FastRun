@@ -32,6 +32,7 @@ auto_map.nums = get_config("auto_map_nums")
 auto_map.skill = get_config("skill")
 auto_map.skill_food = get_config("skill_food")
 auto_map.run_change = get_config("run_change")
+auto_map.mappath = "maps\\" + get_config("map_type")
 # 清体力配置
 auto_dungeon.team_change = get_config("team_change")
 auto_dungeon.teamid = get_config("dungeon_team_id")

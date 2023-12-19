@@ -79,11 +79,7 @@
   "fontsize": 10,
   "fontfamily": "Microsoft YaHei UI",
   "gamepath": "",
-  "配置1": [
-    {
-      "毁灭之蕾·拟造花萼(赤)": 4
-    }
-  ],
+  "配置1": [],
   "配置2": [],
   "配置3": [],
   "skill": false,
@@ -92,7 +88,7 @@
   "proxy": "https://gh-proxy.com/",
   "dungeon_time": [
     "配置1",
-    "配置2",
+    "配置3",
     "配置2",
     "配置1",
     "配置1",
