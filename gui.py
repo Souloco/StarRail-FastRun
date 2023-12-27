@@ -4,8 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import tkinter.font as tkfont
 from utils.config import read_map,read_maplist_name,set_config,get_config,read_json_info,check_config
-from utils.map import Map
-from utils.dungeon import Dungeon
+from utils.StarRail import StarRail
 import os
 import logging
 from utils.log import log
@@ -15,10 +14,6 @@ import requests
 import time
 import win32console
 import win32gui
-import inspect
-import ctypes
-import subprocess
-import sys
 # 全局属性
 # 标题
 TITLE_NAME = 'StarRail-FastRun'
@@ -26,14 +21,8 @@ TITLE_NAME = 'StarRail-FastRun'
 VER = read_json_info('version.json','version')
 # 版本更新提示
 ver_update = False
-# 线程变量
-t = threading.Thread()
-# 模拟宇宙进程变量
-u = None
 # 模拟宇宙标志符
 u_flag = os.path.isdir("./Auto_Simulated_Universe-main")
-# 日志开始标志符
-logstart_flag = 0
 # 用于日志文本框
 class TextboxHandler(logging.Handler):
     def __init__(self, textbox:tk.Text):
@@ -47,13 +36,12 @@ class TextboxHandler(logging.Handler):
 # 事件
 # 进入锄大地页面
 def Enter_hoeframe():
-    if not t.is_alive():
+    if not sra.thread.is_alive():
         logframe.pack_forget()
         mainframe.pack_forget()
         hoe_frame.pack()
         root.update()
-        global logstart_flag
-        logstart_flag = 0
+        sra.mode = 0
     else:
         log.warning("功能线程还在运行！")
 # 进入主页面
@@ -75,24 +63,21 @@ def get_map_list(map_value_list):
         if value == 1:
             map_use_list.append(map_list[i])
     return map_use_list
-# 模拟宇宙
-def Enter_Universe():
-    global u
-    log.info("模拟宇宙运行中")
-    command = ["python","states.py",f"--bonus={universe_bonus.get()}",f"--nums={universe_nums.get()}"]
-    u = subprocess.Popen(command,text=True,cwd="./Auto_Simulated_Universe-main")
 
-# 模拟宇宙
+# 进入模拟宇宙页面
 def Enter_Universeframe():
-    if not t.is_alive():
+    if not sra.thread.is_alive():
         logframe.pack_forget()
         mainframe.pack_forget()
         universe_frame.pack()
         root.update()
-        global logstart_flag
-        logstart_flag = 0
+        sra.mode = 0
     else:
         log.warning("功能线程还在运行！")
+# 应用模拟宇宙配置
+def universe_config():
+    sra.universe_bonus = universe_bonus.get()
+    sra.universe_nums = universe_nums.get()
 # 保存模拟宇宙配置
 def save_universe_config():
     set_config("universe_bonus",universe_bonus.get())
@@ -114,46 +99,54 @@ def save_config():
     set_config("run_change",run_change_var.get())
 # 进入日志页面
 def Enter_logframe(logmode:int = 1):
+    # 页面初始化
     hoe_frame.pack_forget()
     dungeonframe.pack_forget()
     universe_frame.pack_forget()
     allframe.pack_forget()
     logframe.pack()
-    global logstart_flag
-    logstart_flag = logmode
+    sra.mode = logmode
     if logmode == 1:
-        logstart.configure(command=Enter_map)
+        # 锄大地启用配置
+        map_config()
         logreturn.configure(command=Enter_hoeframe)
     elif logmode == 2:
-        logstart.configure(command=enter_dungeon)
+        # 清体力启用配置
+        dungeon_config()
         logreturn.configure(command=Enter_dungeonframe)
     elif logmode == 3:
-        logstart.configure(command=enter_function)
+        # 锄大地启用配置
+        map_config()
+        # 清体力启用配置
+        dungeon_config()
+        # 模拟宇宙启用配置
+        universe_config()
+        # 多功能执行启用配置
+        allfunction_config()
         logreturn.configure(command=Enter_allframe)
     elif logmode == 4:
-        logstart.configure(command=Enter_Universe)
+        # 模拟宇宙启用配置
+        universe_config()
         logreturn.configure(command=Enter_Universeframe)
     root.update()
 # 进入清体力页面
 def Enter_dungeonframe():
-    if not t.is_alive():
+    if not sra.thread.is_alive():
         logframe.pack_forget()
         mainframe.pack_forget()
         dungeonframe.pack()
         root.update()
-        global logstart_flag
-        logstart_flag = 0
+        sra.mode = 0
     else:
         log.warning("功能线程还在运行！")
 # 进入多功能合一执行页面
 def Enter_allframe():
-    if not t.is_alive():
+    if not sra.thread.is_alive():
         logframe.pack_forget()
         mainframe.pack_forget()
         allframe.pack()
         root.update()
-        global logstart_flag
-        logstart_flag = 0
+        sra.mode = 0
     else:
         log.warning("功能线程还在运行！")
 # 进入编辑配置页面
@@ -161,110 +154,37 @@ def Enter_configframe():
     mainframe.pack_forget()
     configframe.pack()
     root.update()
+# 多功能执行配置
+def allfunction_config():
+    sra.map_flag = auto_map_var.get()
+    sra.dungeon_flag = auto_dungeon_var.get()
+    sra.universe_flag = auto_universe_var.get()
 # 锄地配置启用
 def map_config():
-    map_use_list = get_map_list(map_value_list)
-    auto_map_use_list = get_map_list(auto_map_value_list)
-    auto_map.calculated.img_log_value = img_log_Var.get()
-    auto_map.team_change = team_change_var.get()
-    auto_map.teamid = teamid_sets.get()
-    auto_map.id = id_sets.get()
-    auto_map.commission = commission_var.get()
-    auto_map.close_game = close_game_var.get()
-    auto_map.nums = auto_map_nums.get()
-    auto_map.skill = skill_var.get()
-    auto_map.skill_food = skill_food_var.get()
-    auto_map.run_change = run_change_var.get()
-    auto_map.planetid = 0
-    return map_use_list,auto_map_use_list
-# 线程启动函数
-def Enter_map_all():
-    # 配置启用
-    map_use_list,auto_map_use_list = map_config()
-    # 激活窗口
-    auto_map.calculated.active_window()
-    # 锄地启动
-    auto_map.start(map_use_list,auto_map_use_list)
-# 锄地线程
-def Enter_map():
-    auto_map.calculated.get_hwnd()
-    if auto_map.calculated.hwnd == 0:
-        log.warning("未检测到游戏运行,请启动游戏")
-    else:
-        # 线程启动
-        global t
-        if not t.is_alive():
-            t = threading.Thread(name='chudi',target=Enter_map_all,daemon=True)
-            t.start()
-        else:
-            log.warning("线程已存在")
+    sra.map.map_list = get_map_list(map_value_list)
+    sra.map.auto_map_list = get_map_list(auto_map_value_list)
+    sra.map.calculated.img_log_value = img_log_Var.get()
+    sra.map.team_change = team_change_var.get()
+    sra.map.teamid = teamid_sets.get()
+    sra.map.id = id_sets.get()
+    sra.map.commission = commission_var.get()
+    sra.map.close_game = close_game_var.get()
+    sra.map.nums = auto_map_nums.get()
+    sra.map.skill = skill_var.get()
+    sra.map.skill_food = skill_food_var.get()
+    sra.map.run_change = run_change_var.get()
+    sra.map.planetid = 0
+    sra.calculated.fight_time = fight_time.get()
 # 副本配置启用
 def dungeon_config():
-    auto_dungeon.team_change = team_change_var.get()
-    auto_dungeon.teamid = dungeon_teamid_sets.get()
-    auto_dungeon.id = dungeon_id_sets.get()
-
-# 副本线程启动函数
-def enter_dungeon_all():
-    # 配置启用
-    dungeon_config()
-    # 激活窗口
-    auto_map.calculated.active_window()
-    # 线程启动
+    sra.dungeon.team_change = team_change_var.get()
+    sra.dungeon.teamid = dungeon_teamid_sets.get()
+    sra.dungeon.id = dungeon_id_sets.get()
     if dungeon_time_flag.get():
         id = dungeon_title.index(dungeon_time[today_id])
     else:
         id = dungeon_notebook.index("current")
-    auto_dungeon.start(dungeon_config_list[id])
-# 副本线程
-def enter_dungeon():
-    auto_dungeon.calculated.get_hwnd()
-    if auto_dungeon.calculated.hwnd == 0:
-        log.warning("未检测到游戏运行,请启动游戏")
-    else:
-        global t
-        if not t.is_alive():
-            t = threading.Thread(name='dungeon',target=enter_dungeon_all,daemon=True)
-            t.start()
-        else:
-            log.warning("线程已存在")
-
-# 多功能执行
-def enter_function_all():
-    # 锄大地配置启用
-    map_use_list,auto_map_use_list = map_config()
-    # 清体力配置启用
-    dungeon_config()
-    # 激活窗口
-    auto_map.calculated.active_window()
-    # 清体力执行
-    if auto_dungeon_var.get():
-        if dungeon_time_flag.get():
-            id = dungeon_title.index(dungeon_time[today_id])
-        else:
-            id = dungeon_notebook.index("current")
-        auto_dungeon.start(dungeon_config_list[id])
-    # 锄地执行
-    if auto_map_var.get():
-        auto_map.start(map_use_list,auto_map_use_list)
-    # 模拟宇宙执行
-    if u_flag and auto_universe_var.get():
-        auto_dungeon.open_dungeon()
-        auto_dungeon.calculated.dungeon_img_click("universe.jpg")
-        Enter_Universe()
-# 多功能执行线程
-def enter_function():
-    auto_map.calculated.get_hwnd()
-    auto_dungeon.calculated.get_hwnd()
-    if auto_map.calculated.hwnd == 0:
-        log.warning("未检测到游戏运行,请启动游戏")
-    else:
-        global t
-        if not t.is_alive():
-            t = threading.Thread(name='allfunction',target=enter_function_all,daemon=True)
-            t.start()
-        else:
-            log.warning("线程已存在")
+    sra.dungeon.dungeon_list = dungeon_config_list[id]
 # 添加副本配置项
 def add_dungeon_config():
     id = dungeon_notebook.index("current")
@@ -307,6 +227,7 @@ def save_gui_config():
     set_config("map_type",map_type_sets.get())
     set_config("proxy",proxy_text.get())
     set_config("gamepath",game_path.get())
+    set_config("fight_time",fight_time.get())
 
 # 清理图片log
 def clear_imglog():
@@ -319,53 +240,20 @@ def clear_imglog():
 
 # 关闭程序
 def close_window():
-    auto_map.calculated.release_mouse_keyboard()
-    if u is not None:
-        u.kill()
+    sra.stop()
     root.destroy()
-# 停止
-def stop():
-    log.info("停止")
-    stop_thread(t)
-    if u is not None:
-        u.kill()
-    auto_map.calculated.release_mouse_keyboard()
+
 # 按键监听线程
 def btn_close_window():
     def on_press(key):
         if key == keyboard.Key.f7:
-            global logstart_flag
-            if logstart_flag == 1:
-                Enter_map()
-            if logstart_flag == 2:
-                enter_dungeon()
-            if logstart_flag == 3:
-                enter_function()
-            if logstart_flag == 4:
-                Enter_Universe()
+            sra.start()
         if key == keyboard.Key.f10:
             close_window()
         if key == keyboard.Key.f8:
-            stop()
+            sra.stop()
     with keyboard.Listener(on_press=on_press) as listener:  # 创建按键监听线程
         listener.join()  # 等待按键监听线程结束
-# 线程关闭
-def _async_raise(tid, exctype):
-    """raises the exception, performs cleanup if needed"""
-    tid = ctypes.c_long(tid)
-    if not inspect.isclass(exctype):
-        exctype = type(exctype)
-    res = ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, ctypes.py_object(exctype))
-    if res == 0:
-        raise ValueError("invalid thread id")
-    elif res != 1:
-        # """if it returns a number greater than one, you're in trouble,
-        # and you should call it again with exc=NULL to revert the effect"""
-        ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
-        raise SystemError("PyThreadState_SetAsyncExc failed")
-def stop_thread(thread:threading.Thread):
-    if thread.is_alive():
-        _async_raise(thread.ident,SystemExit)
 
 # map_value_list的值初始化
 def set_map_value_list(map_value_list,value):
@@ -410,10 +298,8 @@ if __name__ == '__main__':
         # raise Exception("请以管理员身份运行")
     # 配置检查
     check_config()
-    # 锄大地实例
-    auto_map = Map()
-    # 清体力实例
-    auto_dungeon = Dungeon()
+    # 功能实例
+    sra = StarRail()
     # gui页面
     root = tk.Tk()
     root.tk.call("source", "./tkinter/azure.tcl")
@@ -497,7 +383,7 @@ if __name__ == '__main__':
     ttk.Label(hoe_frame,text=TITLE_NAME,font=titlefont).grid(columnspan=5)
     ttk.Label(hoe_frame,text=VER,font=versionfont).grid(columnspan=5)
     map_type = get_config("map_type")
-    auto_map.mappath = f"maps\\{map_type}"
+    sra.map.mappath = f"maps\\{map_type}"
     ttk.Label(hoe_frame,text=f'必跑路线---{map_type.replace("yukongmap","驭空路线").replace("map","通用路线")}',font=versionfont).grid(columnspan=5)
     # notebook地图选项
     map_list = read_map(map_type)
@@ -569,7 +455,7 @@ if __name__ == '__main__':
     auto_map_spinbox.grid(row=8,column=2,pady=5)
     # 切换队伍
     teamid_sets = tk.IntVar()
-    teamid_option_list = [1,2,3,4,5,6]
+    teamid_option_list = [1,2,3,4,5,6,7,8,9]
     id_sets = tk.IntVar()
     id_option_list = [1,2,3,4]
     ttk.Label(hoe_frame,text='队伍/人物编号:').grid(row=8,column=0,pady=5)
@@ -605,9 +491,9 @@ if __name__ == '__main__':
     # 日志页面
     logframe = ttk.Frame(root)
     ttk.Label(logframe, text='实时日志', font=('Arial Black',16)).pack(anchor='nw')   # justify控制对其方向，anchor控制位置 共同使文本靠左
-    logstart = ttk.Button(logframe, text='开始',width=5,command=Enter_map)
+    logstart = ttk.Button(logframe, text='开始',width=5,command=sra.start)
     logstart.place(relx=0.40,rely=0)
-    ttk.Button(logframe, text='停止',width=5,command=stop).place(relx=0.52,rely=0)
+    ttk.Button(logframe, text='停止',width=5,command=sra.stop).place(relx=0.52,rely=0)
     ttk.Button(logframe, text='结束',width=5,command=close_window).place(relx=0.64,rely=0)
     ttk.Button(logframe, text='清理',width=5,command=clear_imglog).place(relx=0.76,rely=0)
     logreturn = ttk.Button(logframe, text='返回',width=5,command=Enter_mainframe)
@@ -758,6 +644,11 @@ if __name__ == '__main__':
     game_path.set(get_config("gamepath"))
     game_text = ttk.Entry(configframe,textvariable=game_path)
     game_text.grid(row=6,column=2,columnspan=2,pady=5)
+    ttk.Label(configframe,text='战斗时间:').grid(row=7,column=0,columnspan=2,pady=5)
+    fight_time = tk.IntVar()
+    fight_time.set(get_config("fight_time"))
+    fight_time_spinbox = ttk.Spinbox(configframe,from_=1, to=3600, increment=1,textvariable=fight_time)
+    fight_time_spinbox.grid(row=7,column=2,columnspan=2,pady=5)
     ttk.Button(configframe,text='确定',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程

@@ -11,15 +11,13 @@ if not pyuac.isUserAdmin():
 auto_map = Map()
 auto_dungeon = Dungeon()
 # 读取配置
-map_list_data = get_config("map_list_data")
-auto_map_list_data = get_config("auto_map_list_data")
 gamepath = get_config("gamepath")
 if get_config("dungeon_time_flag"):
     today_id = int(time.strftime("%w", time.localtime()))
     dungeon_time = get_config("dungeon_time")
-    dungeon_config = dungeon_time[today_id]
+    auto_dungeon.dungeon_list = dungeon_time[today_id]
 else:
-    dungeon_config = get_config("配置1")
+    auto_dungeon.dungeon_list = get_config("配置1")
 # 配置启用
 # 锄大地配置
 auto_map.calculated.img_log_value = get_config("img_log")
@@ -33,6 +31,8 @@ auto_map.skill = get_config("skill")
 auto_map.skill_food = get_config("skill_food")
 auto_map.run_change = get_config("run_change")
 auto_map.mappath = "maps\\" + get_config("map_type")
+auto_map.map_list = get_config("map_list_data")
+auto_map.auto_map_list = get_config("auto_map_list_data")
 # 清体力配置
 auto_dungeon.team_change = get_config("team_change")
 auto_dungeon.teamid = get_config("dungeon_team_id")
@@ -54,8 +54,8 @@ else:
     auto_map.calculated.login()
     # 清体力
     if auto_dungeon_flag:
-        auto_dungeon.start(dungeon_config)
+        auto_dungeon.start()
     # 锄大地
     if auto_map_flag:
-        auto_map.start(map_list_data,auto_map_list_data)
+        auto_map.start()
 time.sleep(5)

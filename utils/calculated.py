@@ -31,6 +31,8 @@ class Calculated:
         self.compare_lists = lambda a, b: all(x <= y for x, y in zip(a, b))
         # 图片logs是否记录
         self.img_log_value = False
+        # 战斗检测时间
+        self.fight_time = 900
 
     def get_hwnd(self):
         self.hwnd = win32gui.FindWindow("UnityWndClass","崩坏：星穹铁道")
@@ -400,7 +402,7 @@ class Calculated:
             if self.img_check("liaotian.png",(20,900,80,970),0.5):
                 break
             time.sleep(3)
-            if time.time() - start_time > 600:
+            if time.time() - start_time > self.fight_time:
                 return False
         time.sleep(2)   # 等待人物模型出现
         return True
@@ -504,14 +506,14 @@ class Calculated:
         说明:
             切换队伍
         """
-        if teamid > 0 and teamid <= 6:
+        if teamid > 0 and teamid <= 9:
             log.info("切换队伍")
             self.Keyboard.press('t')
             time.sleep(0.5)
             self.Keyboard.release('t')
             time.sleep(1)   # 缓冲
             teamid = '0' + str(teamid)
-            self.ocr_click(text=teamid,points=(550,0,1300,130),overtime=2)
+            self.ocr_click(text=teamid,points=(550,0,1800,130),overtime=2)
             self.img_click("team_sure.png",points=(1500,950,1920,1080),overtime=2)
             time.sleep(2)   # 缓冲
             self.Keyboard.press(Key.esc)

@@ -6,12 +6,13 @@ from pynput import mouse
 from pyautogui import drag
 from pynput.keyboard import Key
 class Dungeon:
-    def __init__(self):
-        self.calculated = Calculated()
+    def __init__(self,base:Calculated = Calculated()):
+        self.calculated = base
         self.team_change = False
         self.teamid = 1
         self.id = 1
         self.index_find_nums,self.dungeon_find_nums = self.dungeon_find_init()
+        self.dungeon_list = []
 
     def dungeon_find_init(self):
         """
@@ -92,14 +93,14 @@ class Dungeon:
         self.calculated.img_click("dungeon_exit.jpg")
         self.calculated.wait_fight_end()
 
-    def start(self,dungeonlist):
+    def start(self):
         log.info("游戏初始化设置")
         self.calculated.set_windowsize()
         if self.team_change:
             log.info("清体力---切换队伍")
             self.calculated.change_team(self.teamid,self.id)
         log.info("清体力---开始")
-        for dungeon in dungeonlist:
+        for dungeon in self.dungeon_list:
             for key,value in dungeon.items():
                 log.info(f"清体力---执行副本{key}---{value}")
                 dungeonpath = read_json_info("dungeon.json",key,prepath="dungeon")

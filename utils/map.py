@@ -6,8 +6,8 @@ from .log import log
 from pynput import mouse
 from pyautogui import drag
 class Map:
-    def __init__(self):
-        self.calculated = Calculated()
+    def __init__(self,base:Calculated = Calculated()):
+        self.calculated = base
         self.team_change = False
         self.teamid = 1
         self.id = 1
@@ -19,6 +19,8 @@ class Map:
         self.mappath = "maps\\map"
         self.planetid = 0
         self.run_change = False
+        self.map_list = []
+        self.auto_map_list = []
 
     def Enter_map_start(self,mapjson):
         """
@@ -176,7 +178,7 @@ class Map:
         self.calculated.Keyboard.release("m")
         time.sleep(1)
 
-    def start(self,map_list,auto_map_list):
+    def start(self):
         log.info("游戏初始化设置")
         self.calculated.set_windowsize()
         self.calculated.check_main_interface()
@@ -192,10 +194,10 @@ class Map:
         log.info("锄大地---地图初始化")
         self.map_init()
         log.info("锄大地---必跑路线")
-        self.Enter_map_jsonlist(map_list)
+        self.Enter_map_jsonlist(self.map_list)
         log.info("锄大地---重跑路线")
         for i in range(self.nums):
-            self.Enter_map_jsonlist(auto_map_list)
+            self.Enter_map_jsonlist(self.auto_map_list)
         if self.run_change:
             log.info("锄大地---疾跑模式切换")
             self.calculated.run_change(0)

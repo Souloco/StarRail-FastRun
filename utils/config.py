@@ -108,6 +108,7 @@ class Config():
     auto_map = False
     auto_dungeon = False
     run_change = False
+    fight_time = 900
 def check_config():
     config_path = os.path.join(root_dir,CONFIG_FILE_NAME)
     # 如果不存在先创建空白json

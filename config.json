@@ -104,5 +104,6 @@
   "auto_universe": false,
   "run_change": false,
   "auto_map": false,
-  "auto_dungeon": false
+  "auto_dungeon": false,
+  "fight_time": 900
 }
