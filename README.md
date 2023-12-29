@@ -2,6 +2,8 @@
 ![Static Badge](https://img.shields.io/badge/platfrom-Windows-blue?color=blue)
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/Souloco/StarRail-FastRun)
 ![GitHub all releases](https://img.shields.io/github/downloads/Souloco/StarRail-FastRun/total)
+![Static Badge](https://img.shields.io/badge/QQ%E7%BE%A4-906995514-purple)
+
 
 
 # 免责声明
@@ -45,28 +47,27 @@ This software is open source, free of charge and for learning and exchange purpo
 - 软件使用
     - 锄大地
         - ```远程角色```带队最佳
-        - 路线测试角色```佩拉|驭空|青雀|艾丝妲|符玄|娜塔莎|托帕```
-        - 切换锄地路线---```编辑配置下切换|通用路线|驭空路线---全程秘技跑---暂未完善```
+        - 路线测试角色```佩拉|驭空|青雀|艾丝妲|符玄|娜塔莎|托帕|布洛妮娅```
         - 秘技使用---```部分路线打地图上的秘技点|托帕不必准备食物,地图上秘技点够用```
         - 秘技食物---```消耗补充秘技点的食物```
         - 截图记录---```存放至logs\image下|日志页面清理按钮可清空图片log|不对路线有所改动不必打开```
         - 自动关机---```关闭游戏|关闭程序|执行强制关机指令```
         - 重跑路线---```捡漏代替选项|后续捡漏功能实装时会删除|重跑次数为0不执行```
         - 疾跑切换---```执行前切换疾跑模式为长按进入疾跑状态|执行完毕后切换后短按|与模拟宇宙跑步模式适配```
-        - 委托开关
         - 切换队伍
     - 清体力
         - 默认执行```当前选中配置```
+    - 清任务
+        - 请到```多功能执行页面```配置
+        - 委托开关---领取委托
+        - 支援奖励---领取支援奖励
+        - 每日实训---暂未实装
+        - 无名勋礼---暂未实装
     - 多功能执行
-        - 执行顺序```清体力-清委托-锄大地-自动关机```
-        - 清委托执行需打开```委托开关```
-        - 自动关机需打开```自动关机```
-    - 快速启动---用于定时执行|自动开机执行
-        - 在多功能执行页面```配置```
-        - 清体力支持时间条件执行|默认执行```配置1```
-        - 编辑配置页面---游戏路径设置成本体路径```Game/StarRail.exe```
-        - 执行顺序```启动游戏-清体力-清委托-锄大地-自动关机```
-        - 以管理员身份运行```FastStart.exe```
+        - 执行顺序```清委托-领取支援奖励-清体力-锄大地-自动关机-模拟宇宙```
+        - 清体力---是否执行清体力
+        - 锄大地---是否执行锄大地
+        - 模拟宇宙---是否执行模拟宇宙---```请不要与自动关机一起使用```
     - 快捷键---在日志界面触发
         - 开始---```f7```
         - 暂停---```f8```
@@ -76,10 +77,19 @@ This software is open source, free of charge and for learning and exchange purpo
         - gui字体大小
         - 切换锄地路线---```自定义锄地路线请仿造maps下的文件夹格式```
         - 更新代理---更新不成功自行更换可用的代理网址末尾需带有```/```
-        - 游戏路径
+        - 游戏路径---```游戏本体路径Game\StarRail.exe```
+        - 战斗时间---默认为900s```练度过低需要调高此数值```
+    - 快速启动---用于定时执行|自动开机执行
+        - 在多功能执行页面```配置```
+        - 清体力支持时间条件执行|默认执行```配置1```
+        - 编辑配置页面---游戏路径设置成本体路径```Game/StarRail.exe```
+        - 执行顺序```启动游戏-多功能执行顺序```
+        - 以管理员身份运行```FastStart.exe```
+        - 不支持快捷键
     - 桌面通知
         - 运行```notify.exe```
 - 进阶使用
+
     - 调用模拟宇宙(https://github.com/CHNZYX/Auto_Simulated_Universe)     
         - 点击Code---Download ZIP---下载Auto_Simulated_Universe-main.zip
         - 在本项目下解压成Auto_Simulated_Universe-main文件夹
@@ -100,7 +110,7 @@ This software is open source, free of charge and for learning and exchange purpo
 # 实现功能
 - [x] 锄大地
 - [x] 清体力
-- [x] 清委托
+- [] 清任务
 - [x] 多功能合一执行
 - [ ] 捡漏
 # Star History
