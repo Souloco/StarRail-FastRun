@@ -78,7 +78,7 @@
   "commission": false,
   "fontsize": 10,
   "fontfamily": "Microsoft YaHei UI",
-  "gamepath": "",
+  "gamepath": "G:\\Star Rail\\Game\\StarRail.exe",
   "配置1": [],
   "配置2": [],
   "配置3": [],
@@ -103,7 +103,11 @@
   "universe_nums": 5,
   "auto_universe": false,
   "run_change": false,
-  "auto_map": false,
-  "auto_dungeon": false,
-  "fight_time": 900
+  "auto_map": true,
+  "auto_dungeon": true,
+  "fight_time": 900,
+  "task_commission": true,
+  "task_supportrewards": true,
+  "task_rewards": false,
+  "task_dailytask": false
 }

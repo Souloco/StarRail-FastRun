@@ -1,61 +1,60 @@
 from utils.config import get_config
-from utils.map import Map
-from utils.dungeon import Dungeon
+from utils.StarRail import StarRail
 from utils.log import log
 import time
-import os
 import pyuac
+import subprocess
 if not pyuac.isUserAdmin():
     pyuac.runAsAdmin()
 # 实例化
-auto_map = Map()
-auto_dungeon = Dungeon()
+sra = StarRail()
 # 读取配置
 gamepath = get_config("gamepath")
+# 配置启用
+# 锄大地配置
+sra.map.calculated.img_log_value = get_config("img_log")
+sra.map.team_change = get_config("team_change")
+sra.map.teamid = get_config("team_id")
+sra.map.id = get_config("character_id")
+sra.map.close_game = get_config("close_game")
+sra.map.nums = get_config("auto_map_nums")
+sra.map.skill = get_config("skill")
+sra.map.skill_food = get_config("skill_food")
+sra.map.run_change = get_config("run_change")
+sra.map.mappath = "maps\\" + get_config("map_type")
+sra.map.map_list = get_config("map_list_data")
+sra.map.auto_map_list = get_config("auto_map_list_data")
+sra.calculated.fight_time = get_config("fight_time")
+# 清体力配置
+sra.dungeon.team_change = get_config("team_change")
+sra.dungeon.teamid = get_config("dungeon_team_id")
+sra.dungeon.id = get_config("dungeon_character_id")
+# 清任务配置启用
+sra.task.commission_flag = get_config("task_commission")
+sra.task.supportrewards_flag = get_config("task_supportrewards")
+sra.task.dailytask_flag = get_config("task_rewards")
+sra.task.rewards_flag = get_config("task_dailytask")
 if get_config("dungeon_time_flag"):
     today_id = int(time.strftime("%w", time.localtime()))
     dungeon_time = get_config("dungeon_time")
-    auto_dungeon.dungeon_list = dungeon_time[today_id]
+    sra.dungeon.dungeon_list = dungeon_time[today_id]
 else:
-    auto_dungeon.dungeon_list = get_config("配置1")
-# 配置启用
-# 锄大地配置
-auto_map.calculated.img_log_value = get_config("img_log")
-auto_map.team_change = get_config("team_change")
-auto_map.teamid = get_config("team_id")
-auto_map.id = get_config("character_id")
-auto_map.commission = get_config("commission")
-auto_map.close_game = get_config("close_game")
-auto_map.nums = get_config("auto_map_nums")
-auto_map.skill = get_config("skill")
-auto_map.skill_food = get_config("skill_food")
-auto_map.run_change = get_config("run_change")
-auto_map.mappath = "maps\\" + get_config("map_type")
-auto_map.map_list = get_config("map_list_data")
-auto_map.auto_map_list = get_config("auto_map_list_data")
-# 清体力配置
-auto_dungeon.team_change = get_config("team_change")
-auto_dungeon.teamid = get_config("dungeon_team_id")
-auto_dungeon.id = get_config("dungeon_character_id")
+    sra.dungeon.dungeon_list = get_config("配置1")
 # 单项功能是否执行
-auto_map_flag = get_config("auto_map")
-auto_dungeon_flag = get_config("auto_dungeon")
+sra.map_flag = get_config("auto_map")
+sra.dungeon_flag = get_config("auto_dungeon")
+sra.universe_flag = get_config("auto_universe")
 # 启动游戏
-os.startfile(gamepath)
+subprocess.Popen([gamepath],shell=True)
 time.sleep(10)
 # 游戏执行
-auto_map.calculated.get_hwnd()
-auto_dungeon.calculated.get_hwnd()
-if auto_map.calculated.hwnd == 0:
+sra.calculated.get_hwnd()
+if sra.calculated.hwnd == 0:
     log.warning("未检测到游戏运行,请启动游戏")
 else:
-    auto_map.calculated.set_windowsize()
+    sra.calculated.set_windowsize()
     # 登录
-    auto_map.calculated.login()
-    # 清体力
-    if auto_dungeon_flag:
-        auto_dungeon.start()
-    # 锄大地
-    if auto_map_flag:
-        auto_map.start()
+    sra.calculated.login()
+    # 启动多功能执行
+    sra.allfunction()
 time.sleep(5)

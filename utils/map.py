@@ -11,7 +11,6 @@ class Map:
         self.team_change = False
         self.teamid = 1
         self.id = 1
-        self.commission = False
         self.close_game = False
         self.nums = 0
         self.skill = True
@@ -185,9 +184,6 @@ class Map:
         if self.run_change:
             log.info("锄大地---疾跑模式切换")
             self.calculated.run_change(1)
-        if self.commission:
-            log.info("清委托")
-            self.calculated.commission()
         if self.team_change:
             log.info("锄大地---切换队伍")
             self.calculated.change_team(self.teamid,self.id)

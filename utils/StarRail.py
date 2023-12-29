@@ -20,7 +20,6 @@ class StarRail:
         # 多功能执行配置
         self.map_flag = False
         self.dungeon_flag = False
-        self.task_flag = False
         self.universe_flag = False
         # 模拟宇宙启动参数
         self.universe_bonus = 0
@@ -31,12 +30,26 @@ class StarRail:
         """
             说明：多功能执行
         """
+        # 清委托执行
+        if self.task.commission_flag:
+            self.task.commission()
+        # 领取支援奖励执行
+        if self.task.supportrewards_flag:
+            self.task.support_rewards()
+        # 清体力执行
         if self.dungeon_flag:
             self.dungeon.start()
+        # 锄大地执行
         if self.map_flag:
             self.map.start()
+        # 模拟宇宙执行
         if self.universe_flag:
             self.Universe()
+        # 清任务执行
+        if self.task.dailytask_flag:
+            self.task.daily_task()
+        if self.task.rewards_flag:
+            self.task.rewards()
 
     def Universe(self):
         """

@@ -109,6 +109,10 @@ class Config():
     auto_dungeon = False
     run_change = False
     fight_time = 900
+    task_commission = False
+    task_supportrewards = False
+    task_rewards = False
+    task_dailytask = False
 def check_config():
     config_path = os.path.join(root_dir,CONFIG_FILE_NAME)
     # 如果不存在先创建空白json

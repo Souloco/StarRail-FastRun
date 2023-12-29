@@ -513,6 +513,19 @@ class Calculated:
             self.Keyboard.release('t')
             time.sleep(1)   # 缓冲
             teamid = '0' + str(teamid)
+            # 向后滚动
+            if not self.ocr_check(text=teamid,points=(550,0,1800,130),overtime=1):
+                self.Mouse.position = self.mouse_pos((1300,60))
+                for j in range(8):
+                    time.sleep(0.05)
+                    self.Mouse.scroll(0,-200)
+            # 向前滚动
+            if not self.ocr_check(text=teamid,points=(550,0,1800,130),overtime=1):
+                self.Mouse.position = self.mouse_pos((1300,60))
+                for j in range(8):
+                    time.sleep(0.05)
+                    self.Mouse.scroll(0,200)
+            self.ocr_click(text=teamid,points=(550,0,1800,130),overtime=2)
             self.ocr_click(text=teamid,points=(550,0,1800,130),overtime=2)
             self.img_click("team_sure.png",points=(1500,950,1920,1080),overtime=2)
             time.sleep(2)   # 缓冲
@@ -532,27 +545,6 @@ class Calculated:
                 self.Keyboard.press(id)
                 time.sleep(0.05)
                 self.Keyboard.release(id)
-
-    def commission(self):
-        """
-        说明:
-            委托功能
-        """
-        log.info("清委托")
-        starttime = time.time()
-        maxtime = 100
-        while not self.ocr_check(text='委托',points=(100,0,170,70),overtime=1) and time.time() - starttime < maxtime:
-            self.Keyboard.press(Key.esc)
-            time.sleep(0.05)
-            self.Keyboard.release(Key.esc)
-            self.ocr_click(text='委托',points=(1700,400,1755,425))
-        while self.ocr_check(text='委托',points=(100,0,170,70),overtime=2) and self.img_click('red_notice.jpg',overtime=5,rates=0.80) and time.time() - starttime < maxtime:
-            if self.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
-                self.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
-        while not self.img_check("liaotian.png",(20,900,80,970),1):
-            self.Keyboard.press(Key.esc)
-            time.sleep(0.05)
-            self.Keyboard.release(Key.esc)
 
     def login(self):
         """
