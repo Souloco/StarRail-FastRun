@@ -44,7 +44,7 @@ class Task:
         starttime = time.time()
         maxtime = 100
         self.open_esc()
-        self.calculated.ocr_click(text='委托',points=(1700,400,1755,425))
+        self.calculated.ocr_click(text='委托',points=(1700,395,1755,430))
         while self.calculated.ocr_check(text='委托',points=(100,0,170,70),overtime=2) and self.calculated.img_click('red_notice.jpg',overtime=5,rates=0.80) and time.time() - starttime < maxtime:
             if self.calculated.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
                 self.calculated.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
@@ -56,6 +56,17 @@ class Task:
             每日实训功能
         """
         log.info("完成每日实训")
+        starttime = time.time()
+        maxtime = 100
+        self.calculated.Keyboard.press(Key.f4)
+        time.sleep(0.05)
+        self.calculated.Keyboard.release(Key.f4)
+        while self.calculated.ocr_click(text='领取',points=(280,800,1600,880),overtime=2) and time.time() - starttime < maxtime:
+            time.sleep(0.5)
+        while self.calculated.img_click('dailytask.jpg',overtime=2) and time.time() - starttime < maxtime:
+            time.sleep(0.5)
+            self.calculated.mouse_click()
+        self.close_esc()
 
     def support_rewards(self):
         """
@@ -77,3 +88,10 @@ class Task:
             无名勋礼功能
         """
         log.info("完成无名勋礼")
+        self.calculated.Keyboard.press(Key.f2)
+        time.sleep(0.05)
+        self.calculated.Keyboard.release(Key.f2)
+        time.sleep(1)
+        if self.calculated.img_click('red_notice.jpg',overtime=3,rates=0.80):
+            self.calculated.ocr_click(text='领取',points=(1330,880,1750,940),overtime=2,mode=2)
+        self.close_esc()

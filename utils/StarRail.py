@@ -30,6 +30,8 @@ class StarRail:
         """
             说明：多功能执行
         """
+        # 游戏初始化设置
+        self.calculated.set_windowsize()
         # 清委托执行
         if self.task.commission_flag:
             self.task.commission()
@@ -42,14 +44,15 @@ class StarRail:
         # 锄大地执行
         if self.map_flag:
             self.map.start()
+        # 每日实训执行
+        if self.task.dailytask_flag:
+            self.task.daily_task()
+        # 无名勋礼执行
+        if self.task.rewards_flag:
+            self.task.rewards()
         # 模拟宇宙执行
         if self.universe_flag:
             self.Universe()
-        # 清任务执行
-        if self.task.dailytask_flag:
-            self.task.daily_task()
-        if self.task.rewards_flag:
-            self.task.rewards()
 
     def Universe(self):
         """

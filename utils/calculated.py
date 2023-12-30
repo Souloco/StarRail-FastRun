@@ -289,6 +289,15 @@ class Calculated:
         y = top + points[1]
         return (x,y)
 
+    def mouse_click(self):
+        """
+        说明:
+            鼠标点击
+        """
+        self.Mouse.press(mouse.Button.left)
+        time.sleep(0.5)
+        self.Mouse.release(mouse.Button.left)
+
     def move(self,key:str = ["w","a","s","d"],times=1.0):
         """
         说明:
