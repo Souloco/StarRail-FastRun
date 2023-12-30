@@ -18,7 +18,7 @@ class Task:
         """
         starttime = time.time()
         maxtime = 10
-        while not self.calculated.img_check("exit1.png",(1800,950,1920,1080),overtime=1) and time.time() - starttime < maxtime:
+        while not self.calculated.ocr_check(text='委托',points=(1700,395,1755,430),overtime=1) and time.time() - starttime < maxtime:
             self.calculated.Keyboard.press(Key.esc)
             time.sleep(0.05)
             self.calculated.Keyboard.release(Key.esc)
