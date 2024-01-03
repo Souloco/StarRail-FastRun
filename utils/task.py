@@ -34,6 +34,7 @@ class Task:
             self.calculated.Keyboard.press(Key.esc)
             time.sleep(0.05)
             self.calculated.Keyboard.release(Key.esc)
+        time.sleep(2)   # 等待人物模型出现
 
     def commission(self):
         """
