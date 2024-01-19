@@ -2,16 +2,22 @@
     "name": "基座舱段-1",
     "author": "Souloco",
     "start": [
-        {"map": ""},
-        {"map_1_point_1.png": 1.5},
-        {"transfer": 1.5}
+        {
+            "map": ""
+        },
+        {
+            "map_1_point_1.png": 1.5
+        },
+        {
+            "transfer": 1.5
+        }
     ],
     "map": [
         {
             "s": 3
         },
         {
-            "e": 1
+            "e": 2
         },
         {
             "fighting": 1

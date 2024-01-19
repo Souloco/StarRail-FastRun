@@ -1,11 +1,17 @@
 {
-    "name": "丹鼎司-4",
-    "author": "Souloco",
-    "start": [
-        {"map": "1"},
-        {"map_3-5_point_3.png": 1.5},
-        {"transfer": 1.5}
-    ],
+  "name": "丹鼎司-4",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "1"
+    },
+    {
+      "map_3-5_point_3.png": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
   "map": [
     {
       "w": 2.480005399993388
@@ -35,7 +41,7 @@
       "s": 1.0809279000095557
     },
     {
-      "e": 1
+      "e": 2
     },
     {
       "fighting": 1

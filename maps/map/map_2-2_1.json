@@ -2,9 +2,15 @@
   "name": "边缘通路-1",
   "author": "Souloco",
   "start": [
-      {"map": ""},
-      {"map_2-2_point_1.jpg": 1.5},
-      {"transfer": 1.5}
+    {
+      "map": ""
+    },
+    {
+      "map_2-2_point_1.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
   ],
   "map": [
     {
@@ -23,7 +29,7 @@
       "a": 3.3960003999993205
     },
     {
-      "e": 1
+      "e": 2
     },
     {
       "fighting": 1

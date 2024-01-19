@@ -2,9 +2,15 @@
   "name": "丹鼎司-2",
   "author": "Souloco",
   "start": [
-      {"map": "1"},
-      {"map_3-5_point_2.png": 1.5},
-      {"transfer": 1.5}
+    {
+      "map": "1"
+    },
+    {
+      "map_3-5_point_2.png": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
   ],
   "map": [
     {
@@ -23,7 +29,7 @@
       "d": 3.176884999987669
     },
     {
-      "e": 1
+      "e": 2
     },
     {
       "fighting": 1

@@ -62,6 +62,8 @@ class StarRail:
         log.info("模拟宇宙运行中")
         self.dungeon.open_dungeon()
         self.dungeon.calculated.dungeon_img_click("universe.jpg")
+        if self.calculated.ocr_check(text="扩展装置",points=(90,40,200,100)):
+            self.calculated.img_click("universe_change.jpg")
         # 启动模拟宇宙
         command = ["python","states.py",f"--bonus={self.universe_bonus}",f"--nums={self.universe_nums}"]
         self.u = subprocess.Popen(command,text=True,cwd="./Auto_Simulated_Universe-main")

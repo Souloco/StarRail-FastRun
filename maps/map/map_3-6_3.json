@@ -1,11 +1,17 @@
 {
-    "name": "鳞渊境-3",
-    "author": "Souloco",
-    "start": [
-        {"map": ""},
-        {"map_3-6_point_3.png": 1.5},
-        {"transfer": 1.5}
-    ],
+  "name": "鳞渊境-3",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": ""
+    },
+    {
+      "map_3-6_point_3.png": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
   "map": [
     {
       "d": 1.4038313000019116
@@ -20,7 +26,7 @@
       "s": 3.786910599970724
     },
     {
-      "e": 1
+      "e": 2
     },
     {
       "fighting": 1

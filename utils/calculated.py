@@ -575,13 +575,13 @@ class Calculated:
         if self.has_purple((1710,840,1755,890)):
             if food:
                 self.Keyboard.press('e')
-                time.sleep(0.05)
+                time.sleep(0.1)
                 self.Keyboard.release('e')
                 if self.img_click("sure.jpg",overtime=0.5):
                     self.img_click("exit3.jpg",overtime=0.5)
                     self.img_check("liaotian.png",(20,900,80,970),1)
                     self.Keyboard.press('e')
-                    time.sleep(0.05)
+                    time.sleep(0.1)
                     self.Keyboard.release('e')
                     time.sleep(skill_time)
                     return True
@@ -591,7 +591,7 @@ class Calculated:
                         return False
         else:
             self.Keyboard.press('e')
-            time.sleep(0.05)
+            time.sleep(0.1)
             self.Keyboard.release('e')
             time.sleep(skill_time)
         return food

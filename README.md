@@ -88,29 +88,42 @@ This software is open source, free of charge and for learning and exchange purpo
         - 不支持快捷键
     - 桌面通知
         - 运行```notify.exe```
-- 进阶使用
-
-    - 调用模拟宇宙(https://github.com/CHNZYX/Auto_Simulated_Universe)     
-        - 点击Code---Download ZIP---下载Auto_Simulated_Universe-main.zip
-        - 在本项目下解压成Auto_Simulated_Universe-main文件夹
-        - 模拟宇宙详细配置请使用模拟宇宙本体gui
-    - 定时执行
-        - ```计算机管理-任务计划程序-创建任务```
-        - 常规-```使用最高权限运行|配置```
-        - 触发器-```设定时间```
-        - 操作-```启动程序-选择FastStart.exe```
-        - 条件|设置-自行设定
-    - 自动开机执行
-        - BIOS电源设置自动开机时间由于不同品牌设置不同自行百度设置
-        - 电源选项-选择电源按钮的功能-点击```更改当前不可用的设置```将```启用快速启动(推荐)```取消
-        - 搭配```定时执行```
+# 进阶使用
 - 在线更新
     - 自行在main分支下下载```发布包体不带有update.exe```
     - 运行```update.exe```
+- 调用模拟宇宙(https://github.com/CHNZYX/Auto_Simulated_Universe)     
+    - 点击Code---Download ZIP---下载Auto_Simulated_Universe-main.zip
+    - 在本项目下解压成Auto_Simulated_Universe-main文件夹
+    - 请先确保你已安装模拟宇宙需求的依赖环境
+    - 模拟宇宙详细配置请使用模拟宇宙本体gui
+- 定时执行
+    - ```计算机管理-任务计划程序-创建任务```
+    - 常规-```使用最高权限运行|配置```
+    - 触发器-```设定时间```
+    - 操作-```启动程序-选择FastStart.exe```
+    - 条件|设置-自行设定
+- 自动开机执行
+    - BIOS电源设置自动开机时间由于不同品牌设置不同自行百度设置
+    - 电源选项-选择电源按钮的功能-点击```更改当前不可用的设置```将```启用快速启动(推荐)```取消
+    - 搭配```定时执行```
+# 配置文件说明
+## 锄大地路线```map_X-X-X.json```
+- 参数说明
+    - map列表参数
+
+    | 参数 | 说明 |
+    | --- | --- |
+    | a,s,w,d | 移动跑步---按下[a,s,w,d]+shift指定秒数|
+    | e | 使用秘技---数值为秘技使用动画时间,单位为秒 |
+    | fighting | 攻击---数值为1,攻击完后等待战斗判定结束;其他数值攻击完后无战斗判断,2代表可破坏物标记,3代表秘技点标记|
+    | mouse_move | 水平移动视角---数值正负分别代表移动方向,单位为px|
+    | delay | 延迟---数值为延迟时间,单位为秒 |
+
 # 实现功能
 - [x] 锄大地
 - [x] 清体力
-- [] 清任务
+- [ ] 清任务
 - [x] 多功能合一执行
 - [ ] 捡漏
 # Star History

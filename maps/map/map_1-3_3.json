@@ -2,16 +2,22 @@
   "name": "支援舱段-3",
   "author": "Souloco",
   "start": [
-      {"map": "2"},
-      {"map_1-3_point_4.jpg": 1.5},
-      {"transfer": 1.5}
+    {
+      "map": "2"
+    },
+    {
+      "map_1-3_point_4.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
   ],
   "map": [
     {
       "w": 3.8718064999993658
     },
     {
-      "e": 1
+      "e": 2
     },
     {
       "fighting": 1
