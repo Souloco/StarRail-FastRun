@@ -16,7 +16,6 @@ sra.map.calculated.img_log_value = get_config("img_log")
 sra.map.team_change = get_config("team_change")
 sra.map.teamid = get_config("team_id")
 sra.map.id = get_config("character_id")
-sra.map.close_game = get_config("close_game")
 sra.map.nums = get_config("auto_map_nums")
 sra.map.skill = get_config("skill")
 sra.map.skill_food = get_config("skill_food")
@@ -44,6 +43,8 @@ else:
 sra.map_flag = get_config("auto_map")
 sra.dungeon_flag = get_config("auto_dungeon")
 sra.universe_flag = get_config("auto_universe")
+# 自动关机配置
+sra.close_game = get_config("close_game")
 # 启动游戏
 subprocess.Popen([gamepath],shell=True)
 time.sleep(10)
