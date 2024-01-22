@@ -25,6 +25,8 @@ class StarRail:
         self.universe_bonus = 0
         self.universe_nums = 0
         self.u = None
+        # 关闭游戏参数
+        self.close_game = False
 
     def allfunction(self):
         """
@@ -53,6 +55,9 @@ class StarRail:
         # 模拟宇宙执行
         if self.universe_flag:
             self.Universe()
+        if self.close_game:
+            log.info("自动关机")
+            self.calculated.close_game()
 
     def Universe(self):
         """
@@ -67,6 +72,7 @@ class StarRail:
         # 启动模拟宇宙
         command = ["python","states.py",f"--bonus={self.universe_bonus}",f"--nums={self.universe_nums}"]
         self.u = subprocess.Popen(command,text=True,cwd="./Auto_Simulated_Universe-main")
+        self.u.wait()
 
     def start(self):
         # 获取窗口句柄

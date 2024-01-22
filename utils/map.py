@@ -11,7 +11,6 @@ class Map:
         self.team_change = False
         self.teamid = 1
         self.id = 1
-        self.close_game = False
         self.nums = 0
         self.skill = True
         self.skill_food = True
@@ -197,9 +196,6 @@ class Map:
         if self.run_change:
             log.info("锄大地---疾跑模式切换")
             self.calculated.run_change(0)
-        if self.close_game:
-            log.info("锄大地---自动关机")
-            self.calculated.close_game()
         log.info("锄大地---执行完毕")
         message("锄大地---执行完毕")
 

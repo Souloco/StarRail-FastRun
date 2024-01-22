@@ -163,6 +163,8 @@ def allfunction_config():
     sra.task.supportrewards_flag = task_supportrewards_var.get()
     sra.task.dailytask_flag = task_dailytask_var.get()
     sra.task.rewards_flag = task_rewards_var.get()
+    # 自动关机配置启用
+    sra.close_game = close_game_var.get()
 # 锄地配置启用
 def map_config():
     sra.map.map_list = get_map_list(map_value_list)
@@ -171,7 +173,6 @@ def map_config():
     sra.map.team_change = team_change_var.get()
     sra.map.teamid = teamid_sets.get()
     sra.map.id = id_sets.get()
-    sra.map.close_game = close_game_var.get()
     sra.map.nums = auto_map_nums.get()
     sra.map.skill = skill_var.get()
     sra.map.skill_food = skill_food_var.get()
@@ -472,8 +473,6 @@ if __name__ == '__main__':
     team_change_var.set(get_config("team_change"))
     img_log_Var = tk.BooleanVar()
     img_log_Var.set(get_config("img_log"))
-    close_game_var = tk.BooleanVar()
-    close_game_var.set(get_config("close_game"))
     skill_var = tk.BooleanVar()
     skill_var.set(get_config("skill"))
     skill_food_var = tk.BooleanVar()
@@ -486,8 +485,7 @@ if __name__ == '__main__':
     ttk.Checkbutton(hoe_frame,text="疾跑切换",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=run_change_var).grid(row=9,column=3,pady=5)
     ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1)
     ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var).grid(row=10,column=2)
-    ttk.Checkbutton(hoe_frame,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=10,column=3)
-    # 按钮
+    
     ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=4,pady=5)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=4,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=4)
@@ -620,6 +618,9 @@ if __name__ == '__main__':
     task_dailytask_var.set(get_config("task_dailytask"))
     task_rewards_var = tk.BooleanVar()
     task_rewards_var.set(get_config("task_rewards"))
+    # 自动关机功能执行
+    close_game_var = tk.BooleanVar()
+    close_game_var.set(get_config("close_game"))
     ttk.Checkbutton(allframe,text="清体力",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_dungeon_var).grid(row=2,column=3,pady=5)
     ttk.Checkbutton(allframe,text="锄大地",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_map_var).grid(row=3,column=3,pady=5)
     ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_commission_var).grid(row=4,column=0,pady=5)

@@ -86,6 +86,10 @@ class Dungeon:
                 time.sleep(2)
                 return True
             self.calculated.img_click("dungeon_again.jpg")
+            # 历战余响次数用尽
+            if dungeon_id == '5':
+                self.calculated.img_click("exit3.jpg")
+                return True
             time.sleep(2)
             nums = nums - 1
         while not self.calculated.img_check("dungeon_again.jpg",overtime=2):
