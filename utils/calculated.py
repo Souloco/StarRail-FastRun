@@ -453,7 +453,7 @@ class Calculated:
         log.info("执行交互---传送")
         time.sleep(1)   # 截图识别延时性修复
         start_time = time.time()    # 开始计算等待时间
-        while not self.img_check("interaction.jpg",(1000,580,1100,660),1):
+        while not self.img_check("interaction.jpg",(1050,580,1250,660),1):
             self.Keyboard.press(mode)
             time.sleep(0.1)
             self.Keyboard.release(mode)
@@ -572,7 +572,7 @@ class Calculated:
             使用秘技
         """
         log.info("使用秘技")
-        if self.has_purple((1710,840,1755,890)):
+        if self.has_purple((1740,840,1790,890)):
             if food:
                 self.Keyboard.press('e')
                 time.sleep(0.1)

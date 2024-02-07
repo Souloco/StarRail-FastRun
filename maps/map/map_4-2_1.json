@@ -1,0 +1,32 @@
+{
+  "name": "稚子的梦-1",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": ""
+    },
+    {
+      "map_4-2_point_1.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "mouse_move": 1000
+    },
+    {
+      "w": 4.09201849999954
+    },
+    {
+      "e": 2
+    },
+    {
+      "fighting": 1
+    },
+    {
+      "fighting": 1
+    }
+  ]
+}

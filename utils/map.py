@@ -49,12 +49,14 @@ class Map:
                                     break
                                 else:
                                     self.calculated.img_click("Enter_planet.jpg",(1440,115,1870,160))
-                            planet_img = "orientation_{planet_id}.png".format(planet_id=planet_id)
+                            planet_img = "orientation_{planet_id}.jpg".format(planet_id=planet_id)
                             for i in range(3):
                                 if self.calculated.img_check("map_navigation.jpg",(40,40,100,100),2):
                                     break
                                 else:
-                                    self.calculated.img_click(planet_img)
+                                    if not self.calculated.img_click(planet_img,overtime=2):
+                                        self.calculated.Mouse.position = self.calculated.mouse_pos((1000,100))
+                                        drag(400,0, 1,button='left')
                         # 进入地名
                         log.info("进入地名")
                         # 滚动寻找
