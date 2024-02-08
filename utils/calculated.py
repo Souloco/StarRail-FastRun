@@ -298,6 +298,13 @@ class Calculated:
         time.sleep(0.5)
         self.Mouse.release(mouse.Button.left)
 
+    def key_press(self,key,times=1.0):
+        self.Keyboard.press(key)
+        start_time = time.perf_counter()
+        while time.perf_counter() - start_time < times:
+            pass
+        self.Keyboard.release(key)
+
     def move(self,key:str = ["w","a","s","d"],times=1.0):
         """
         说明:
@@ -465,7 +472,22 @@ class Calculated:
         time.sleep(0.05)
         self.Keyboard.release("f")
         time.sleep(2)   # 缓冲
-        self.wait_main_interface()
+        self.wait_main_interaction()
+
+    def wait_main_interaction(self):
+        """
+        说明:
+            交互检测主页面
+        """
+        start_time = time.time()    # 开始计算等待时间
+        while True:
+            if self.img_check("one.jpg",(1860,300,1900,350),0.5):
+                break
+            time.sleep(3)
+            if time.time() - start_time > 30:
+                return False
+        time.sleep(2)   # 等待人物模型出现
+        return True
 
     def open_map(self):
         """
@@ -477,6 +499,9 @@ class Calculated:
             self.Keyboard.press("m")
             time.sleep(0.05)
             self.Keyboard.release("m")
+        # 稚子的梦返回地图界面
+        time.sleep(1.0)
+        self.img_click("return.jpg",overtime=0.5)
 
     def release_mouse_keyboard(self):
         """

@@ -31,6 +31,7 @@ class Map:
         map_name_dir = mapjson[0:mapjson.index("_",5)] + ".jpg"
         map_name = read_json_info(mapjson,"name",prepath=self.mappath).split("-")[0]
         planet_id = int(mapjson[mapjson.index('_') + 1:mapjson.index('-')])
+        # map_id = str(mapjson[mapjson.index('_') + 1:mapjson.rindex('_')])
         for start in start_list:
             for key,value in start.items():
                 if key == "map":
@@ -86,20 +87,7 @@ class Map:
                         self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
                 elif "point" in key:
                     log.info("寻找传送点")
-                    # 向下滚动寻找
-                    for i in range(5):
-                        if not self.calculated.img_check(key,(0,0,0,0),1):
-                            self.calculated.Mouse.position = self.calculated.mouse_pos((1330,440))
-                            drag(0,-400, 1,button='left')
-                        else:
-                            break
-                    # 向上滚动寻找
-                    for i in range(5):
-                        if not self.calculated.img_check(key,(0,0,0,0),1):
-                            self.calculated.Mouse.position = self.calculated.mouse_pos((1330,640))
-                            drag(0,400, 1,button='left')
-                        else:
-                            break
+                    self.find_transfer_point(key)
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
                 elif key == "transfer":
                     log.info("进行传送")
@@ -115,6 +103,42 @@ class Map:
                         self.calculated.change_team(0,self.id)
                 else:
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
+
+    def find_transfer_point(self,key):
+        """
+        说明:
+            寻找传送点
+        """
+        start_time = time.time()
+        while not self.calculated.img_check(key,(0,0,0,0),1) and time.time() - start_time < 30:
+            # 向下滚动寻找
+            for i in range(3):
+                if not self.calculated.img_check(key,(0,0,0,0),1):
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,440))
+                    drag(0,-400, 1,button='left')
+                else:
+                    break
+            # 向左滚动寻找
+            for i in range(3):
+                if not self.calculated.img_check(key,(0,0,0,0),1):
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,440))
+                    drag(400,0, 1,button='left')
+                else:
+                    break
+            # 向上滚动寻找
+            for i in range(3):
+                if not self.calculated.img_check(key,(0,0,0,0),1):
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,640))
+                    drag(0,400, 1,button='left')
+                else:
+                    break
+            # 向右滚动寻找
+            for i in range(3):
+                if not self.calculated.img_check(key,(0,0,0,0),1):
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,440))
+                    drag(-400,0, 1,button='left')
+                else:
+                    break
 
     def Enter_map_fighting(self,mapjson):
         """
@@ -137,6 +161,9 @@ class Map:
                     self.calculated.mouse_move(value)
                 elif key == "f":
                     self.calculated.interaction(value)
+                elif key == "r":
+                    self.calculated.key_press("r")
+                    time.sleep(2)
                 elif key == "delay":
                     time.sleep(value)
             logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
@@ -169,6 +196,7 @@ class Map:
         self.calculated.Keyboard.press("m")
         self.calculated.Keyboard.release("m")
         self.calculated.img_check("map_navigation.jpg",(40,40,100,100),2)
+        self.calculated.img_click("return.jpg",overtime=1)
         self.calculated.img_click("map_init_2.jpg",(600,970,660,1000))
         while not self.calculated.img_check("map_init_1.jpg",(660,970,695,1000),0.5):
             self.calculated.Mouse.press(mouse.Button.left)
