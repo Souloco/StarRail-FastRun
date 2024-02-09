@@ -362,7 +362,7 @@ class Calculated:
         mask = cv.inRange(hsv_img,lower,upper)
         # 统计掩膜中的像素数目
         pixel_count = cv.countNonZero(mask)
-        return pixel_count > 500
+        return pixel_count > 700
 
     def get_whiteimg(self,img):
         """
@@ -597,7 +597,7 @@ class Calculated:
             使用秘技
         """
         log.info("使用秘技")
-        if self.has_purple((1740,840,1790,890)):
+        if self.has_purple((1650,850,1750,880)):
             if food:
                 self.Keyboard.press('e')
                 time.sleep(0.1)
