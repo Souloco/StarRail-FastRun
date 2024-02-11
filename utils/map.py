@@ -84,7 +84,7 @@ class Map:
                     if value != "":
                         # 进入层数
                         log.info(f"进入{value}层")
-                        self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
+                        self.find_floor(value)
                 elif "point" in key:
                     log.info("寻找传送点")
                     self.find_transfer_point(key)
@@ -139,6 +139,16 @@ class Map:
                     drag(-400,0, 1,button='left')
                 else:
                     break
+
+    def find_floor(self,value):
+        """
+        说明：
+            寻找楼层
+        """
+        # 图片识别
+        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),1)
+        # OCR识别
+        # self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
 
     def Enter_map_fighting(self,mapjson):
         """

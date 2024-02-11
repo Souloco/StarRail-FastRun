@@ -597,7 +597,7 @@ class Calculated:
             使用秘技
         """
         log.info("使用秘技")
-        if self.has_purple((1650,850,1750,880)):
+        if self.has_purple((1650,850,1800,880)):
             if food:
                 self.Keyboard.press('e')
                 time.sleep(0.1)
