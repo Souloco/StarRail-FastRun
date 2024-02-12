@@ -145,10 +145,8 @@ class Map:
         说明：
             寻找楼层
         """
-        # 图片识别
-        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),1)
-        # OCR识别
-        # self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
+        self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
+        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),1,rates=0.95)
 
     def Enter_map_fighting(self,mapjson):
         """
@@ -160,6 +158,7 @@ class Map:
         map_name = mapjson[0:mapjson.index(".")]
         operate_list = read_json_info(mapjson,"map",prepath=self.mappath)
         for operate in operate_list:
+            step_num = 0
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
@@ -176,8 +175,9 @@ class Map:
                     time.sleep(2)
                 elif key == "delay":
                     time.sleep(value)
-            logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
-            self.calculated.save_screenshot(f"{map_name}-{logtime}")
+            # logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
+                step_num += 1
+            self.calculated.save_screenshot(f"{map_name}---{step_num}-{operate}")
 
     def Enter_map_onejson(self,mapjson):
         """
