@@ -653,6 +653,54 @@ class Calculated:
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
 
+    def rotate_img(self,img,angle):
+        """
+        说明:
+            返回旋转后的图片
+        """
+        h, w, _ = img.shape
+        center = (w // 2, h // 2)
+        # 构建旋转变换矩阵
+        matrix = cv.getRotationMatrix2D(center, angle, 1.0)
+        # 应用旋转变换并得到结果图像
+        result = cv.warpAffine(img, matrix, (w,h))
+        return result
+
+    def get_loc_angle(self):
+        """
+        说明:
+            返回当前蓝色箭头位置角度
+        """
+        arrow = read_picture("arrow.jpg")
+        img = self.take_screenshot((120,135,160,175))
+        hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)  # 转HSV
+        # 设置蓝色提取范围
+        lower = np.array([90, 120, 60])
+        upper = np.array([100, 255, 255])
+        mask = cv.inRange(hsv, lower, upper)  # 创建掩膜
+        arrow_now = cv.bitwise_and(img,img, mask=mask)
+        best_val = 0.00
+        angle = 0
+        for i in range(360):
+            rotate_arrow = self.rotate_img(arrow,i)   
+            res = cv.matchTemplate(arrow_now,rotate_arrow,cv.TM_CCOEFF_NORMED)
+            _,max_val,_,loc = cv.minMaxLoc(res)
+            if best_val < max_val:
+                angle = i
+                best_val = max_val
+        return angle
+
+    def correct_loc_angle(self,angle):
+        """
+        说明:
+            校准蓝色箭头位置角度
+        """
+        self.wait_main_interaction()
+        angle_now = self.get_loc_angle()
+        rotate_angle = angle - angle_now
+        print(angle_now)
+        self.mouse_move(17.222*rotate_angle)
+
     def map_pos(self,mappath:str):
         """
         说明:
