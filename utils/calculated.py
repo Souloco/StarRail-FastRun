@@ -671,6 +671,9 @@ class Calculated:
         说明:
             返回当前蓝色箭头位置角度
         """
+        self.Keyboard.press('w')
+        self.Keyboard.release('w')
+        time.sleep(1.0)
         arrow = read_picture("arrow.jpg")
         img = self.take_screenshot((120,135,160,175))
         hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)  # 转HSV
@@ -697,9 +700,9 @@ class Calculated:
         """
         self.wait_main_interaction()
         angle_now = self.get_loc_angle()
-        rotate_angle = angle - angle_now
-        print(angle_now)
-        self.mouse_move(17.222*rotate_angle)
+        rotate_angle = angle_now - angle
+        print(angle_now,rotate_angle,6180*rotate_angle/360)
+        self.mouse_move(6180*rotate_angle/360)
 
     def map_pos(self,mappath:str):
         """

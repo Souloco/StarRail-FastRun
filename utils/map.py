@@ -173,6 +173,8 @@ class Map:
                 elif key == "r":
                     self.calculated.key_press("r")
                     time.sleep(2)
+                elif key == "loc_angle":
+                    self.calculated.correct_loc_angle(value)
                 elif key == "delay":
                     time.sleep(value)
             # logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
@@ -205,8 +207,8 @@ class Map:
         log.info("地图初始化")
         self.calculated.Keyboard.press("m")
         self.calculated.Keyboard.release("m")
-        self.calculated.img_check("map_navigation.jpg",(40,40,100,100),2)
-        self.calculated.img_click("return.jpg",overtime=1)
+        self.calculated.img_check("map_navigation.jpg",(40,40,100,100),1.5)
+        self.calculated.img_click("return.jpg",overtime=0.5)
         self.calculated.img_click("map_init_2.jpg",(600,970,660,1000))
         while not self.calculated.img_check("map_init_1.jpg",(660,970,695,1000),0.5):
             self.calculated.Mouse.press(mouse.Button.left)
