@@ -110,33 +110,33 @@ class Map:
             寻找传送点
         """
         start_time = time.time()
-        while not self.calculated.img_check(key,(0,0,0,0),1) and time.time() - start_time < 30:
+        while not self.calculated.img_check(key,(0,0,0,0),1) and time.time() - start_time < 45:
             # 向下滚动寻找
             for i in range(3):
                 if not self.calculated.img_check(key,(0,0,0,0),1):
-                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,440))
-                    drag(0,-400, 1,button='left')
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((250,900))
+                    drag(0,-600, 1,button='left')
                 else:
                     break
             # 向左滚动寻找
             for i in range(3):
                 if not self.calculated.img_check(key,(0,0,0,0),1):
-                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,440))
-                    drag(400,0, 1,button='left')
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((250,900))
+                    drag(600,0, 1,button='left')
                 else:
                     break
             # 向上滚动寻找
             for i in range(3):
                 if not self.calculated.img_check(key,(0,0,0,0),1):
-                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,640))
-                    drag(0,400, 1,button='left')
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,200))
+                    drag(0,600, 1,button='left')
                 else:
                     break
             # 向右滚动寻找
             for i in range(3):
                 if not self.calculated.img_check(key,(0,0,0,0),1):
-                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,440))
-                    drag(-400,0, 1,button='left')
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((1330,200))
+                    drag(-600,0, 1,button='left')
                 else:
                     break
 

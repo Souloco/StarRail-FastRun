@@ -672,8 +672,9 @@ class Calculated:
             返回当前蓝色箭头位置角度
         """
         self.Keyboard.press('w')
+        time.sleep(0.2)
         self.Keyboard.release('w')
-        time.sleep(1.0)
+        time.sleep(0.6)
         arrow = read_picture("arrow.jpg")
         img = self.take_screenshot((120,135,160,175))
         hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)  # 转HSV

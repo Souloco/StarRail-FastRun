@@ -416,7 +416,7 @@ if __name__ == '__main__':
         map_planet_value_list[int(planet_id)-1].append(map_value_list[i])
         if map_list[i] in map_list_data:
             map_value_list[i].set(1)
-        map_checkbutton_list.append(ttk.Checkbutton(map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=map_value_list[i],onvalue=1, offvalue=0,width=10))
+        map_checkbutton_list.append(ttk.Checkbutton(map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=map_value_list[i],onvalue=1, offvalue=0,width=12))
         map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     map_notebook.grid(columnspan=5)
     # 按钮
@@ -445,7 +445,7 @@ if __name__ == '__main__':
         auto_map_planet_value_list[int(planet_id)-1].append(auto_map_value_list[i])
         if map_list[i] in auto_map_list_data:
             auto_map_value_list[i].set(1)
-        auto_map_checkbutton_list.append(ttk.Checkbutton(auto_map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=auto_map_value_list[i],onvalue=1, offvalue=0,width=10))
+        auto_map_checkbutton_list.append(ttk.Checkbutton(auto_map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=auto_map_value_list[i],onvalue=1,offvalue=0,width=12))
         auto_map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     # 按钮
     auto_map_btn1 = ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],1))
