@@ -157,8 +157,8 @@ class Map:
         """
         map_name = mapjson[0:mapjson.index(".")]
         operate_list = read_json_info(mapjson,"map",prepath=self.mappath)
+        step_num = 0
         for operate in operate_list:
-            step_num = 0
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
@@ -178,8 +178,8 @@ class Map:
                 elif key == "delay":
                     time.sleep(value)
             # logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
-                step_num += 1
-            self.calculated.save_screenshot(f"{map_name}---{step_num}-{operate}")
+            step_num += 1
+            self.calculated.save_screenshot(f"{map_name}---{step_num}-{key}")
 
     def Enter_map_onejson(self,mapjson):
         """
@@ -205,11 +205,7 @@ class Map:
 
     def map_init(self):
         log.info("地图初始化")
-        self.calculated.Keyboard.press("m")
-        self.calculated.Keyboard.release("m")
-        self.calculated.img_check("map_navigation.jpg",(40,40,100,100),1.5)
-        self.calculated.Mouse.position = self.calculated.mouse_pos((250,900))
-        self.calculated.img_click("return.jpg",overtime=0.5,rates=0.85)
+        self.calculated.open_map()
         self.calculated.img_click("map_init_2.jpg",(600,970,660,1000))
         while not self.calculated.img_check("map_init_1.jpg",(660,970,695,1000),0.5):
             self.calculated.Mouse.press(mouse.Button.left)

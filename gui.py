@@ -23,6 +23,12 @@ VER = read_json_info('version.json','version')
 ver_update = False
 # 模拟宇宙标志符
 u_flag = os.path.isdir("./Auto_Simulated_Universe-main")
+if u_flag:
+    with open("./Auto_Simulated_Universe-main/logs/notif.txt",'r',encoding="utf-8") as file:
+        u_text = f"模拟宇宙完成次数:{file.readline()}"
+        file.close()
+else:
+    u_text = "未获取到模拟宇宙完成次数"
 # 用于日志文本框
 class TextboxHandler(logging.Handler):
     def __init__(self, textbox:tk.Text):
@@ -381,6 +387,7 @@ if __name__ == '__main__':
     universe_spinbox.grid(columnspan=2,row=2,column=2)
     universe_bonus = tk.IntVar()
     universe_bonus.set(get_config("universe_bonus"))
+    ttk.Label(universe_frame,text=u_text).grid(columnspan=4,pady=5)
     ttk.Checkbutton(universe_frame,text="沉浸奖励",style="Switch.TCheckbutton",onvalue=1,offvalue=0,variable=universe_bonus).grid(columnspan=4,pady=5)
     ttk.Button(universe_frame,text='确定',width=10,command=lambda:Enter_logframe(4)).grid(columnspan=4,pady=5)
     ttk.Button(universe_frame,text='保存',width=10,command=save_universe_config).grid(columnspan=4,pady=5)
@@ -485,7 +492,7 @@ if __name__ == '__main__':
     ttk.Checkbutton(hoe_frame,text="疾跑切换",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=run_change_var).grid(row=9,column=3,pady=5)
     ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1)
     ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var).grid(row=10,column=2)
-    
+
     ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=4,pady=5)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=4,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=4)
@@ -632,6 +639,7 @@ if __name__ == '__main__':
     ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=5,column=0,pady=5)
     ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=5,column=1,pady=5)
     ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=5,column=2,pady=5)
+    ttk.Label(allframe,text=u_text).grid(columnspan=4)
     ttk.Button(allframe,text='确定',width=10,command=lambda:Enter_logframe(3)).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
