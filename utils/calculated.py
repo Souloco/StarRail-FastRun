@@ -483,6 +483,9 @@ class Calculated:
         while True:
             if self.img_check("one.jpg",(1860,300,1900,350),0.5):
                 break
+            # 遥梦之眼交互
+            if self.img_click("map_4-1_point_6.png",overtime=1.5):
+                break
             time.sleep(3)
             if time.time() - start_time > 30:
                 return False

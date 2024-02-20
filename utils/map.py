@@ -168,13 +168,13 @@ class Map:
                     self.calculated.fighting(value)
                 elif key == "mouse_move":
                     self.calculated.mouse_move(value)
+                elif key == "loc_angle":
+                    self.calculated.correct_loc_angle(value)
                 elif key == "f":
                     self.calculated.interaction(value)
                 elif key == "r":
                     self.calculated.key_press("r")
-                    time.sleep(2)
-                elif key == "loc_angle":
-                    self.calculated.correct_loc_angle(value)
+                    time.sleep(1.5)
                 elif key == "delay":
                     time.sleep(value)
             # logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
