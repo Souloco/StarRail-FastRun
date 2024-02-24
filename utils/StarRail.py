@@ -26,7 +26,7 @@ class StarRail:
         self.universe_nums = 0
         self.u = None
         # 关闭游戏参数
-        self.close_game = False
+        self.close_game = 0
 
     def allfunction(self):
         """
@@ -55,9 +55,8 @@ class StarRail:
         # 模拟宇宙执行
         if self.universe_flag:
             self.Universe()
-        if self.close_game:
-            log.info("自动关机")
-            self.calculated.close_game()
+        # 关闭模式执行
+        self.calculated.close_game(self.close_game)
 
     def Universe(self):
         """

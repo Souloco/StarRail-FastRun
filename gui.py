@@ -626,7 +626,7 @@ if __name__ == '__main__':
     task_rewards_var = tk.BooleanVar()
     task_rewards_var.set(get_config("task_rewards"))
     # 自动关机功能执行
-    close_game_var = tk.BooleanVar()
+    close_game_var = tk.IntVar()
     close_game_var.set(get_config("close_game"))
     ttk.Checkbutton(allframe,text="清体力",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_dungeon_var).grid(row=2,column=3,pady=5)
     ttk.Checkbutton(allframe,text="锄大地",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_map_var).grid(row=3,column=3,pady=5)
@@ -634,12 +634,17 @@ if __name__ == '__main__':
     ttk.Checkbutton(allframe,text="支援奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_supportrewards_var).grid(row=4,column=1,pady=5)
     ttk.Checkbutton(allframe,text="每日实训",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_dailytask_var).grid(row=4,column=2,pady=5)
     ttk.Checkbutton(allframe,text="无名勋礼",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_rewards_var).grid(row=4,column=3,pady=5)
-    if u_flag:
-        ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=5,column=3,pady=5)
     ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=5,column=0,pady=5)
     ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=5,column=1,pady=5)
-    ttk.Checkbutton(allframe,text="自动关机",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=close_game_var).grid(row=5,column=2,pady=5)
-    ttk.Label(allframe,text=u_text).grid(columnspan=4)
+    if u_flag:
+        ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=5,column=2,pady=5)
+        # ttk.Checkbutton(allframe,text="模拟奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=5,column=3,pady=5)
+    ttk.Radiobutton(allframe, text="禁止", variable=close_game_var, value=0).grid(row=6,column=0,pady=5)
+    ttk.Radiobutton(allframe, text="关闭", variable=close_game_var, value=1).grid(row=6,column=1,pady=5)
+    ttk.Radiobutton(allframe, text="关机", variable=close_game_var, value=2).grid(row=6,column=2,pady=5)
+    ttk.Radiobutton(allframe, text="注销", variable=close_game_var, value=3).grid(row=6,column=3,pady=5)
+    if u_flag:
+        ttk.Label(allframe,text=u_text).grid(columnspan=4)
     ttk.Button(allframe,text='确定',width=10,command=lambda:Enter_logframe(3)).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)

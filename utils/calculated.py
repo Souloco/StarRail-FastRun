@@ -486,6 +486,9 @@ class Calculated:
             # 遥梦之眼交互
             if self.img_click("map_4-1_point_6.png",overtime=1.5):
                 break
+            # 界域定锚退出
+            if self.img_click("exit.jpg",overtime=0.5):
+                break
             time.sleep(3)
             if time.time() - start_time > 30:
                 return False
@@ -517,26 +520,33 @@ class Calculated:
             self.Keyboard.release(key)
         return True
 
-    def close_game(self):
+    def close_game(self,mode):
         """
         说明:
-            自动关机
+            关闭模式
         """
         # 关闭游戏
-        self.Keyboard.press(Key.esc)
-        time.sleep(0.05)
-        self.Keyboard.release(Key.esc)
-        self.img_click("exit1.png")
-        self.img_click("sure.jpg")
-        self.img_click("exit2.png",overtime=60)
-        self.img_click("sure2.png",overtime=10)
+        if mode >= 1:
+            self.Keyboard.press(Key.esc)
+            time.sleep(0.05)
+            self.Keyboard.release(Key.esc)
+            self.img_click("exit1.png")
+            self.img_click("sure.jpg")
+            self.img_click("exit2.png",overtime=60)
+            self.img_click("sure2.png",overtime=10)
+        else:
+            return False
+        time.sleep(10)
         # 关机
-        time.sleep(5)
-        os.system('shutdown /s /t 60')
+        if mode == 2:
+            os.system('shutdown /s /t 30')
+        # 注销
+        if mode == 3:
+            os.system('shutdown /l')
         # 关闭程序
-        self.Keyboard.press(Key.f8)
+        self.Keyboard.press(Key.f10)
         time.sleep(0.05)
-        self.Keyboard.release(Key.f8)
+        self.Keyboard.release(Key.f10)
         return True
 
     def change_team(self,teamid:int,id:int):
@@ -683,10 +693,11 @@ class Calculated:
         img = self.take_screenshot((120,135,160,175))
         hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)  # 转HSV
         # 设置蓝色提取范围
-        lower = np.array([90, 120, 60])
-        upper = np.array([100, 255, 255])
+        lower = np.array([91, 120, 60])
+        upper = np.array([98, 255, 255])
         mask = cv.inRange(hsv, lower, upper)  # 创建掩膜
         arrow_now = cv.bitwise_and(img,img, mask=mask)
+        cv.imwrite("arrow.jpg",arrow_now)
         best_val = 0.00
         angle = 0
         for i in range(360):
@@ -706,8 +717,8 @@ class Calculated:
         self.wait_main_interaction()
         angle_now = self.get_loc_angle()
         rotate_angle = angle_now - angle
-        print(angle_now,rotate_angle,6180*rotate_angle/360)
-        self.mouse_move(6180*rotate_angle/360)
+        # print(angle_now,rotate_angle,6150*rotate_angle/360)
+        self.mouse_move(6150*rotate_angle/360)
 
     def map_pos(self,mappath:str):
         """

@@ -80,7 +80,7 @@ class Config():
     auto_map_nums = 0
     character_id = 4
     dungeon_character_id = 1
-    close_game = False
+    close_game = 0
     img_log = False
     map_list_data = []
     team_change = False
