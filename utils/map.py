@@ -179,7 +179,7 @@ class Map:
                     time.sleep(value)
             # logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
             step_num += 1
-            self.calculated.save_screenshot(f"{map_name}---{step_num}-{key}")
+            self.calculated.save_screenshot(f"{map_name}-{step_num}-{key}")
 
     def Enter_map_onejson(self,mapjson):
         """

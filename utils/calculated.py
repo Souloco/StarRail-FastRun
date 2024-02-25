@@ -697,7 +697,7 @@ class Calculated:
         upper = np.array([98, 255, 255])
         mask = cv.inRange(hsv, lower, upper)  # 创建掩膜
         arrow_now = cv.bitwise_and(img,img, mask=mask)
-        cv.imwrite("arrow.jpg",arrow_now)
+        # cv.imwrite("arrow.jpg",arrow_now)
         best_val = 0.00
         angle = 0
         for i in range(360):

@@ -23,16 +23,16 @@
       "fighting": 2
     },
     {
-      "w": 1.4
+      "w": 3.6
     },
     {
-      "mouse_move": 1000
+      "mouse_move": 1100
     },
     {
-      "w": 4.6
+      "w": 3.9
     },
     {
-      "mouse_move": 1400
+      "mouse_move": 1350
     },
     {
       "w": 0.7
@@ -41,7 +41,7 @@
       "fighting": 2
     },
     {
-      "w": 5.0
+      "w": 4.8
     },
     {
       "e": 1.2
@@ -56,10 +56,10 @@
       "fighting": 1
     },
     {
-      "loc_angle": 90
+      "loc_angle": 270
     },
     {
-      "a": 0.7
+      "w": 0.7
     },
     {
       "fighting": 2
