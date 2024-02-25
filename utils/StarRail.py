@@ -46,15 +46,15 @@ class StarRail:
         # 锄大地执行
         if self.map_flag:
             self.map.start()
+        # 模拟宇宙执行
+        if self.universe_flag:
+            self.Universe()
         # 每日实训执行
         if self.task.dailytask_flag:
             self.task.daily_task()
         # 无名勋礼执行
         if self.task.rewards_flag:
             self.task.rewards()
-        # 模拟宇宙执行
-        if self.universe_flag:
-            self.Universe()
         # 关闭模式执行
         self.calculated.close_game(self.close_game)
 
