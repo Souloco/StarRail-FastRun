@@ -32,12 +32,6 @@
       "fighting": 1
     },
     {
-      "fighting": 1
-    },
-    {
-      "fighting": 1
-    },
-    {
       "loc_angle": 330
     },
     {
@@ -45,6 +39,15 @@
     },
     {
       "e": 1.2
+    },
+    {
+      "fighting": 1
+    },
+    {
+      "fighting": 1
+    },
+    {
+      "a": 0.7
     },
     {
       "fighting": 1
