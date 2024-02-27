@@ -4,6 +4,10 @@ import time
 import os
 import orjson
 base = Calculated()
+# 游戏初始化设置
+base.get_hwnd()
+base.set_windowsize()
+base.active_window()
 # 可记录的按键列表
 key_list = ['w','a','s','d']
 # 记录按键按下的时间
@@ -12,6 +16,10 @@ key_down_time = {}
 key_event_list = []
 # 保存文件名字
 save_name = "map_X-X_X"
+# 每次水平移动视角距离数值px
+mouse_move_value = 100
+# 记录最终水平移动视角距离数据
+last_move_value = 0
 
 # 按下触发事件
 def on_press(key):
@@ -22,13 +30,34 @@ def on_press(key):
             key_down_time[key.char] = current_time
             print("按键按下:",key.char,current_time)
     except AttributeError:
-        # print('特殊键： {} 被按下'.format(key))
         pass
 
 # 释放触发事件
 def on_release(key):
+    global last_move_value
     # 记录当前时间
     current_time = time.perf_counter()
+
+    # 水平移动视角mouse_move映射|loc_angle映射
+    if key == keyboard.Key.left:
+        last_move_value = last_move_value - mouse_move_value
+        base.mouse_move(mouse_move_value*-1)
+        print(f"当前记录水平移动距离:{last_move_value}")
+    elif key == keyboard.Key.right:
+        last_move_value = last_move_value + mouse_move_value
+        base.mouse_move(mouse_move_value)
+        print(f"当前记录水平移动距离:{last_move_value}")
+    # loc_angle映射
+    elif key == keyboard.Key.f7:
+        angle = base.get_loc_angle()
+        key_event_list.append({"loc_angle":angle})
+        print(f"已记录最终位置角度loc_angle:{angle}")
+        last_move_value = 0
+    elif last_move_value != 0:
+        key_event_list.append({"mouse_move":last_move_value})
+        print(f"已记录最终水平移动距离mouse_move:{last_move_value}")
+        last_move_value = 0
+    # 可记录按键(非特殊)映射
     try:
         if key.char in key_list and key.char in key_down_time:
             key_time = current_time-key_down_time[key.char]

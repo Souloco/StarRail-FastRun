@@ -47,7 +47,10 @@
       "fighting": 1
     },
     {
-      "a": 0.7
+      "loc_angle": 90
+    },
+    {
+      "w": 0.7
     },
     {
       "fighting": 1
