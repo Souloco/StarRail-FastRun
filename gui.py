@@ -368,7 +368,7 @@ if __name__ == '__main__':
                 ver_update = True
                 messagebox.showerror("版本更新","当前版本过低，请更新")
         else:
-            announce_text.insert('end',"网络获取失败")
+            announce_text.insert('end',f"网络获取失败{response.status_code}")
     except Exception:
         announce_text.insert('end',"疑似网络超时")
     announce_text.configure(state='disabled')

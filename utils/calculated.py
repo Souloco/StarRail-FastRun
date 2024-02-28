@@ -19,7 +19,6 @@ class Calculated:
         self.up_border = int(31)
         # 缩放比例
         self.scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
-        self.borderless = False
         # OCR识别
         self.reader = CnOcr(det_model_name="ch_PP-OCRv3_det", rec_model_name="densenet_lite_136-fc",det_root=os.path.join(model_dir, "cnocr"), rec_root=os.path.join(model_dir, "cnstr"))
         # 键鼠控制
@@ -43,15 +42,14 @@ class Calculated:
     def set_windowsize(self):
         """
         说明:
-            设置窗口化或者全屏幕参数让截图区域正确
+            设置边框参数让截图区域正确
         """
         rect = win32gui.GetWindowRect(self.hwnd)
         w = rect[2]-rect[0]
         h = rect[3]-rect[1]
-        self.borderless = True if w == 1920 and h == 1080 else False
-        self.left_border = int((w-1920)/2)
-        self.up_border = (h-1080)-self.left_border
-        log.info(f"游戏分辨率:{w}x{h}x{self.scale}---{self.borderless}".replace("True","全屏幕").replace("False","窗口"))
+        self.left_border = (w-1920) // 2
+        self.up_border = h-1080-self.left_border
+        log.info(f"游戏分辨率:{w}x{h}x{self.scale}")
 
     def get_WindowRect(self,hwnd):
         """
@@ -61,8 +59,7 @@ class Calculated:
             hwnd: 窗口句柄
         """
         left, top, right, bottom = win32gui.GetWindowRect(hwnd)
-        if not self.borderless:
-            left, top, right, bottom = left+self.left_border,top+self.up_border,right-self.left_border,bottom-self.left_border
+        left, top, right, bottom = left+self.left_border,top+self.up_border,right-self.left_border,bottom-self.left_border
         return (left, top, right, bottom)
 
     def take_screenshot(self,points=(0,0,0,0)):
@@ -600,10 +597,11 @@ class Calculated:
             登录功能
         """
         log.info("登录界面")
-        while not self.img_check("liaotian.png",(20,900,80,970),1):
-            self.Mouse.position = self.mouse_pos((950,900))
-            self.Mouse.click(mouse.Button.left)
-            time.sleep(1)
+        for i in range(3):
+            while not self.img_check("liaotian.png",(20,900,80,970),1):
+                self.Mouse.position = self.mouse_pos((950,900))
+                self.Mouse.click(mouse.Button.left)
+                time.sleep(1.5)
 
     def use_skill(self,food:bool = True,skill_time=1):
         """
