@@ -83,7 +83,7 @@
       "fighting": 1
     },
     {
-      "loc_angle": 45
+      "loc_angle": 50
     },
     {
       "w": 3.15
@@ -98,10 +98,16 @@
       "fighting": 1
     },
     {
-      "loc_angle": 55
+      "loc_angle": 52
     },
     {
-      "s": 5.3
+      "w": 2.5
+    },
+    {
+      "d": 1.2
+    },
+    {
+      "s": 6.7
     },
     {
       "mouse_move": 2400

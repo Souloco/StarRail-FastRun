@@ -18,6 +18,7 @@ class Calculated:
         self.left_border = int(8)
         self.up_border = int(31)
         # 缩放比例
+        ctypes.windll.user32.SetProcessDPIAware()
         self.scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
         # OCR识别
         self.reader = CnOcr(det_model_name="ch_PP-OCRv3_det", rec_model_name="densenet_lite_136-fc",det_root=os.path.join(model_dir, "cnocr"), rec_root=os.path.join(model_dir, "cnstr"))
@@ -152,7 +153,7 @@ class Calculated:
             img = self.take_screenshot(points)
             val,loc = self.img_match(img,templeimg)
             time.sleep(0.05)
-        log.info(f"图片检测-{val}")
+        # log.info(f"图片检测-{val}")
         if val >= rates:
             return True
         else:
