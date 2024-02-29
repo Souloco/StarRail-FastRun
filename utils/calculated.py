@@ -152,7 +152,7 @@ class Calculated:
             img = self.take_screenshot(points)
             val,loc = self.img_match(img,templeimg)
             time.sleep(0.05)
-        # log.info(f"图片检测-{val}")
+        log.info(f"图片检测-{val}")
         if val >= rates:
             return True
         else:
@@ -481,7 +481,11 @@ class Calculated:
             if self.img_check("one.jpg",(1860,300,1900,350),0.5):
                 break
             # 遥梦之眼交互
-            if self.img_click("map_4-1_point_6.png",overtime=1.5):
+            if self.img_check("map_4-1_point_6.png",overtime=1.5):
+                if self.img_check("map_4-1_point_7.png",overtime=3.5):
+                    self.img_click("map_4-1_point_8.png",overtime=1.5)
+                else:
+                    self.img_click("map_4-1_point_6.png",overtime=1.5)
                 break
             # 界域定锚退出
             if self.img_click("exit.jpg",overtime=0.5):
