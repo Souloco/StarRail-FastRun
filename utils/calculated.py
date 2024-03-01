@@ -440,11 +440,12 @@ class Calculated:
         """
         start_time = time.time()
         while self.img_check("liaotian.png",(20,900,80,970),1):
-            if self.has_red((50,68,230,245)):
-                time.sleep(1)
+            if self.img_check("z.png",(750,0,850,100),1) or self.has_red((50,68,230,245)):
+                time.sleep(2)
+                self.Mouse.click(mouse.Button.left)
             else:
                 break
-            if time.time() - start_time > 5:
+            if time.time() - start_time > 7:
                 break
         if not self.img_check("liaotian.png",(20,900,80,970),0.5):
             log.info("等待战斗结束")
@@ -518,7 +519,8 @@ class Calculated:
             释放键鼠操作
         """
         self.Mouse.release(mouse.Button.left)
-        for key in ["w","a","s","d","f",Key.esc,Key.shift_l]:
+        self.Mouse.release(mouse.Button.right)
+        for key in ["w","a","s","d","f","e","r",Key.esc,Key.shift_l]:
             self.Keyboard.release(key)
         return True
 
@@ -704,7 +706,7 @@ class Calculated:
         best_val = 0.00
         angle = 0
         for i in range(360):
-            rotate_arrow = self.rotate_img(arrow,i)   
+            rotate_arrow = self.rotate_img(arrow,i)
             res = cv.matchTemplate(arrow_now,rotate_arrow,cv.TM_CCOEFF_NORMED)
             _,max_val,_,loc = cv.minMaxLoc(res)
             if best_val < max_val:
