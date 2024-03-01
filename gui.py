@@ -101,6 +101,7 @@ def save_config():
     set_config("close_game",close_game_var.get())
     set_config("auto_map_nums",auto_map_nums.get())
     set_config("skill",skill_var.get())
+    set_config("skill_food",skill_food_var.get())
     set_config("run_change",run_change_var.get())
 # 进入日志页面
 def Enter_logframe(logmode:int = 1):
