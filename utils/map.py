@@ -162,6 +162,8 @@ class Map:
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
+                if key in ["W","S","A","D"]:
+                    self.calculated.key_press(key.lower(),value)
                 elif key == "e" and self.skill:
                     self.skill_food = self.calculated.use_skill(self.skill_food,value)
                 elif key == "fighting":
