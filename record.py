@@ -1,14 +1,12 @@
 '''
-author: Soulocu
+author: Souloco
 modify: Klamist
 2024-3-1 11:45:14
 StarRail-FastRun的map.json录制脚本，保存在map/save
 请以管理员权限的cmd启动录制脚本
-
-不要同时按多个键，疾跑先按住shift再赶路（转弯时注意衔接不要掉速）
+不要同时按多个键，疾跑先按住shift再赶路（转弯时注意衔接不要掉速）或者按住鼠标右键保持疾跑状态
 鼠标操作请使用攻击键、转向键（绝对转向时可先用鼠标）
 交互键按下之前，请先超快短按补一个wasd位移，录入蹭的方向（例如先w再f最终记为f:w）
-
 主控键：
     F8保存+重录，F9保存+退出，F10闪退
 赶路键：
@@ -29,11 +27,12 @@ import orjson
 from win32 import win32api
 import ctypes
 # 不带StarRail会导致dpi缩放识别错误，若解决了可移除这行
-from utils.StarRail import StarRail 
-
-# 使用键秘技键分别是啥
-use_key = "f"
-skill_key = "e"
+from utils.StarRail import StarRail
+import pyuac
+# 以管理员身份启动
+if __name__ == '__main__':
+    if not pyuac.isUserAdmin():
+        pyuac.runAsAdmin()
 
 calcu = Calculated()
 # 游戏初始化设置
@@ -43,6 +42,9 @@ calcu.active_window()
 scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
 # 可记录的按键列表
 key_list = ['w','a','s','d','e','f','r','x','v']
+# 使用键秘技键分别是啥
+use_key = "f"
+skill_key = "e"
 # 记录按键按下的时间
 key_down_time = {}
 # 记录按键顺序及时间
@@ -89,10 +91,12 @@ def on_release(key):
             if key.char == use_key:  # 交互键参数使用上一步位移的方向
                 last_way, = key_event_list[-1]
                 last_time, = key_event_list[-1].values()
-                if last_time < 0.15:  # 若提前超短位移，就替换为蹭f
+                if last_time < 0.15 and last_way in ['w','a','s','d']:  # 若提前超短位移，就替换为蹭f
                     del key_event_list[-1]
-                key_event_list.append({"f": last_way})
-                print(f"f 朝{last_way}方向蹭交互")
+                    key_event_list.append({"f": last_way})
+                    print(f"f 朝{last_way}方向蹭交互")
+                else:
+                    print("f 未提供方向")
             elif key.char == skill_key:
                 key_event_list.append({"e": 1.2})
                 print("e 使用秘技")
@@ -102,11 +106,11 @@ def on_release(key):
             elif key.char == 'x':
                 key_event_list.append({"fighting": 1})
                 print("x 打怪入战")
-                win32api.mouse_event(2|4,0,0)
+                win32api.mouse_event(2 | 4,0,0)
             elif key.char == 'v':
                 key_event_list.append({"fighting": 2})
                 print("v 打罐子")
-                win32api.mouse_event(2|4,0,0)
+                win32api.mouse_event(2 | 4,0,0)
             elif key_time > 0.01:  # 忽略loc_angle导致的超短位移输入
                 key_event_list.append({key.char:key_time})
                 print(f"{key.char} 按下了{key_time}秒")
@@ -132,20 +136,19 @@ def on_release(key):
     elif key == keyboard.Key.left:
         calcu.correct_loc_angle(180)
         key_event_list.append({"loc_angle": 180})
-        print(f"视角转正loc_angle: 180")
+        print("视角转正loc_angle: 180")
     elif key == keyboard.Key.right:
         calcu.correct_loc_angle(0)
         key_event_list.append({"loc_angle": 0})
-        print(f"视角转正loc_angle: 0")
+        print("视角转正loc_angle: 0")
     elif key == keyboard.Key.up:
         calcu.correct_loc_angle(90)
         key_event_list.append({"loc_angle": 90})
-        print(f"视角转正loc_angle: 90")
+        print("视角转正loc_angle: 90")
     elif key == keyboard.Key.down:
         calcu.correct_loc_angle(270)
         key_event_list.append({"loc_angle": 270})
-        print(f"视角转正loc_angle: 270")
-
+        print("视角转正loc_angle: 270")
     # F10直接闪退
     if key == keyboard.Key.f10:
         return False
