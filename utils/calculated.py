@@ -441,8 +441,7 @@ class Calculated:
         start_time = time.time()
         while self.img_check("liaotian.png",(20,900,80,970),1):
             if self.img_check("z.png",(750,0,850,100),1) or self.has_red((50,68,230,245)):
-                time.sleep(2)
-                self.Mouse.click(mouse.Button.left)
+                time.sleep(1)
             else:
                 break
             if time.time() - start_time > 7:

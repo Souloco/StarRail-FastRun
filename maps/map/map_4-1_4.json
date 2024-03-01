@@ -123,6 +123,9 @@
     },
     {
       "fighting": 1
+    },
+    {
+      "fighting": 2
     }
   ]
 }
