@@ -96,7 +96,9 @@ def on_release(key):
             elif key.char == skill_key:
                 key_event_list.append({"e": 1.2})
                 print("e 使用秘技")
-                win32api.mouse_event(2|4,0,0)
+            elif key.char == "r":
+                key_event_list.append({"r": 1.0})
+                print("r 放泡泡")
             elif key.char == 'x':
                 key_event_list.append({"fighting": 1})
                 print("x 打怪入战")
