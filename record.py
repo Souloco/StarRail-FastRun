@@ -1,19 +1,20 @@
 '''
 author: Souloco
 modify: Klamist
-2024-3-1 11:45:14
+2024-3-1 18:30:11
 StarRail-FastRun的map.json录制脚本，保存在map/save
-请以管理员权限的cmd启动录制脚本
-不要同时按多个键，疾跑先按住shift再赶路（转弯时注意衔接不要掉速）或者按住鼠标右键保持疾跑状态
-鼠标操作请使用攻击键、转向键（绝对转向时可先用鼠标）
+不要同时按多个键，疾跑先按住shift或鼠标右键再赶路（转弯时注意衔接不要掉速）
+鼠标操作请使用攻击键、转向键（绝对转向时可先用鼠标瞄准）
 交互键按下之前，请先超快短按补一个wasd位移，录入蹭的方向（例如先w再f最终记为f:w）
 主控键：
     F8保存+重录，F9保存+退出，F10闪退
 赶路键：
     W A S D E F R，移动、交互、秘技
+等待键：
+    Q，根据按住的时间添加delay，用于原地等待
 鼠标操作：
     攻击键：X打怪，V打罐子
-    转向键：<和>键(M键右边俩)让角色转向，多次点按直到转朝目标
+    转向键：<和>键(M键右边俩)让角色转向，可多次点按叠加直到转向目标
     绝对转向：手动转到目标方向，然后按F7键，通过小地图箭头记录视角(get_loc_angle)
     视角转正：方向键↑↓←→，视角转朝小地图对应方向(loc_angle)
 '''
@@ -26,8 +27,6 @@ from pynput import keyboard
 import orjson
 from win32 import win32api
 import ctypes
-# 不带StarRail会导致dpi缩放识别错误，若解决了可移除这行
-from utils.StarRail import StarRail
 import pyuac
 # 以管理员身份启动
 if __name__ == '__main__':
@@ -39,9 +38,10 @@ calcu = Calculated()
 calcu.get_hwnd()
 calcu.set_windowsize()
 calcu.active_window()
+ctypes.windll.user32.SetProcessDPIAware()
 scale = ctypes.windll.user32.GetDpiForSystem() / 96.0
 # 可记录的按键列表
-key_list = ['w','a','s','d','e','f','r','x','v']
+key_list = ['w','a','s','d','e','f','r','x','v','q']
 # 使用键秘技键分别是啥
 use_key = "f"
 skill_key = "e"
@@ -100,7 +100,10 @@ def on_release(key):
             elif key.char == skill_key:
                 key_event_list.append({"e": 1.2})
                 print("e 使用秘技")
-            elif key.char == "r":
+            elif key.char == 'q':
+                key_event_list.append({"delay": key_time})
+                print(f"在此停顿{key_time}秒")
+            elif key.char == 'r':
                 key_event_list.append({"r": 1.0})
                 print("r 放泡泡")
             elif key.char == 'x':
@@ -113,7 +116,7 @@ def on_release(key):
                 win32api.mouse_event(2 | 4,0,0)
             elif key_time > 0.01:  # 忽略loc_angle导致的超短位移输入
                 key_event_list.append({key.char:key_time})
-                print(f"{key.char} 按下了{key_time}秒")
+                print(f"{key.char} 跑路{key_time}秒")
             del key_down_time[key.char]
         # 水平移动视角mouse_move映射
         elif key.char == ',':
