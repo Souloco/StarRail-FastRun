@@ -48,6 +48,9 @@ class StarRail:
         # 锄大地执行
         if self.map_flag:
             self.map.start()
+        # 清委托执行
+        if self.task.commission_flag:
+            self.task.commission()
         # 模拟宇宙执行
         if self.universe_flag:
             self.Universe()
