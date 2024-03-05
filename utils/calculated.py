@@ -410,6 +410,7 @@ class Calculated:
     def wait_main_interface(self):
         start_time = time.time()    # 开始计算等待时间
         while True:
+            self.img_click("sure.jpg",overtime=0.5)
             if self.img_click("fighting_lost.jpg",(700,140,1200,400),0.5):
                 log.info("战斗失败")
                 break
