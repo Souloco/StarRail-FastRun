@@ -105,6 +105,7 @@ class Config():
     universe_bonus = 0
     universe_nums = 34
     auto_universe = False
+    universe_rewards = False
     auto_map = False
     auto_dungeon = False
     run_change = False

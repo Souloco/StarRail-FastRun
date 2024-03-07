@@ -26,7 +26,7 @@ class StarRail:
         self.universe_nums = 0
         self.u = None
         # 模拟宇宙奖励配置
-        self.universe_reward_flag = False
+        self.universe_reward_flag = True
         # 关闭游戏参数
         self.close_game = 0
 
@@ -79,6 +79,11 @@ class StarRail:
             说明：领取模拟宇宙奖励
         """
         log.info("领取模拟宇宙奖励")
+        if self.calculated.img_click('red_notice.jpg',overtime=5,rates=0.80):
+            if self.calculated.ocr_click('领取'):
+                self.calculated.fighting(2)
+                self.calculated.fighting(2)
+            self.calculated.img_click('exit.jpg')
 
     def Universe(self):
         """

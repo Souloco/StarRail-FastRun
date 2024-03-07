@@ -88,6 +88,7 @@ def universe_config():
 def save_universe_config():
     set_config("universe_bonus",universe_bonus.get())
     set_config("universe_nums",universe_nums.get())
+    set_config("universe_rewards",universe_rewards.get())
 # 保存配置
 def save_config():
     map_use_list = get_map_list(map_value_list)
@@ -388,8 +389,11 @@ if __name__ == '__main__':
     universe_spinbox.grid(columnspan=2,row=2,column=2)
     universe_bonus = tk.IntVar()
     universe_bonus.set(get_config("universe_bonus"))
+    universe_rewards = tk.BooleanVar()
+    universe_rewards.set(get_config("universe_rewards"))
     ttk.Label(universe_frame,text=u_text).grid(columnspan=4,pady=5)
     ttk.Checkbutton(universe_frame,text="沉浸奖励",style="Switch.TCheckbutton",onvalue=1,offvalue=0,variable=universe_bonus).grid(columnspan=4,pady=5)
+    ttk.Checkbutton(universe_frame,text="模拟奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=universe_rewards).grid(columnspan=4,pady=5)
     ttk.Button(universe_frame,text='确定',width=10,command=lambda:Enter_logframe(4)).grid(columnspan=4,pady=5)
     ttk.Button(universe_frame,text='保存',width=10,command=save_universe_config).grid(columnspan=4,pady=5)
     ttk.Button(universe_frame,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
@@ -639,7 +643,6 @@ if __name__ == '__main__':
     ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=5,column=1,pady=5)
     if u_flag:
         ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=5,column=2,pady=5)
-        # ttk.Checkbutton(allframe,text="模拟奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=5,column=3,pady=5)
     ttk.Radiobutton(allframe, text="禁止", variable=close_game_var, value=0).grid(row=6,column=0,pady=5)
     ttk.Radiobutton(allframe, text="关闭", variable=close_game_var, value=1).grid(row=6,column=1,pady=5)
     ttk.Radiobutton(allframe, text="关机", variable=close_game_var, value=2).grid(row=6,column=2,pady=5)

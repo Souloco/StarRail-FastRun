@@ -722,8 +722,13 @@ class Calculated:
         self.wait_main_interaction()
         angle_now = self.get_loc_angle()
         rotate_angle = angle_now - angle
+        if rotate_angle > 180:
+            rotate_angle -= 360
+        elif rotate_angle < -180:
+            rotate_angle += 360
         # print(angle_now,rotate_angle,6150*rotate_angle/360)
         self.mouse_move(6150*rotate_angle/360)
+        log.info(f"校准角度{angle}旋转了{rotate_angle}")
 
     def map_pos(self,mappath:str):
         """
