@@ -31,7 +31,7 @@ class Map:
         map_name_dir = mapjson[0:mapjson.index("_",5)] + ".jpg"
         map_name = read_json_info(mapjson,"name",prepath=self.mappath).split("-")[0]
         planet_id = int(mapjson[mapjson.index('_') + 1:mapjson.index('-')])
-        # map_id = str(mapjson[mapjson.index('_') + 1:mapjson.rindex('_')])
+        map_id = mapjson[0:mapjson.index(".")]
         for start in start_list:
             for key,value in start.items():
                 if key == "map":
@@ -41,6 +41,8 @@ class Map:
                     if not self.calculated.ocr_check(map_name,(0,0,200,40),1,mode=2):
                         # 进入地图
                         self.calculated.open_map()
+                        # 截图记录
+                        self.calculated.save_screenshot(f"{map_id}-start")
                         # 进入星球
                         if self.planetid != planet_id:
                             self.planetid = planet_id
@@ -81,6 +83,8 @@ class Map:
                     else:
                         # 进入地图
                         self.calculated.open_map()
+                        # 截图记录
+                        self.calculated.save_screenshot(f"{map_id}-start")
                     if value != "":
                         # 进入层数
                         log.info(f"进入{value}层")

@@ -26,7 +26,9 @@ class StarRail:
         self.universe_nums = 0
         self.u = None
         # 模拟宇宙奖励配置
-        self.universe_reward_flag = True
+        self.universe_reward_flag = False
+        # 模拟宇宙消息提示
+        self.u_text = self.get_universe_notif()
         # 关闭游戏参数
         self.close_game = 0
 
@@ -85,6 +87,15 @@ class StarRail:
                 self.calculated.fighting(2)
             self.calculated.img_click('exit.jpg')
 
+    def get_universe_notif(self):
+        if os.path.exists("./Auto_Simulated_Universe-main/logs/notif.txt"):
+            with open("./Auto_Simulated_Universe-main/logs/notif.txt",'r',encoding="utf-8") as file:
+                u_text = f"模拟宇宙完成次数:{file.readline()}"
+                file.close()
+        else:
+            u_text = "未获取到模拟宇宙完成次数"
+        return u_text
+
     def Universe(self):
         """
             说明：模拟宇宙执行
@@ -99,6 +110,8 @@ class StarRail:
         command = ["python","states.py",f"--bonus={self.universe_bonus}",f"--nums={self.universe_nums}"]
         self.u = subprocess.Popen(command,text=True,cwd="./Auto_Simulated_Universe-main")
         self.u.wait()
+        self.u_text = self.get_universe_notif()
+        log.info(self.u_text)
 
     def start(self):
         # 获取窗口句柄

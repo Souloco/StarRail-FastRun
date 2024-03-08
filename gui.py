@@ -23,12 +23,6 @@ VER = read_json_info('version.json','version')
 ver_update = False
 # 模拟宇宙标志符
 u_flag = os.path.isdir("./Auto_Simulated_Universe-main")
-if u_flag:
-    with open("./Auto_Simulated_Universe-main/logs/notif.txt",'r',encoding="utf-8") as file:
-        u_text = f"模拟宇宙完成次数:{file.readline()}"
-        file.close()
-else:
-    u_text = "未获取到模拟宇宙完成次数"
 # 用于日志文本框
 class TextboxHandler(logging.Handler):
     def __init__(self, textbox:tk.Text):
@@ -84,6 +78,7 @@ def Enter_Universeframe():
 def universe_config():
     sra.universe_bonus = universe_bonus.get()
     sra.universe_nums = universe_nums.get()
+    sra.universe_reward_flag = universe_rewards.get()
 # 保存模拟宇宙配置
 def save_universe_config():
     set_config("universe_bonus",universe_bonus.get())
@@ -391,7 +386,7 @@ if __name__ == '__main__':
     universe_bonus.set(get_config("universe_bonus"))
     universe_rewards = tk.BooleanVar()
     universe_rewards.set(get_config("universe_rewards"))
-    ttk.Label(universe_frame,text=u_text).grid(columnspan=4,pady=5)
+    ttk.Label(universe_frame,text=sra.u_text).grid(columnspan=4,pady=5)
     ttk.Checkbutton(universe_frame,text="沉浸奖励",style="Switch.TCheckbutton",onvalue=1,offvalue=0,variable=universe_bonus).grid(columnspan=4,pady=5)
     ttk.Checkbutton(universe_frame,text="模拟奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=universe_rewards).grid(columnspan=4,pady=5)
     ttk.Button(universe_frame,text='确定',width=10,command=lambda:Enter_logframe(4)).grid(columnspan=4,pady=5)
@@ -648,7 +643,7 @@ if __name__ == '__main__':
     ttk.Radiobutton(allframe, text="关机", variable=close_game_var, value=2).grid(row=6,column=2,pady=5)
     ttk.Radiobutton(allframe, text="注销", variable=close_game_var, value=3).grid(row=6,column=3,pady=5)
     if u_flag:
-        ttk.Label(allframe,text=u_text).grid(columnspan=4)
+        ttk.Label(allframe,text=sra.u_text).grid(columnspan=4)
     ttk.Button(allframe,text='确定',width=10,command=lambda:Enter_logframe(3)).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='保存',width=10,command=save_all_config).grid(columnspan=4,pady=5)
     ttk.Button(allframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
