@@ -4,6 +4,7 @@ from .config import read_json_info,message
 from .calculated import Calculated
 from .log import log
 from pynput import mouse
+from pynput.keyboard import Key
 from pyautogui import drag
 class Map:
     def __init__(self,base:Calculated = Calculated()):
@@ -166,6 +167,8 @@ class Map:
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
+                else:
+                    self.calculated.Keyboard.release(Key.shift_l)
                 if key in ["W","S","A","D"]:
                     self.calculated.key_press(key.lower(),value)
                 elif key == "e" and self.skill:

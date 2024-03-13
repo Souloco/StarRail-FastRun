@@ -318,7 +318,6 @@ class Calculated:
         while time.perf_counter() - start_time < times:
             pass
         self.Keyboard.release(key)
-        self.Keyboard.release(Key.shift_l)
 
     def mouse_move(self,value:int):
         win32api.mouse_event(1,int(value*self.scale),0)
@@ -441,6 +440,9 @@ class Calculated:
         """
         start_time = time.time()
         while self.img_check("liaotian.png",(20,900,80,970),1):
+            if self.has_red((110,50,155,65)):
+                time.sleep(1.5)
+                self.Mouse.click(mouse.Button.left)
             if self.img_check("z.png",(750,0,850,100),1) or self.has_red((50,68,230,245)):
                 time.sleep(1)
             else:
