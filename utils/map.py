@@ -167,6 +167,7 @@ class Map:
             for key,value in operate.items():
                 if key in ["w","s","a","d"]:
                     self.calculated.move(key,value)
+                    continue
                 else:
                     self.calculated.Keyboard.release(Key.shift_l)
                 if key in ["W","S","A","D"]:
