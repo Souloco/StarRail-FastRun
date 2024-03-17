@@ -20,6 +20,7 @@ class Map:
         self.run_change = False
         self.map_list = []
         self.auto_map_list = []
+        self.mapid = "map_0-0_0"
 
     def Enter_map_start(self,mapjson):
         """
@@ -32,7 +33,6 @@ class Map:
         map_name_dir = mapjson[0:mapjson.index("_",5)] + ".jpg"
         map_name = read_json_info(mapjson,"name",prepath=self.mappath).split("-")[0]
         planet_id = int(mapjson[mapjson.index('_') + 1:mapjson.index('-')])
-        map_id = mapjson[0:mapjson.index(".")]
         for start in start_list:
             for key,value in start.items():
                 if key == "map":
@@ -43,7 +43,7 @@ class Map:
                         # 进入地图
                         self.calculated.open_map()
                         # 截图记录
-                        self.calculated.save_screenshot(f"{map_id}-start")
+                        self.calculated.save_screenshot(f"{self.mapid}-map")
                         # 进入星球
                         if self.planetid != planet_id:
                             self.planetid = planet_id
@@ -85,7 +85,7 @@ class Map:
                         # 进入地图
                         self.calculated.open_map()
                         # 截图记录
-                        self.calculated.save_screenshot(f"{map_id}-start")
+                        self.calculated.save_screenshot(f"{self.mapid}-map")
                     if value != "":
                         # 进入层数
                         log.info(f"进入{value}层")
@@ -190,6 +190,7 @@ class Map:
             # logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
             step_num += 1
             self.calculated.save_screenshot(f"{map_name}-{step_num}-{key}")
+        self.mapid = map_name
 
     def Enter_map_onejson(self,mapjson):
         """
@@ -210,7 +211,10 @@ class Map:
         参数:
             mapjson:路线json列表
         """
-        for mapjson in jsonlist:
+        begin_index = 0
+        if self.mapid + ".json" in jsonlist:
+            begin_index = jsonlist.index(self.mapid + ".json") + 1
+        for mapjson in jsonlist[begin_index:]:
             self.Enter_map_onejson(mapjson)
 
     def map_init(self):
@@ -241,6 +245,7 @@ class Map:
         self.Enter_map_jsonlist(self.map_list)
         log.info("锄大地---重跑路线")
         for i in range(self.nums):
+            self.mapid = "map_0-0_0"
             self.Enter_map_jsonlist(self.auto_map_list)
         if self.run_change:
             log.info("锄大地---疾跑模式切换")

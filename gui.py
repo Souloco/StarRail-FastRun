@@ -181,6 +181,7 @@ def map_config():
     sra.map.skill_food = skill_food_var.get()
     sra.map.run_change = run_change_var.get()
     sra.map.planetid = 0
+    sra.map.mapid = "map_0-0_0"
     sra.calculated.fight_time = fight_time.get()
 # 副本配置启用
 def dungeon_config():
