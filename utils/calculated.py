@@ -580,7 +580,6 @@ class Calculated:
                     time.sleep(0.05)
                     self.Mouse.scroll(0,200)
             self.ocr_click(text=teamid,points=(550,0,1800,130),overtime=2)
-            self.ocr_click(text=teamid,points=(550,0,1800,130),overtime=2)
             self.img_click("team_sure.png",points=(1500,950,1920,1080),overtime=2)
             time.sleep(2)   # 缓冲
             self.Keyboard.press(Key.esc)

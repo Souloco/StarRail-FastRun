@@ -8,6 +8,7 @@ import ctypes
 import inspect
 import subprocess
 import os
+import time
 class StarRail:
     def __init__(self,base:Calculated = Calculated()):
         self.calculated = base
@@ -82,9 +83,8 @@ class StarRail:
         """
         log.info("领取模拟宇宙奖励")
         if self.calculated.img_click('red_notice.jpg',overtime=5,rates=0.80):
-            if self.calculated.img_click('sure3.png'):
-                self.calculated.fighting(2)
-                self.calculated.fighting(2)
+            self.calculated.img_click('sure3.png')
+            time.sleep(3.5)
             self.calculated.img_click('exit.jpg')
 
     def get_universe_notif(self):

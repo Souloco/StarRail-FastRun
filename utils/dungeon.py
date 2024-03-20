@@ -48,6 +48,7 @@ class Dungeon:
             if not self.calculated.img_check(dungeon_name_dir,(0,0,0,0),1):
                 self.calculated.Mouse.position = self.calculated.mouse_pos((450,400))
                 drag(0,-150, 1,button='left')
+        time.sleep(0.7)
         self.calculated.img_click(dungeon_name_dir)
         # 向下滚动寻找
         for i in range(self.dungeon_find_nums):
@@ -56,6 +57,7 @@ class Dungeon:
                 drag(0,-300, 1,button='left')
             else:
                 break
+        time.sleep(0.7)
         self.calculated.dungeon_img_click(dungeonpath)
         time.sleep(2)
         while not self.calculated.img_check("dungeon_fight1.jpg",overtime=1.0):
@@ -69,6 +71,7 @@ class Dungeon:
         self.calculated.img_click("dungeon_fight1.jpg")
         if self.calculated.img_check("dungeon_fight2.jpg",overtime=2):
             self.calculated.img_click("dungeon_fight2.jpg")
+            self.calculated.img_click("sure.jpg",(1118,650,1225,693))
         else:
             self.calculated.img_click("exit3.jpg")
             self.calculated.img_click("exit.jpg")
@@ -85,6 +88,7 @@ class Dungeon:
                 time.sleep(2)
                 return True
             self.calculated.img_click("dungeon_again.jpg")
+            self.calculated.img_click("sure.jpg",(1118,650,1225,693))
             # 历战余响次数用尽
             if dungeon_id == '5' and self.calculated.img_click("exit3.jpg"):
                 return True
