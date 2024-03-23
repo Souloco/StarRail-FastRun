@@ -443,7 +443,7 @@ class Calculated:
             if self.has_red((110,50,155,65)):
                 time.sleep(1.5)
                 self.Mouse.click(mouse.Button.left)
-            if self.img_check("z.png",(750,0,850,100),1) or self.has_red((50,68,230,245)):
+            if self.img_check("z.png",(750,0,850,100),1) or self.has_red((90,100,190,200)):
                 time.sleep(1)
             else:
                 break

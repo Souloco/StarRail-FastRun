@@ -166,6 +166,8 @@ def allfunction_config():
     sra.task.supportrewards_flag = task_supportrewards_var.get()
     sra.task.dailytask_flag = task_dailytask_var.get()
     sra.task.rewards_flag = task_rewards_var.get()
+    # 功能序列配置
+    sra.functional_sequence = get_config("functional_sequence")
     # 自动关机配置启用
     sra.close_game = close_game_var.get()
 # 锄地配置启用

@@ -43,6 +43,8 @@ else:
 sra.map_flag = get_config("auto_map")
 sra.dungeon_flag = get_config("auto_dungeon")
 sra.universe_flag = get_config("auto_universe")
+# 功能序列配置
+sra.functional_sequence = get_config("functional_sequence")
 # 自动关机配置
 sra.close_game = get_config("close_game")
 # 启动游戏

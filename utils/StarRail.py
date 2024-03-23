@@ -32,6 +32,8 @@ class StarRail:
         self.u_text = self.get_universe_notif()
         # 关闭游戏参数
         self.close_game = 0
+        # 功能执行序列
+        self.functional_sequence = []
 
     def allfunction(self):
         """
@@ -39,30 +41,28 @@ class StarRail:
         """
         # 游戏初始化设置
         self.calculated.set_windowsize()
-        # 清委托执行
-        if self.task.commission_flag:
-            self.task.commission()
-        # 领取支援奖励执行
-        if self.task.supportrewards_flag:
-            self.task.support_rewards()
-        # 清体力执行
-        if self.dungeon_flag:
-            self.dungeon.start()
-        # 锄大地执行
-        if self.map_flag:
-            self.map.start()
-        # 清委托执行
-        if self.task.commission_flag:
-            self.task.commission()
-        # 模拟宇宙执行
-        if self.universe_flag:
-            self.Universe()
-        # 每日实训执行
-        if self.task.dailytask_flag:
-            self.task.daily_task()
-        # 无名勋礼执行
-        if self.task.rewards_flag:
-            self.task.rewards()
+        for function in self.functional_sequence:
+            # 清委托执行
+            if function == "commisson" and self.task.commission_flag:
+                self.task.commission()
+            # 领取支援奖励执行
+            elif function == "supportrewards" and self.task.supportrewards_flag:
+                self.task.support_rewards()
+            # 清体力执行
+            elif function == "dungeon" and self.dungeon_flag:
+                self.dungeon.start()
+            # 锄大地执行
+            elif function == "map" and self.map_flag:
+                self.map.start()
+            # 模拟宇宙执行
+            elif function == "Universe" and self.universe_flag:
+                self.Universe()
+            # 每日实训执行
+            elif function == "dailytask" and self.task.dailytask_flag:
+                self.task.daily_task()
+            # 无名勋礼执行
+            elif function == "rewards" and self.task.rewards_flag:
+                self.task.rewards()
         # 关闭模式执行
         self.calculated.close_game(self.close_game)
 
