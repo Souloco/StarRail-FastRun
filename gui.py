@@ -99,6 +99,7 @@ def save_config():
     set_config("skill",skill_var.get())
     set_config("skill_food",skill_food_var.get())
     set_config("run_change",run_change_var.get())
+    set_config("food",food_var.get())
 # 进入日志页面
 def Enter_logframe(logmode:int = 1):
     # 页面初始化
@@ -185,6 +186,8 @@ def map_config():
     sra.map.planetid = 0
     sra.map.mapid = "map_0-0_0"
     sra.calculated.fight_time = fight_time.get()
+    sra.calculated.health_food = food_var.get()
+    sra.calculated.reborn_food = food_var.get()
 # 副本配置启用
 def dungeon_config():
     sra.dungeon.team_change = team_change_var.get()
@@ -487,6 +490,8 @@ if __name__ == '__main__':
     skill_var.set(get_config("skill"))
     skill_food_var = tk.BooleanVar()
     skill_food_var.set(get_config("skill_food"))
+    food_var = tk.BooleanVar()
+    food_var.set(get_config("food"))
     run_change_var = tk.BooleanVar()
     run_change_var.set(get_config("run_change"))
     # 配置开关
@@ -495,7 +500,7 @@ if __name__ == '__main__':
     ttk.Checkbutton(hoe_frame,text="疾跑切换",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=run_change_var).grid(row=9,column=3,pady=5)
     ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1)
     ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var).grid(row=10,column=2)
-
+    ttk.Checkbutton(hoe_frame,text="战后吃药",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=food_var).grid(row=10,column=3)
     ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=4,pady=5)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=4,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=4)

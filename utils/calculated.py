@@ -33,6 +33,9 @@ class Calculated:
         self.img_log_value = False
         # 战斗检测时间
         self.fight_time = 900
+        # 药品状态
+        self.reborn_food = True
+        self.health_food = True
 
     def get_hwnd(self):
         self.hwnd = win32gui.FindWindow("UnityWndClass","崩坏：星穹铁道")
@@ -386,13 +389,125 @@ class Calculated:
             points:相对游戏坐标
         """
         img = self.take_screenshot()
-        hsv = cv.cvtColor(img, cv.COLOR_RGB2HSV)
+        hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
         x = points[0]
         y = points[1]
-        h = hsv[y,x,0]
-        s = hsv[y,x,1]
-        v = hsv[y,x,2]
-        return [h,s,v]
+        return hsv[y,x]
+
+    def get_pix_bgr(self,points=(0,0)):
+        """
+        说明:
+            返回bgr像素值
+        参数:
+            points:相对游戏坐标
+        """
+        img = self.take_screenshot()
+        x = points[0]
+        y = points[1]
+        return img[y,x]
+
+    def color_bgr_similarity(self,color1,color2):
+        """
+        说明:
+            基于BGR格式返回颜色相似度
+            输出0~1,0相似度最好,1相似度最差
+        """
+        b1,g1,r1 = color1
+        b2,g2,r2 = color2
+        rmean = (r1 + r2) / 2
+        r = r1-r2
+        g = g1-g2
+        b = b1-b2
+        return np.sqrt((2+rmean/256)*(r**2)+4*(g**2)+(2+(255-rmean)/256)*(b**2)) / 764.8339663572415
+
+    def color_similarity(self,color1,points=(0,0)):
+        """
+        说明:
+            基于BGR格式返回颜色相似度
+            输出0~1,0相似度最好,1相似度最差
+        """
+        color2 = self.get_pix_bgr(points)
+        return self.color_bgr_similarity(color1,color2)
+
+    def pixelMatchesColor(self,points,expectedBGRColor,tolerance=0):
+        """
+        说明:
+            基于BRG格式匹配颜色
+        """
+        pix = self.get_pix_bgr(points)
+        b,g,r = pix
+        exB, exG, exR = expectedBGRColor
+        return (abs(r - exR) <= tolerance) and (abs(g - exG) <= tolerance) and (abs(b - exB) <= tolerance)
+
+    def eatfood(self):
+        """
+        说明:
+            吃药
+        """
+        # 判断是否需要吃药
+        need_food = False
+        # 判断是否需要复活
+        if self.reborn_food:
+            for i in range(4):
+                # 人物灰度死亡判定
+                if self.pixelMatchesColor((1800,315 + i*95),(60,60,60),60):
+                    self.key_press(str(i+1),0.05)
+                    if self.img_click('sure.jpg'):
+                        time.sleep(1.5)
+                    else:
+                        self.img_click('exit3.jpg')
+                        time.sleep(0.5)
+                        self.reborn_food = False
+                        break
+        # 低血量判断
+        for i in range(4):
+            # 血量非蓝判定
+            if not self.pixelMatchesColor((1710,339+i*94),(252,254,132),12):
+                need_food = True
+                break
+        if need_food and self.health_food:
+            # 打开背包
+            if self.img_check("liaotian.png",(20,900,80,970),0.5):
+                self.Keyboard.press("b")
+                time.sleep(0.05)
+                self.Keyboard.release("b")
+                time.sleep(3)
+            # 食物灰色判定---进入食物页面
+            if not self.pixelMatchesColor((1022,76),(188, 186, 184),1):
+                self.Mouse.position = self.mouse_pos((1020,70))
+                self.Mouse.click(mouse.Button.left)
+            time.sleep(0.5)
+            # 食物检测
+            self.health_food = self.img_check("food1.jpg",(122,117,1246,566),0.9) or self.img_check("food2.jpg",(122,117,1246,566),0.9)
+            if self.health_food:
+                # 点击食物
+                if not self.img_click("food1.jpg",(122,117,1246,566),0.9):
+                    self.img_click("food2.jpg",(122,117,1246,566),0.9)
+                time.sleep(1)
+                self.Mouse.position = self.mouse_pos((1628,986))
+                time.sleep(0.5)
+                self.Mouse.click(mouse.Button.left)
+                time.sleep(0.5)
+                for j in range(4):
+                    # 血量非蓝判定
+                    print(self.get_pix_bgr((1190-j*140,531)))
+                    if not self.pixelMatchesColor((1190-j*140,531),(255,246,69),5):
+                        # 点击人物
+                        self.Mouse.position = self.mouse_pos((1190-j*140,450))
+                        time.sleep(0.5)
+                        self.Mouse.click(mouse.Button.left)
+                        time.sleep(0.5)
+                        # 吃药
+                        for i in range(5):
+                            if not self.pixelMatchesColor((1200-j*140,532),(255,246,69),5):
+                                self.Mouse.position = self.mouse_pos((1169,765))
+                                self.Mouse.click(mouse.Button.left)
+                                time.sleep(1.5)
+                            else:
+                                break
+                # 返回主界面
+                self.goto_main_interface()
+            return self.health_food
 
     def fighting(self,mode=1):
         if mode == 1:   # 打怪
@@ -410,7 +525,7 @@ class Calculated:
         start_time = time.time()    # 开始计算等待时间
         while True:
             self.img_click("sure.jpg",overtime=0.5)
-            if self.img_click("fighting_lost.jpg",(700,140,1200,400),0.5):
+            if self.ocr_click("点击空白区域继续",(850,995,1100,1050),0.5):
                 log.info("战斗失败")
                 break
             if self.img_check("liaotian.png",(20,900,80,970),0.5):
@@ -421,16 +536,19 @@ class Calculated:
         time.sleep(2)   # 等待人物模型出现
         return True
 
+    def goto_main_interface(self):
+        while not self.img_check("liaotian.png",(20,900,80,970),1):
+            self.Keyboard.press(Key.esc)
+            time.sleep(0.05)
+            self.Keyboard.release(Key.esc)
+            time.sleep(1)
+
     def check_main_interface(self):
         log.info("强制在主界面")
         if self.img_check("liaotian.png",(20,900,80,970),10):
             time.sleep(2)   # 等待人物模型出现
         else:
-            while not self.img_check("liaotian.png",(20,900,80,970),1):
-                self.Keyboard.press(Key.esc)
-                time.sleep(0.05)
-                self.Keyboard.release(Key.esc)
-                time.sleep(1)
+            self.goto_main_interface()
         return True
 
     def wait_fight_end(self):
@@ -452,6 +570,7 @@ class Calculated:
         if not self.img_check("liaotian.png",(20,900,80,970),0.5):
             log.info("等待战斗结束")
             self.wait_main_interface()
+            self.eatfood()
 
     def interaction(self,mode:str = ["w","a","s","d"]):
         """
@@ -653,7 +772,8 @@ class Calculated:
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
         self.img_click("setting1.jpg",overtime=2)
-        self.img_click("setting2.jpg",overtime=2)
+        time.sleep(1)
+        self.img_click("setting2.jpg")
         time.sleep(1)
         for i in range(8):
             self.Mouse.position = self.mouse_pos((1300,360))
