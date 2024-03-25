@@ -24,6 +24,8 @@ sra.map.mappath = "maps\\" + get_config("map_type")
 sra.map.map_list = get_config("map_list_data")
 sra.map.auto_map_list = get_config("auto_map_list_data")
 sra.calculated.fight_time = get_config("fight_time")
+sra.calculated.health_food = get_config("food")
+sra.calculated.reborn_food = get_config("food")
 # 清体力配置
 sra.dungeon.team_change = get_config("team_change")
 sra.dungeon.teamid = get_config("dungeon_team_id")
