@@ -53,15 +53,21 @@ def read_maplist_name(map_type="map"):
             map_name = data["name"]
         map_name_list.append(map_name)
     return map_name_list
-def read_picture(imgpath):
+def read_picture(imgname,prepath="picture"):
     """
     说明：
         读取图片
     参数：
         imgpath：图片名
+        prepath: 修补目录
     """
-    img = cv.imread(os.path.join(picture_dir,imgpath))
-    return img
+    imgpath = os.path.join(root_dir,prepath,imgname)
+    if os.path.exists(imgpath):
+        img = cv.imread(imgpath)
+        return img
+    else:
+        print(f"{imgpath}图片不存在")
+        return False
 
 def set_config(info:str,value):
     with open(os.path.join(root_dir,CONFIG_FILE_NAME),"r",encoding='utf-8') as f:
@@ -76,8 +82,6 @@ def get_config(info:str):
         info_list = data[info]
         return info_list
 class Config():
-    auto_map_list_data = []
-    auto_map_nums = 0
     character_id = 4
     dungeon_character_id = 1
     close_game = 0
@@ -92,7 +96,6 @@ class Config():
     fontfamily = "Microsoft YaHei UI"
     skill = False
     skill_food = False
-    auto_map_hide = True
     map_type = "map"
     proxy = "https://gh-proxy.com/"
     配置1 = []
@@ -116,6 +119,7 @@ class Config():
     task_dailytask = False
     food = False
     functional_sequence = ["commisson","supportrewards","dungeon","map","Universe","dailytask","rewards"]
+    compare_maps = False
 def check_config():
     config_path = os.path.join(root_dir,CONFIG_FILE_NAME)
     # 如果不存在先创建空白json

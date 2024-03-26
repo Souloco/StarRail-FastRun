@@ -87,15 +87,13 @@ def save_universe_config():
 # 保存配置
 def save_config():
     map_use_list = get_map_list(map_value_list)
-    auto_map_use_list = get_map_list(auto_map_value_list)
+    set_config("compare_maps",compare_map_Var.get())
     set_config("map_list_data",map_use_list)
-    set_config("auto_map_list_data",auto_map_use_list)
     set_config("team_id",teamid_sets.get())
     set_config("character_id",id_sets.get())
     set_config("team_change",team_change_var.get())
     set_config("img_log",img_log_Var.get())
     set_config("close_game",close_game_var.get())
-    set_config("auto_map_nums",auto_map_nums.get())
     set_config("skill",skill_var.get())
     set_config("skill_food",skill_food_var.get())
     set_config("run_change",run_change_var.get())
@@ -174,12 +172,11 @@ def allfunction_config():
 # 锄地配置启用
 def map_config():
     sra.map.map_list = get_map_list(map_value_list)
-    sra.map.auto_map_list = get_map_list(auto_map_value_list)
-    sra.map.calculated.img_log_value = img_log_Var.get()
+    sra.map.compare_maps = compare_map_Var.get()
+    sra.map.img_logs = img_log_Var.get()
     sra.map.team_change = team_change_var.get()
     sra.map.teamid = teamid_sets.get()
     sra.map.id = id_sets.get()
-    sra.map.nums = auto_map_nums.get()
     sra.map.skill = skill_var.get()
     sra.map.skill_food = skill_food_var.get()
     sra.map.run_change = run_change_var.get()
@@ -289,25 +286,6 @@ def hide_cmd():
         win32gui.ShowWindow(CMD, 0)  # 隐藏命令行窗口
     else:
         win32gui.ShowWindow(CMD, 1)  # 显示命令行窗口
-# 显隐重跑路线
-def hide_auto_map():
-    if auto_map_notebook.winfo_ismapped():
-        auto_map_label.grid_forget()
-        auto_map_notebook.grid_forget()
-        auto_map_btn1.grid_forget()
-        auto_map_btn2.grid_forget()
-        auto_map_btn3.grid_forget()
-        auto_map_btn4.grid_forget()
-        set_config("auto_map_hide",False)
-    else:
-        auto_map_label.grid(row=5,columnspan=5)
-        auto_map_notebook.grid(row=6,columnspan=5)
-        auto_map_btn1.grid(row=7,column=0)
-        auto_map_btn2.grid(row=7,column=1)
-        auto_map_btn3.grid(row=7,column=3)
-        auto_map_btn4.grid(row=7,column=4)
-        set_config("auto_map_hide",True)
-    root.update()
 if __name__ == '__main__':
     if not pyuac.isUserAdmin():
         pyuac.runAsAdmin()
@@ -437,43 +415,7 @@ if __name__ == '__main__':
     ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(map_value_list,1)).grid(row=4,column=1)
     ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],0)).grid(row=4,column=3)
     ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(map_value_list,0)).grid(row=4,column=4)
-    ttk.Button(hoe_frame,text='显隐重跑路线',width=10,command=hide_auto_map).grid(row=4,column=2)
-    # auto_notebook地图选项
-    auto_map_label = ttk.Label(hoe_frame,text='重跑路线',font=versionfont)
-    auto_map_notebook = ttk.Notebook(hoe_frame)
-    auto_map_tab_list = []
-    auto_map_value_list = []
-    auto_map_planet_value_list = []
-    auto_map_checkbutton_list = []
-    auto_map_list_data = get_config("auto_map_list_data")
-    for i in range(len(map_title)):
-        auto_map_tab_list.append(ttk.Frame(auto_map_notebook))
-        auto_map_notebook.add(auto_map_tab_list[i],text=map_title[i][0])
-        auto_map_planet_value_list.append([])
-    for i in range(len(map_list)):
-        planet_id = map_list[i][map_list[i].index('_') + 1:map_list[i].index('-')]
-        map_id = map_list[i][map_list[i].index('-') + 1:map_list[i].index('_',5)]
-        index_id = map_list[i][map_list[i].index('_',5) + 1:map_list[i].index('.')]
-        auto_map_value_list.append(tk.IntVar(value=0))
-        auto_map_planet_value_list[int(planet_id)-1].append(auto_map_value_list[i])
-        if map_list[i] in auto_map_list_data:
-            auto_map_value_list[i].set(1)
-        auto_map_checkbutton_list.append(ttk.Checkbutton(auto_map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=auto_map_value_list[i],onvalue=1,offvalue=0,width=12))
-        auto_map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
-    # 按钮
-    auto_map_btn1 = ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],1))
-    auto_map_btn2 = ttk.Button(hoe_frame,text='全部选择',width=10,command=lambda:set_map_value_list(auto_map_value_list,1))
-    auto_map_btn3 = ttk.Button(hoe_frame,text='单页清空',width=10,command=lambda:set_map_value_list(auto_map_planet_value_list[auto_map_notebook.index("current")],0))
-    auto_map_btn4 = ttk.Button(hoe_frame,text='全部清空',width=10,command=lambda:set_map_value_list(auto_map_value_list,0))
-    if get_config("auto_map_hide"):
-        hide_auto_map()
     # 锄大地配置
-    # 重跑次数
-    ttk.Label(hoe_frame,text='重跑次数:').grid(row=8,column=1,pady=5)
-    auto_map_nums = tk.IntVar()
-    auto_map_nums.set(get_config("auto_map_nums"))
-    auto_map_spinbox = ttk.Spinbox(hoe_frame,from_=0, to=10, increment=1,textvariable=auto_map_nums)
-    auto_map_spinbox.grid(row=8,column=2,pady=5)
     # 切换队伍
     teamid_sets = tk.IntVar()
     teamid_option_list = [1,2,3,4,5,6,7,8,9]
@@ -494,13 +436,16 @@ if __name__ == '__main__':
     food_var.set(get_config("food"))
     run_change_var = tk.BooleanVar()
     run_change_var.set(get_config("run_change"))
+    compare_map_Var = tk.BooleanVar()
+    compare_map_Var.set(get_config("compare_maps"))
     # 配置开关
-    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=9,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="秘技使用",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_var).grid(row=9,column=2,pady=5)
-    ttk.Checkbutton(hoe_frame,text="疾跑切换",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=run_change_var).grid(row=9,column=3,pady=5)
-    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=10,column=1)
-    ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var).grid(row=10,column=2)
-    ttk.Checkbutton(hoe_frame,text="战后吃药",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=food_var).grid(row=10,column=3)
+    ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=8,column=1,pady=5)
+    ttk.Checkbutton(hoe_frame,text="秘技使用",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_var).grid(row=8,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="疾跑切换",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=run_change_var).grid(row=8,column=3,pady=5)
+    ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=1,pady=5)
+    ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var).grid(row=9,column=2,pady=5)
+    ttk.Checkbutton(hoe_frame,text="战后吃药",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=food_var).grid(row=9,column=3,pady=5)
+    ttk.Checkbutton(hoe_frame,text="自动重跑",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=compare_map_Var).grid(row=10,column=1)
     ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=4,pady=5)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=4,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=4)

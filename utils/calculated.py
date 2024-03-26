@@ -29,8 +29,7 @@ class Calculated:
         self.screenshot = Screenhoot()
         # 列表比较
         self.compare_lists = lambda a, b: all(x <= y for x, y in zip(a, b))
-        # 图片logs是否记录
-        self.img_log_value = False
+
         # 战斗检测时间
         self.fight_time = 900
         # 药品状态
@@ -79,17 +78,18 @@ class Calculated:
             return screenshot[points[1]:points[3],points[0]:points[2]]
         return screenshot
 
-    def save_screenshot(self,name:str):
+    def save_screenshot(self,name:str,Compression=25):
         """
         说明:
             保存截图名字为name至log/image
         参数"
             name: 文件名字
+            Coompression:图片压缩质量
         """
-        if self.img_log_value:
-            left, top, right, bottom = self.get_WindowRect(self.hwnd)
-            screenshot = self.screenshot.grab(left,top)
-            cv.imwrite(f"./logs/image/{name}.jpg",screenshot,[cv.IMWRITE_JPEG_QUALITY, 25])
+        left, top, right, bottom = self.get_WindowRect(self.hwnd)
+        points = (0,0,1920,1025)
+        screenshot = self.screenshot.grab(left,top)
+        cv.imwrite(f"./logs/image/{name}.jpg",screenshot[points[1]:points[3],points[0]:points[2]],[cv.IMWRITE_JPEG_QUALITY, Compression])
 
     def img_match(self,img,templeimg):
         """
@@ -439,7 +439,7 @@ class Calculated:
         exB, exG, exR = expectedBGRColor
         return (abs(r - exR) <= tolerance) and (abs(g - exG) <= tolerance) and (abs(b - exB) <= tolerance)
 
-    def eatfood(self):
+    def eatfood(self,id):
         """
         说明:
             吃药
@@ -459,21 +459,25 @@ class Calculated:
                         time.sleep(0.5)
                         self.reborn_food = False
                         break
+            self.key_press(str(id),0.05)
+        # 没有药品退出
+        if not self.health_food:
+            return True
         # 低血量判断
         for i in range(4):
             # 血量非蓝判定
             if not self.pixelMatchesColor((1710,339+i*94),(252,254,132),12):
                 need_food = True
                 break
-        if need_food and self.health_food:
+        if need_food:
             # 打开背包
             if self.img_check("liaotian.png",(20,900,80,970),0.5):
                 self.Keyboard.press("b")
                 time.sleep(0.05)
                 self.Keyboard.release("b")
-                time.sleep(3)
+                time.sleep(2)
             # 食物灰色判定---进入食物页面
-            if not self.pixelMatchesColor((1022,76),(188, 186, 184),1):
+            if not self.pixelMatchesColor((1022,76),(188, 184, 184),3):
                 self.Mouse.position = self.mouse_pos((1020,70))
                 self.Mouse.click(mouse.Button.left)
             time.sleep(0.5)
@@ -483,15 +487,13 @@ class Calculated:
                 # 点击食物
                 if not self.img_click("food1.jpg",(122,117,1246,566),0.9):
                     self.img_click("food2.jpg",(122,117,1246,566),0.9)
-                time.sleep(1)
-                self.Mouse.position = self.mouse_pos((1628,986))
                 time.sleep(0.5)
+                self.Mouse.position = self.mouse_pos((1628,986))
                 self.Mouse.click(mouse.Button.left)
                 time.sleep(0.5)
                 for j in range(4):
                     # 血量非蓝判定
-                    print(self.get_pix_bgr((1190-j*140,531)))
-                    if not self.pixelMatchesColor((1190-j*140,531),(255,246,69),5):
+                    if not self.pixelMatchesColor((1180-j*140,532),(255,246,69),5):
                         # 点击人物
                         self.Mouse.position = self.mouse_pos((1190-j*140,450))
                         time.sleep(0.5)
@@ -505,9 +507,8 @@ class Calculated:
                                 time.sleep(1.5)
                             else:
                                 break
-                # 返回主界面
-                self.goto_main_interface()
-            return self.health_food
+            # 返回主界面
+            self.goto_main_interface()
 
     def fighting(self,mode=1):
         if mode == 1:   # 打怪
@@ -570,7 +571,6 @@ class Calculated:
         if not self.img_check("liaotian.png",(20,900,80,970),0.5):
             log.info("等待战斗结束")
             self.wait_main_interface()
-            self.eatfood()
 
     def interaction(self,mode:str = ["w","a","s","d"]):
         """

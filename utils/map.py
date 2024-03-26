@@ -1,6 +1,6 @@
 import win32gui
 import time
-from .config import read_json_info,message
+from .config import read_json_info,message,read_picture
 from .calculated import Calculated
 from .log import log
 from pynput import mouse
@@ -12,7 +12,6 @@ class Map:
         self.team_change = False
         self.teamid = 1
         self.id = 1
-        self.nums = 0
         self.skill = True
         self.skill_food = True
         self.mappath = "maps\\map"
@@ -21,6 +20,8 @@ class Map:
         self.map_list = []
         self.auto_map_list = []
         self.mapid = "map_0-0_0"
+        self.img_logs = False
+        self.compare_maps = False
 
     def Enter_map_start(self,mapjson):
         """
@@ -39,11 +40,15 @@ class Map:
                     # 激活窗口
                     win32gui.SetForegroundWindow(self.calculated.hwnd)
                     self.calculated.wait_main_interface()
-                    if not self.calculated.ocr_check(map_name,(0,0,200,40),1,mode=2):
-                        # 进入地图
-                        self.calculated.open_map()
+                    check_mapname_flag = self.calculated.ocr_check(map_name,(0,0,200,40),1,mode=2)
+                    # 进入地图
+                    self.calculated.open_map()
+                    if self.compare_maps:
                         # 截图记录
-                        self.calculated.save_screenshot(f"{self.mapid}-map")
+                        self.calculated.save_screenshot(f"{self.mapid}-map",100)
+                        # 截图比较是否需要重新跑图
+                        self.compare_map(self.mapid)
+                    if not check_mapname_flag:
                         # 进入星球
                         if self.planetid != planet_id:
                             self.planetid = planet_id
@@ -81,11 +86,6 @@ class Map:
                             else:
                                 break
                         self.calculated.img_click(map_name_dir,(1420,180,1890,1020),2)
-                    else:
-                        # 进入地图
-                        self.calculated.open_map()
-                        # 截图记录
-                        self.calculated.save_screenshot(f"{self.mapid}-map")
                     if value != "":
                         # 进入层数
                         log.info(f"进入{value}层")
@@ -108,6 +108,19 @@ class Map:
                         self.calculated.change_team(0,self.id)
                 else:
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
+
+    def compare_map(self,mapid):
+        """
+        说明:
+            比较地图
+        """
+        img1 = read_picture(f"{mapid}-map.jpg","logs\\image")
+        img2 = read_picture(f"{mapid}-map.jpg","logs\\compare")
+        if not (img1 is False or img2 is False):
+            max_val,loc = self.calculated.img_match(img1,img2)
+            if max_val < 0.95:
+                self.auto_map_list.append(f"{mapid}.json")
+                log.info(f"{mapid}需要重新跑图")
 
     def find_transfer_point(self,key):
         """
@@ -150,8 +163,8 @@ class Map:
         说明：
             寻找楼层
         """
-        self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
-        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),1,rates=0.95)
+        # self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
+        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),1,rates=0.85)
 
     def Enter_map_fighting(self,mapjson):
         """
@@ -176,6 +189,7 @@ class Map:
                     self.skill_food = self.calculated.use_skill(self.skill_food,value)
                 elif key == "fighting":
                     self.calculated.fighting(value)
+                    self.calculated.eatfood(self.id)
                 elif key == "mouse_move":
                     self.calculated.mouse_move(value)
                 elif key == "loc_angle":
@@ -188,8 +202,9 @@ class Map:
                 elif key == "delay":
                     time.sleep(value)
             # logtime = time.strftime("%m-%d-%H-%M-%S",time.localtime())
-            step_num += 1
-            self.calculated.save_screenshot(f"{map_name}-{step_num}-{key}")
+            if self.img_logs:
+                step_num += 1
+                self.calculated.save_screenshot(f"{map_name}-{step_num}-{key}")
         self.mapid = map_name
 
     def Enter_map_onejson(self,mapjson):
@@ -243,10 +258,9 @@ class Map:
         self.map_init()
         log.info("锄大地---必跑路线")
         self.Enter_map_jsonlist(self.map_list)
+        log.info(f"锄大地---识别到的重跑路线{self.auto_map_list}")
         log.info("锄大地---重跑路线")
-        for i in range(self.nums):
-            self.mapid = "map_0-0_0"
-            self.Enter_map_jsonlist(self.auto_map_list)
+        self.Enter_map_jsonlist(self.auto_map_list)
         if self.run_change:
             log.info("锄大地---疾跑模式切换")
             self.calculated.run_change(0)
