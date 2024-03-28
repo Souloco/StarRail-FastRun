@@ -13,7 +13,6 @@ class Map:
         self.teamid = 1
         self.id = 1
         self.skill = True
-        self.skill_food = True
         self.mappath = "maps\\map"
         self.planetid = 0
         self.run_change = False
@@ -96,11 +95,11 @@ class Map:
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
                 elif key == "transfer":
                     log.info("进行传送")
-                    if not self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value):
+                    if not self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=value):
                         self.calculated.img_click("transfer1.jpg",overtime=0.5)
                         self.calculated.img_click("transfer2.jpg",overtime=0.5)
                         self.calculated.img_click("transfer3.png",overtime=0.5)
-                        self.calculated.img_click("transfer.jpg",(1470,945,1840,1000),overtime=value)
+                        self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=value)
                     time.sleep(3)
                     self.calculated.check_main_interface()
                     # 复活切换远程角色
@@ -185,8 +184,10 @@ class Map:
                     self.calculated.Keyboard.release(Key.shift_l)
                 if key in ["W","S","A","D"]:
                     self.calculated.key_press(key.lower(),value)
-                elif key == "e" and self.skill:
-                    self.skill_food = self.calculated.use_skill(self.skill_food,value)
+                elif key == "E":
+                    self.calculated.use_huangquan_skill(*value)
+                elif key == "e":
+                    self.calculated.use_skill(value)
                 elif key == "fighting":
                     self.calculated.fighting(value)
                     self.calculated.eatfood(self.id)
@@ -260,6 +261,8 @@ class Map:
         self.Enter_map_jsonlist(self.map_list)
         log.info(f"锄大地---识别到的重跑路线{self.auto_map_list}")
         log.info("锄大地---重跑路线")
+        self.mapid = "map_0-0_0"
+        self.compare_maps = False
         self.Enter_map_jsonlist(self.auto_map_list)
         if self.run_change:
             log.info("锄大地---疾跑模式切换")

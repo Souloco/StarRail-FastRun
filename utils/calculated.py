@@ -35,6 +35,7 @@ class Calculated:
         # 药品状态
         self.reborn_food = True
         self.health_food = True
+        self.skill_food = True
 
     def get_hwnd(self):
         self.hwnd = win32gui.FindWindow("UnityWndClass","崩坏：星穹铁道")
@@ -610,11 +611,11 @@ class Calculated:
                 else:
                     self.img_click("map_4-1_point_6.png",overtime=1.5)
                 break
-            # 界域定锚退出
-            if self.img_click("exit.jpg",overtime=0.5):
-                break
-            time.sleep(3)
+            # 气泡弹珠交互
+            self.img_click("space.jpg",(1110,920,1210,1020),overtime=0.5)
+            time.sleep(2.5)
             if time.time() - start_time > 30:
+                self.img_click("exit.jpg",overtime=0.5)
                 return False
         time.sleep(2)   # 等待人物模型出现
         return True
@@ -631,8 +632,9 @@ class Calculated:
             self.Keyboard.release("m")
             # 稚子的梦返回地图界面
             self.Mouse.position = self.mouse_pos((250,900))
-            time.sleep(1.0)
-            self.img_click("return.jpg",overtime=1.5,rates=0.85)
+            time.sleep(1)
+            self.ocr_click("返回",(1700,110,1800,150),1)
+            # self.img_click("return.jpg",overtime=1.5,rates=0.85)
 
     def release_mouse_keyboard(self):
         """
@@ -730,35 +732,50 @@ class Calculated:
                 self.Mouse.click(mouse.Button.left)
                 time.sleep(1.5)
 
-    def use_skill(self,food:bool = True,skill_time=1):
+    def use_huangquan_skill(self,nums,move_key="w"):
+        """
+        说明:
+            黄泉使用秘技
+        """
+        self.Keyboard.press(move_key)
+        for i in range(nums):
+            self.use_skill(0.35)
+            # 地图蓝色箭头---战斗判断
+            if not self.pixelMatchesColor((140,150),(255,198,0),5):
+                self.Keyboard.release(move_key)
+                self.wait_fight_end()
+                self.Keyboard.press(move_key)
+        self.Keyboard.release(move_key)
+
+    def use_skill(self,skill_time=1):
         """
         说明:
             使用秘技
         """
-        log.info("使用秘技")
         if self.has_purple((1650,850,1800,880)):
-            if food:
+            if self.skill_food:
                 self.Keyboard.press('e')
                 time.sleep(0.1)
                 self.Keyboard.release('e')
                 if self.img_click("sure.jpg",overtime=0.5):
+                    time.sleep(0.5)
+                    self.Mouse.click(mouse.Button.left)
+                    time.sleep(0.7)
                     self.img_click("exit3.jpg",overtime=0.5)
                     self.img_check("liaotian.png",(20,900,80,970),1)
                     self.Keyboard.press('e')
                     time.sleep(0.1)
                     self.Keyboard.release('e')
                     time.sleep(skill_time)
-                    return True
                 else:
                     self.img_click("exit3.jpg",overtime=0.5)
                     if self.img_check("liaotian.png",(20,900,80,970),1):
-                        return False
+                        self.skill_food = False
         else:
             self.Keyboard.press('e')
             time.sleep(0.1)
             self.Keyboard.release('e')
             time.sleep(skill_time)
-        return food
 
     def run_change(self,mode:int = 1):
         """
@@ -848,7 +865,7 @@ class Calculated:
         elif rotate_angle < -180:
             rotate_angle += 360
         # print(angle_now,rotate_angle,6150*rotate_angle/360)
-        self.mouse_move(6150*rotate_angle/360)
+        self.mouse_move(6160*rotate_angle/360)
         log.info(f"校准角度{angle}旋转了{rotate_angle}")
 
     def map_pos(self,mappath:str):

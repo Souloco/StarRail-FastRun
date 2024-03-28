@@ -178,13 +178,13 @@ def map_config():
     sra.map.teamid = teamid_sets.get()
     sra.map.id = id_sets.get()
     sra.map.skill = skill_var.get()
-    sra.map.skill_food = skill_food_var.get()
     sra.map.run_change = run_change_var.get()
     sra.map.planetid = 0
     sra.map.mapid = "map_0-0_0"
     sra.calculated.fight_time = fight_time.get()
     sra.calculated.health_food = food_var.get()
     sra.calculated.reborn_food = food_var.get()
+    sra.calculated.skill_food = skill_food_var.get()
 # 副本配置启用
 def dungeon_config():
     sra.dungeon.team_change = team_change_var.get()
@@ -383,7 +383,7 @@ if __name__ == '__main__':
     ttk.Label(hoe_frame,text=VER,font=versionfont).grid(columnspan=5)
     map_type = get_config("map_type")
     sra.map.mappath = f"maps\\{map_type}"
-    ttk.Label(hoe_frame,text=f'必跑路线---{map_type.replace("yukongmap","驭空路线").replace("map","通用路线")}',font=versionfont).grid(columnspan=5)
+    ttk.Label(hoe_frame,text=f'必跑路线---{map_type.replace("huangquan","黄泉路线").replace("map","通用路线")}',font=versionfont).grid(columnspan=5)
     # notebook地图选项
     map_list = read_map(map_type)
     map_title = [('空间站「黑塔」',1),('雅利洛-VI',2),('仙舟「罗浮」',3),('匹诺康尼',4)]    # 星球选项

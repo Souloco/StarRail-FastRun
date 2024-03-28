@@ -1,7 +1,7 @@
 '''
 author: Souloco
 modify: Klamist
-2024-3-1 18:30:11
+2024-3-28 13:35:30
 StarRail-FastRun的map.json录制脚本，保存在map/save
 不要同时按多个键，疾跑先按住shift或鼠标右键再赶路（转弯时注意衔接不要掉速）
 鼠标操作请使用攻击键、转向键（绝对转向时可先用鼠标瞄准）
@@ -91,7 +91,7 @@ def on_release(key):
             if key.char == use_key:  # 交互键参数使用上一步位移的方向
                 last_way, = key_event_list[-1]
                 last_time, = key_event_list[-1].values()
-                if last_time < 0.15 and last_way in ['w','a','s','d']:  # 若提前超短位移，就替换为蹭f
+                if last_time < 0.45 and last_way in ['w','a','s','d']:  # 若提前超短位移，就替换为蹭f
                     del key_event_list[-1]
                     key_event_list.append({"f": last_way})
                     print(f"f 朝{last_way}方向蹭交互")
