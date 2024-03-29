@@ -163,7 +163,8 @@ class Map:
             寻找楼层
         """
         # self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
-        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),1,rates=0.85)
+        time.sleep(1)
+        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),2.0,rates=0.85)
 
     def Enter_map_fighting(self,mapjson):
         """
@@ -186,7 +187,7 @@ class Map:
                     self.calculated.key_press(key.lower(),value)
                 elif key == "E":
                     self.calculated.use_huangquan_skill(*value)
-                elif key == "e":
+                elif key == "e" and self.skill:
                     self.calculated.use_skill(value)
                 elif key == "fighting":
                     self.calculated.fighting(value)

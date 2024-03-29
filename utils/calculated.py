@@ -253,7 +253,7 @@ class Calculated:
             self.Mouse.release(mouse.Button.left)
             return True
         else:
-            log.warning(f"OCR点击失败-{rate}")
+            # log.warning(f"OCR点击失败-{rate}")
             return False
 
     def ocr_check(self,text:str,points=(0,0,0,0),overtime=5.0,rates=0.1,mode=1):
@@ -539,11 +539,10 @@ class Calculated:
         return True
 
     def goto_main_interface(self):
-        while not self.img_check("liaotian.png",(20,900,80,970),1):
+        while not self.img_check("liaotian.png",(20,900,80,970),1.5):
             self.Keyboard.press(Key.esc)
             time.sleep(0.05)
             self.Keyboard.release(Key.esc)
-            time.sleep(1)
 
     def check_main_interface(self):
         log.info("强制在主界面")
@@ -739,11 +738,12 @@ class Calculated:
         """
         self.Keyboard.press(move_key)
         for i in range(nums):
-            self.use_skill(0.35)
+            self.use_skill(0.25)
             # 地图蓝色箭头---战斗判断
-            if not self.pixelMatchesColor((140,150),(255,198,0),5):
+            if not self.pixelMatchesColor((140,150),(255,195,6),10):
+                print("进入战斗")
                 self.Keyboard.release(move_key)
-                self.wait_fight_end()
+                self.wait_main_interface()
                 self.Keyboard.press(move_key)
         self.Keyboard.release(move_key)
 
@@ -752,30 +752,29 @@ class Calculated:
         说明:
             使用秘技
         """
-        if self.has_purple((1650,850,1800,880)):
-            if self.skill_food:
-                self.Keyboard.press('e')
-                time.sleep(0.1)
-                self.Keyboard.release('e')
-                if self.img_click("sure.jpg",overtime=0.5):
-                    time.sleep(0.5)
-                    self.Mouse.click(mouse.Button.left)
-                    time.sleep(0.7)
-                    self.img_click("exit3.jpg",overtime=0.5)
-                    self.img_check("liaotian.png",(20,900,80,970),1)
-                    self.Keyboard.press('e')
-                    time.sleep(0.1)
-                    self.Keyboard.release('e')
-                    time.sleep(skill_time)
-                else:
-                    self.img_click("exit3.jpg",overtime=0.5)
-                    if self.img_check("liaotian.png",(20,900,80,970),1):
-                        self.skill_food = False
-        else:
+        if self.pixelMatchesColor((1720,857),(255,250,255),5):
             self.Keyboard.press('e')
             time.sleep(0.1)
             self.Keyboard.release('e')
             time.sleep(skill_time)
+        elif self.skill_food:
+            self.Keyboard.press('e')
+            time.sleep(0.1)
+            self.Keyboard.release('e')
+            if self.img_click("sure.jpg",overtime=0.5):
+                time.sleep(0.5)
+                self.Mouse.click(mouse.Button.left)
+                time.sleep(0.7)
+                self.img_click("exit3.jpg",overtime=0.5)
+                self.img_check("liaotian.png",(20,900,80,970),1)
+                self.Keyboard.press('e')
+                time.sleep(0.1)
+                self.Keyboard.release('e')
+                time.sleep(skill_time)
+            else:
+                self.img_click("exit3.jpg",overtime=0.5)
+                if self.img_check("liaotian.png",(20,900,80,970),1):
+                    self.skill_food = False
 
     def run_change(self,mode:int = 1):
         """
