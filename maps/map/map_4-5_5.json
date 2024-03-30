@@ -194,6 +194,12 @@
       "s": 1.9061249000005773
     },
     {
+      "fighting": 2
+    },
+    {
+      "fighting": 2
+    },
+    {
       "a": 1.9
     },
     {
@@ -245,10 +251,10 @@
       "d": 0.5
     },
     {
-      "fighting": 1
+      "fighting": 2
     },
     {
-      "fighting": 2
+      "fighting": 1
     },
     {
       "fighting": 1

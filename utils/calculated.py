@@ -29,7 +29,6 @@ class Calculated:
         self.screenshot = Screenhoot()
         # 列表比较
         self.compare_lists = lambda a, b: all(x <= y for x, y in zip(a, b))
-
         # 战斗检测时间
         self.fight_time = 900
         # 药品状态
@@ -752,7 +751,7 @@ class Calculated:
         说明:
             使用秘技
         """
-        if self.pixelMatchesColor((1720,857),(255,250,255),5):
+        if not self.pixelMatchesColor((1720,857),(80,80,80),100):
             self.Keyboard.press('e')
             time.sleep(0.1)
             self.Keyboard.release('e')
@@ -771,10 +770,9 @@ class Calculated:
                 time.sleep(0.1)
                 self.Keyboard.release('e')
                 time.sleep(skill_time)
-            else:
-                self.img_click("exit3.jpg",overtime=0.5)
-                if self.img_check("liaotian.png",(20,900,80,970),1):
-                    self.skill_food = False
+            elif self.img_click("exit3.jpg",overtime=0.5):
+                self.skill_food = False
+                self.img_check("liaotian.png",(20,900,80,970),1.5)
 
     def run_change(self,mode:int = 1):
         """

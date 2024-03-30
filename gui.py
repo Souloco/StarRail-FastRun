@@ -383,7 +383,7 @@ if __name__ == '__main__':
     ttk.Label(hoe_frame,text=VER,font=versionfont).grid(columnspan=5)
     map_type = get_config("map_type")
     sra.map.mappath = f"maps\\{map_type}"
-    ttk.Label(hoe_frame,text=f'必跑路线---{map_type.replace("huangquan","黄泉路线").replace("map","通用路线")}',font=versionfont).grid(columnspan=5)
+    ttk.Label(hoe_frame,text=f'{map_type.replace("huangquan","黄泉路线").replace("map","通用路线")}',font=versionfont).grid(columnspan=5)
     # notebook地图选项
     map_list = read_map(map_type)
     map_title = [('空间站「黑塔」',1),('雅利洛-VI',2),('仙舟「罗浮」',3),('匹诺康尼',4)]    # 星球选项
