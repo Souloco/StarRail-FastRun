@@ -92,6 +92,7 @@ class Map:
                 elif "point" in key:
                     log.info("寻找传送点")
                     self.find_transfer_point(key)
+                    time.sleep(0.5)
                     self.calculated.img_click(key,(0,0,0,0),overtime=value)
                 elif key == "transfer":
                     log.info("进行传送")
