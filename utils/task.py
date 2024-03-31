@@ -46,8 +46,8 @@ class Task:
         maxtime = 100
         self.open_esc()
         self.calculated.ocr_click(text='委托',points=(1700,395,1755,430))
-        while self.calculated.ocr_check(text='委托',points=(100,0,170,70),overtime=2) and self.calculated.img_click('red_notice.jpg',overtime=5,rates=0.80) and time.time() - starttime < maxtime:
-            if self.calculated.ocr_click(text='领取',points=(1460,880,1520,920),overtime=2):
+        while self.calculated.ocr_check(text='委托',points=(100,0,170,70),overtime=2) and self.calculated.img_check('red_notice.jpg',overtime=5,rates=0.80) and time.time() - starttime < maxtime:
+            if self.calculated.ocr_click(text='一键领取',points=(430,880,560,920),overtime=2):
                 self.calculated.ocr_click(text='再次派遣',points=(1170,930,1300,960),overtime=2,mode=2)
         self.close_esc()
 

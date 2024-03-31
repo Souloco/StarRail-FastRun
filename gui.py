@@ -583,7 +583,7 @@ if __name__ == '__main__':
     close_game_var.set(get_config("close_game"))
     ttk.Checkbutton(allframe,text="清体力",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_dungeon_var).grid(row=2,column=3,pady=5)
     ttk.Checkbutton(allframe,text="锄大地",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_map_var).grid(row=3,column=3,pady=5)
-    ttk.Checkbutton(allframe,text="委托开关",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_commission_var).grid(row=4,column=0,pady=5)
+    ttk.Checkbutton(allframe,text="委托奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_commission_var).grid(row=4,column=0,pady=5)
     ttk.Checkbutton(allframe,text="支援奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_supportrewards_var).grid(row=4,column=1,pady=5)
     ttk.Checkbutton(allframe,text="每日实训",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_dailytask_var).grid(row=4,column=2,pady=5)
     ttk.Checkbutton(allframe,text="无名勋礼",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_rewards_var).grid(row=4,column=3,pady=5)

@@ -738,8 +738,9 @@ class Calculated:
         self.Keyboard.press(move_key)
         for i in range(nums):
             self.use_skill(0.25)
-            # 地图蓝色箭头---战斗判断
-            if not self.pixelMatchesColor((140,150),(255,195,6),10):
+            # 手机白色---战斗判断
+            print("战斗判断:",self.get_pix_bgr((40,65)))
+            if not self.pixelMatchesColor((40,65),(229,229,229),10):
                 print("进入战斗")
                 self.Keyboard.release(move_key)
                 self.wait_main_interface()
@@ -751,19 +752,22 @@ class Calculated:
         说明:
             使用秘技
         """
-        if not self.pixelMatchesColor((1720,857),(80,80,80),100):
+        print("秘技判断:",self.get_pix_bgr((1765,865)))
+        # 秘技用尽紫色判断
+        if not self.pixelMatchesColor((1765,865),(206,132,147),10):
             self.Keyboard.press('e')
             time.sleep(0.1)
             self.Keyboard.release('e')
             time.sleep(skill_time)
         elif self.skill_food:
+            print("进入食物判断")
             self.Keyboard.press('e')
             time.sleep(0.1)
             self.Keyboard.release('e')
             if self.img_click("sure.jpg",overtime=0.5):
-                time.sleep(0.5)
-                self.Mouse.click(mouse.Button.left)
-                time.sleep(0.7)
+                # time.sleep(0.5)
+                # self.Mouse.click(mouse.Button.left)
+                # time.sleep(0.7)
                 self.img_click("exit3.jpg",overtime=0.5)
                 self.img_check("liaotian.png",(20,900,80,970),1)
                 self.Keyboard.press('e')
