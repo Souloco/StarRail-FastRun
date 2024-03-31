@@ -833,7 +833,7 @@ class Calculated:
         time.sleep(0.2)
         self.Keyboard.release('w')
         time.sleep(0.6)
-        arrow = read_picture("arrow.jpg")
+        arrow = read_picture("arrow.png")
         img = self.take_screenshot((120,135,160,175))
         hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)  # 转HSV
         # 设置蓝色提取范围
@@ -841,7 +841,7 @@ class Calculated:
         upper = np.array([98, 255, 255])
         mask = cv.inRange(hsv, lower, upper)  # 创建掩膜
         arrow_now = cv.bitwise_and(img,img, mask=mask)
-        # cv.imwrite("arrow.jpg",arrow_now)
+        # cv.imwrite("arrow.png",arrow_now)
         best_val = 0.00
         angle = 0
         for i in range(360):
