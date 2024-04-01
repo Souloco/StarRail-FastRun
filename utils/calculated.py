@@ -765,9 +765,7 @@ class Calculated:
             time.sleep(0.1)
             self.Keyboard.release('e')
             if self.img_click("sure.jpg",overtime=0.5):
-                # time.sleep(0.5)
-                # self.Mouse.click(mouse.Button.left)
-                # time.sleep(0.7)
+                time.sleep(0.7)
                 self.img_click("exit3.jpg",overtime=0.5)
                 self.img_check("liaotian.png",(20,900,80,970),1)
                 self.Keyboard.press('e')
