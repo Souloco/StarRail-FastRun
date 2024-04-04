@@ -737,9 +737,9 @@ class Calculated:
         """
         self.Keyboard.press(move_key)
         for i in range(nums):
-            self.use_skill(0.25)
+            self.use_skill(0.26)
             # 手机白色---战斗判断
-            print("战斗判断:",self.get_pix_bgr((40,65)))
+            # print("战斗判断:",self.get_pix_bgr((40,65)))
             if not self.pixelMatchesColor((40,65),(229,229,229),10):
                 print("进入战斗")
                 self.Keyboard.release(move_key)
@@ -760,7 +760,6 @@ class Calculated:
             self.Keyboard.release('e')
             time.sleep(skill_time)
         elif self.skill_food:
-            print("进入食物判断")
             self.Keyboard.press('e')
             time.sleep(0.1)
             self.Keyboard.release('e')

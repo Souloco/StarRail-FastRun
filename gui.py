@@ -440,15 +440,23 @@ if __name__ == '__main__':
     compare_map_Var.set(get_config("compare_maps"))
     # 配置开关
     ttk.Checkbutton(hoe_frame,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=8,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="秘技使用",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_var).grid(row=8,column=2,pady=5)
+    skill_btn = ttk.Checkbutton(hoe_frame,text="秘技使用",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_var)
+    skill_btn.grid(row=8,column=2,pady=5)
     ttk.Checkbutton(hoe_frame,text="疾跑切换",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=run_change_var).grid(row=8,column=3,pady=5)
     ttk.Checkbutton(hoe_frame,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=9,column=1,pady=5)
-    ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var).grid(row=9,column=2,pady=5)
+    skill_food_btn = ttk.Checkbutton(hoe_frame,text="秘技食物",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_food_var)
+    skill_food_btn.grid(row=9,column=2,pady=5)
     ttk.Checkbutton(hoe_frame,text="战后吃药",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=food_var).grid(row=9,column=3,pady=5)
     ttk.Checkbutton(hoe_frame,text="自动重跑",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=compare_map_Var).grid(row=10,column=1)
     ttk.Button(hoe_frame,text='确定',width=10,command=lambda:Enter_logframe(1)).grid(row=8,column=4,pady=5)
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=4,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=4)
+    # 黄泉路线前置配置
+    if map_type == "huangquan":
+        skill_var.set(True)
+        skill_food_var.set(True)
+        skill_btn.state(['disabled'])
+        skill_food_btn.state(['disabled'])
 
     # 日志页面
     logframe = ttk.Frame(root)
