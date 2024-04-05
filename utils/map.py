@@ -236,7 +236,6 @@ class Map:
             self.Enter_map_onejson(mapjson)
 
     def map_init(self):
-        log.info("地图初始化")
         self.calculated.open_map()
         self.calculated.img_click("map_init_2.jpg",(600,970,660,1000))
         while not self.calculated.img_check("map_init_1.jpg",(660,970,695,1000),0.5):
