@@ -96,3 +96,19 @@ class Task:
         if self.calculated.img_click('red_notice.jpg',overtime=3,rates=0.80):
             self.calculated.ocr_click(text='领取',points=(1330,880,1750,940),overtime=2,mode=2)
         self.close_esc()
+
+    def make_skillfood(self):
+        log.info("合成奇巧零食")
+        self.open_esc()
+        starttime = time.time()
+        maxtime = 15
+        self.calculated.ocr_click(text='合成',points=(1575,525,1625,565))
+        while not self.calculated.ocr_check(text='奇巧零食',points=(1020,160,1175,210),overtime=1.5) and time.time() - starttime < maxtime:
+            self.calculated.img_click('food3.jpg')
+        if self.calculated.ocr_check(text='奇巧零食',points=(1020,160,1175,210),overtime=1.5):
+            self.calculated.Mouse.position = self.calculated.mouse_pos((1435,870))
+            self.calculated.mouse_click()
+            if self.calculated.ocr_click(text='合成',points=(1150,965,1210,1000)):
+                self.calculated.img_click("sure.jpg")
+                time.sleep(0.5)
+        self.close_esc()

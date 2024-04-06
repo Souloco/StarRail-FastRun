@@ -96,6 +96,8 @@ class Config():
     fontfamily = "Microsoft YaHei UI"
     skill = False
     skill_food = False
+    skill_make = False
+    skill_buy = False
     map_type = "map"
     proxy = "https://gh-proxy.com/"
     配置1 = []
