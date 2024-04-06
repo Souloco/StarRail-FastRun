@@ -403,13 +403,12 @@ if __name__ == '__main__':
         planet_id = map_list[i][map_list[i].index('_') + 1:map_list[i].index('-')]
         map_id = map_list[i][map_list[i].index('-') + 1:map_list[i].index('_',5)]
         index_id = map_list[i][map_list[i].index('_',5) + 1:map_list[i].index('.')]
-        if map_id != '0':
-            map_value_list.append(tk.IntVar(value=0))
-            map_planet_value_list[int(planet_id)-1].append(map_value_list[i])
-            if map_list[i] in map_list_data:
-                map_value_list[i].set(1)
-            map_checkbutton_list.append(ttk.Checkbutton(map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=map_value_list[i],onvalue=1, offvalue=0,width=12))
-            map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
+        map_value_list.append(tk.IntVar(value=0))
+        map_planet_value_list[int(planet_id)-1].append(map_value_list[i])
+        if map_list[i] in map_list_data:
+            map_value_list[i].set(1)
+        map_checkbutton_list.append(ttk.Checkbutton(map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=map_value_list[i],onvalue=1, offvalue=0,width=12))
+        map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     map_notebook.grid(columnspan=5)
     # 按钮
     ttk.Button(hoe_frame,text='单页选择',width=10,command=lambda:set_map_value_list(map_planet_value_list[map_notebook.index("current")],1)).grid(row=4,column=0)
