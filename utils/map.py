@@ -167,6 +167,16 @@ class Map:
         time.sleep(1)
         self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),2.0,rates=0.85)
 
+    def skill_buy(self):
+        path = self.mappath
+        self.mappath = "maps\\special"
+        log.info("执行零食购买")
+        self.map_init()
+        mapjson = "map_3-0_1.json"
+        self.Enter_map_start(mapjson)
+        self.Enter_map_fighting(mapjson)
+        self.mappath = path
+
     def Enter_map_fighting(self,mapjson):
         """
         说明:

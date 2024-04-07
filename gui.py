@@ -167,6 +167,9 @@ def allfunction_config():
     sra.task.rewards_flag = task_rewards_var.get()
     # 功能序列配置
     sra.functional_sequence = get_config("functional_sequence")
+    # 零食购买与合成配置
+    sra.skill_buy_flag = skill_buy_var.get()
+    sra.skill_make_flag = skill_make_var.get()
     # 自动关机配置启用
     sra.close_game = close_game_var.get()
 # 锄地配置启用
@@ -230,6 +233,8 @@ def save_all_config():
     set_config("task_supportrewards",task_supportrewards_var.get())
     set_config("task_dailytask",task_dailytask_var.get())
     set_config("task_rewards",task_rewards_var.get())
+    set_config("skill_buy",skill_buy_var.get())
+    set_config("skill_make",skill_make_var.get())
 # 应用与保存gui配置项
 def save_gui_config():
     defaultfont.configure(family=fontfamilt_sets.get(),size=font_sizes.get())
@@ -586,6 +591,11 @@ if __name__ == '__main__':
     task_dailytask_var.set(get_config("task_dailytask"))
     task_rewards_var = tk.BooleanVar()
     task_rewards_var.set(get_config("task_rewards"))
+    # 零食购买与合成功能
+    skill_buy_var = tk.BooleanVar()
+    skill_buy_var.set(get_config("skill_buy"))
+    skill_make_var = tk.BooleanVar()
+    skill_make_var.set(get_config("skill_buy"))
     # 自动关机功能执行
     close_game_var = tk.IntVar()
     close_game_var.set(get_config("close_game"))
@@ -595,14 +605,16 @@ if __name__ == '__main__':
     ttk.Checkbutton(allframe,text="支援奖励",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_supportrewards_var).grid(row=4,column=1,pady=5)
     ttk.Checkbutton(allframe,text="每日实训",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_dailytask_var).grid(row=4,column=2,pady=5)
     ttk.Checkbutton(allframe,text="无名勋礼",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=task_rewards_var).grid(row=4,column=3,pady=5)
-    ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=5,column=0,pady=5)
-    ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=5,column=1,pady=5)
+    ttk.Checkbutton(allframe,text="零食购买",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_buy_var).grid(row=5,column=0,pady=5)
+    ttk.Checkbutton(allframe,text="零食合成",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=skill_make_var).grid(row=5,column=1,pady=5)
+    ttk.Checkbutton(allframe,text="切换队伍",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=team_change_var).grid(row=5,column=2,pady=5)
+    ttk.Checkbutton(allframe,text="截图记录",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=img_log_Var).grid(row=5,column=3,pady=5)
     if u_flag:
-        ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=5,column=2,pady=5)
-    ttk.Radiobutton(allframe, text="禁止", variable=close_game_var, value=0).grid(row=6,column=0,pady=5)
-    ttk.Radiobutton(allframe, text="关闭", variable=close_game_var, value=1).grid(row=6,column=1,pady=5)
-    ttk.Radiobutton(allframe, text="关机", variable=close_game_var, value=2).grid(row=6,column=2,pady=5)
-    ttk.Radiobutton(allframe, text="注销", variable=close_game_var, value=3).grid(row=6,column=3,pady=5)
+        ttk.Checkbutton(allframe,text="模拟宇宙",style="Switch.TCheckbutton",onvalue=True,offvalue=False,variable=auto_universe_var).grid(row=6,column=0,pady=5)
+    ttk.Radiobutton(allframe, text="禁止", variable=close_game_var, value=0).grid(row=7,column=0,pady=5)
+    ttk.Radiobutton(allframe, text="关闭", variable=close_game_var, value=1).grid(row=7,column=1,pady=5)
+    ttk.Radiobutton(allframe, text="关机", variable=close_game_var, value=2).grid(row=7,column=2,pady=5)
+    ttk.Radiobutton(allframe, text="注销", variable=close_game_var, value=3).grid(row=7,column=3,pady=5)
     if u_flag:
         ttk.Label(allframe,text=sra.u_text).grid(columnspan=4)
     ttk.Button(allframe,text='确定',width=10,command=lambda:Enter_logframe(3)).grid(columnspan=4,pady=5)

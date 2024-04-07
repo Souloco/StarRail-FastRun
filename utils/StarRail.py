@@ -34,6 +34,9 @@ class StarRail:
         self.close_game = 0
         # 功能执行序列
         self.functional_sequence = []
+        # 零食合成
+        self.skill_buy_flag = False
+        self.skill_make_flag = False
 
     def allfunction(self):
         """
@@ -51,6 +54,12 @@ class StarRail:
             # 清体力执行
             elif function == "dungeon" and self.dungeon_flag:
                 self.dungeon.start()
+            # 零食购买执行
+            elif function == "skill_buy" and self.skill_buy_flag:
+                self.map.skill_buy()
+            # 零食合成执行
+            elif function == "skill_make" and self.skill_make_flag:
+                self.task.make_skillfood()
             # 锄大地执行
             elif function == "map" and self.map_flag:
                 self.map.start()

@@ -120,7 +120,7 @@ class Config():
     task_rewards = False
     task_dailytask = False
     food = False
-    functional_sequence = ["commisson","supportrewards","dungeon","map","Universe","dailytask","rewards"]
+    functional_sequence = ["commisson","supportrewards","dungeon","skill_buy","skill_make","map","Universe","dailytask","rewards"]
     compare_maps = False
 def check_config():
     config_path = os.path.join(root_dir,CONFIG_FILE_NAME)

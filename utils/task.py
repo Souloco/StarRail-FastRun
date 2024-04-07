@@ -106,7 +106,7 @@ class Task:
         while not self.calculated.ocr_check(text='奇巧零食',points=(1020,160,1175,210),overtime=1.5) and time.time() - starttime < maxtime:
             self.calculated.img_click('food3.jpg')
         if self.calculated.ocr_check(text='奇巧零食',points=(1020,160,1175,210),overtime=1.5):
-            self.calculated.Mouse.position = self.calculated.mouse_pos((1435,870))
+            self.calculated.Mouse.position = self.calculated.mouse_pos((1440,870))
             self.calculated.mouse_click()
             if self.calculated.ocr_click(text='合成',points=(1150,965,1210,1000)):
                 self.calculated.img_click("sure.jpg")

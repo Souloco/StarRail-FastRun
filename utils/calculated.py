@@ -603,15 +603,29 @@ class Calculated:
             if self.img_check("one.jpg",(1860,300,1900,350),0.5):
                 break
             # 遥梦之眼交互
-            if self.img_check("map_4-1_point_6.png",overtime=1.5):
-                if self.img_check("map_4-1_point_7.png",overtime=3.5):
-                    self.img_click("map_4-1_point_8.png",overtime=1.5)
-                else:
-                    self.img_click("map_4-1_point_6.png",overtime=1.5)
-                break
+            self.img_click("map_4-1_point_6.png",overtime=1.5)
             # 气泡弹珠交互
             self.img_click("space.jpg",(1110,920,1210,1020),overtime=0.5)
-            time.sleep(2.5)
+            # 零食购买货全交互
+            if self.img_check("L.png",(0,0,200,100),overtime=1.5):
+                self.mouse_click()
+                time.sleep(0.5)
+                self.mouse_click()
+                if self.img_click("buy.jpg",overtime=1.5):
+                    time.sleep(0.5)
+                    self.mouse_click()
+                    if self.img_click("food3_1.jpg",rates=0.95,overtime=1.5):
+                        self.img_click("buy_all.jpg",overtime=1.5)
+                        self.img_click("sure.jpg",overtime=1.5)
+                        time.sleep(0.5)
+                        self.mouse_click()
+                    if self.img_click("food3_2.jpg",rates=0.95,overtime=1.5):
+                        self.img_click("buy_all.jpg",overtime=1.5)
+                        self.img_click("sure.jpg",overtime=1.5)
+                        time.sleep(0.5)
+                        self.mouse_click()
+                    time.sleep(0.5)
+                    self.key_press(Key.esc,0.05)
             if time.time() - start_time > 30:
                 self.img_click("exit.jpg",overtime=0.5)
                 return False
