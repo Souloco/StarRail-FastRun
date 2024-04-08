@@ -57,7 +57,7 @@ class Dungeon:
                 drag(0,-300, 1,button='left')
             else:
                 break
-        time.sleep(0.7)
+        time.sleep(1.2)
         self.calculated.dungeon_img_click(dungeonpath)
         time.sleep(2)
         while not self.calculated.img_check("dungeon_fight1.jpg",overtime=1.0):

@@ -742,7 +742,9 @@ class Calculated:
             while not self.img_check("liaotian.png",(20,900,80,970),1):
                 self.Mouse.position = self.mouse_pos((950,900))
                 self.Mouse.click(mouse.Button.left)
-                time.sleep(1.5)
+                time.sleep(1.0)
+            self.Mouse.click(mouse.Button.left)
+            time.sleep(1.5)
 
     def use_huangquan_skill(self,nums,move_key="w"):
         """
