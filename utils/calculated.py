@@ -35,6 +35,8 @@ class Calculated:
         self.reborn_food = True
         self.health_food = True
         self.skill_food = True
+        # 秘技食物使用统计
+        self.skill_nums = 0
 
     def get_hwnd(self):
         self.hwnd = win32gui.FindWindow("UnityWndClass","崩坏：星穹铁道")
@@ -780,6 +782,7 @@ class Calculated:
             time.sleep(0.1)
             self.Keyboard.release('e')
             if self.img_click("sure.jpg",overtime=0.5):
+                self.skill_nums += 1
                 time.sleep(0.7)
                 self.img_click("exit3.jpg",overtime=0.5)
                 self.img_check("liaotian.png",(20,900,80,970),1)

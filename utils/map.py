@@ -275,6 +275,7 @@ class Map:
         self.mapid = "map_0-0_0"
         self.compare_maps = False
         self.Enter_map_jsonlist(self.auto_map_list)
+        log.info(f"锄大地---秘技食物使用次数:{self.calculated.skill_nums}")
         if self.run_change:
             log.info("锄大地---疾跑模式切换")
             self.calculated.run_change(0)
