@@ -130,7 +130,7 @@ class Map:
         else:
             find_str = "sssaaawwwdddsssaaawwwddd"
         for find in find_str:
-            if not self.calculated.img_check(key,(0,0,0,0),1):
+            if not self.calculated.img_check(key,(0,0,0,0),0.5):
                 if find == 's':
                     self.calculated.Mouse.position = self.calculated.mouse_pos((250,900))
                     drag(0,-600, 1,button='left')
@@ -145,7 +145,7 @@ class Map:
                     drag(-600,0, 1,button='left')
             else:
                 break
-        time.sleep(0.5)
+        time.sleep(0.7)
         self.calculated.img_click(key,overtime=1.5)
 
     def find_floor(self,value):
