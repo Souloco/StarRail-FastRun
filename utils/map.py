@@ -91,9 +91,7 @@ class Map:
                         self.find_floor(value)
                 elif "point" in key:
                     log.info("寻找传送点")
-                    self.find_transfer_point(key)
-                    time.sleep(0.5)
-                    self.calculated.img_click(key,(0,0,0,0),overtime=value)
+                    self.find_transfer_point(key,value)
                 elif key == "transfer":
                     log.info("进行传送")
                     if not self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=value):
@@ -122,41 +120,33 @@ class Map:
                 self.auto_map_list.append(f"{mapid}.json")
                 log.info(f"{mapid}需要重新跑图")
 
-    def find_transfer_point(self,key):
+    def find_transfer_point(self,key,find_str):
         """
         说明:
             寻找传送点
         """
-        start_time = time.time()
-        while not self.calculated.img_check(key,(0,0,0,0),1) and time.time() - start_time < 45:
-            # 向下滚动寻找
-            for i in range(3):
-                if not self.calculated.img_check(key,(0,0,0,0),1):
+        if type(find_str) == str:
+            find_str = find_str + "sssaaawwwdddsssaaawwwddd"
+        else:
+            find_str = "sssaaawwwdddsssaaawwwddd"
+        for find in find_str:
+            if not self.calculated.img_check(key,(0,0,0,0),1):
+                if find == 's':
                     self.calculated.Mouse.position = self.calculated.mouse_pos((250,900))
                     drag(0,-600, 1,button='left')
-                else:
-                    break
-            # 向左滚动寻找
-            for i in range(3):
-                if not self.calculated.img_check(key,(0,0,0,0),1):
+                elif find == 'a':
                     self.calculated.Mouse.position = self.calculated.mouse_pos((250,900))
                     drag(600,0, 1,button='left')
-                else:
-                    break
-            # 向上滚动寻找
-            for i in range(3):
-                if not self.calculated.img_check(key,(0,0,0,0),1):
+                elif find == 'w':
                     self.calculated.Mouse.position = self.calculated.mouse_pos((1330,200))
                     drag(0,600, 1,button='left')
-                else:
-                    break
-            # 向右滚动寻找
-            for i in range(3):
-                if not self.calculated.img_check(key,(0,0,0,0),1):
+                elif find == 'd':
                     self.calculated.Mouse.position = self.calculated.mouse_pos((1330,200))
                     drag(-600,0, 1,button='left')
-                else:
-                    break
+            else:
+                break
+        time.sleep(0.5)
+        self.calculated.img_click(key,overtime=1.5)
 
     def find_floor(self,value):
         """
