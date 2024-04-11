@@ -1,12 +1,12 @@
 {
-  "name": "迥星港-5",
+  "name": "流云渡-7",
   "author": "Souloco",
   "start": [
     {
       "map": "1"
     },
     {
-      "map_3-2_point_7.jpg": 1.5
+      "map_3-1_point_5.jpg": 1.5
     },
     {
       "transfer": 1.5
@@ -14,7 +14,7 @@
   ],
   "map": [
     {
-      "E":[2,"s"]
+      "E":[2,"d"]
     }
   ]
 }
