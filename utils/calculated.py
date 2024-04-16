@@ -37,6 +37,8 @@ class Calculated:
         self.skill_food = True
         # 秘技食物使用统计
         self.skill_nums = 0
+        # 旋转参数
+        self.rotation = 1.0
 
     def get_hwnd(self):
         self.hwnd = win32gui.FindWindow("UnityWndClass","崩坏：星穹铁道")
@@ -325,7 +327,7 @@ class Calculated:
         self.Keyboard.release(key)
 
     def mouse_move(self,value:int):
-        win32api.mouse_event(1,int(value*self.scale),0)
+        win32api.mouse_event(1,int(value*self.scale*self.rotation),0)
         time.sleep(0.5)
 
     def has_red(self, points=(0,0,0,0)):

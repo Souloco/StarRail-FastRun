@@ -23,6 +23,7 @@ import time
 import os
 from datetime import datetime
 from utils.calculated import Calculated
+from utils.config import get_config
 from pynput import keyboard
 import orjson
 from win32 import win32api
@@ -35,6 +36,7 @@ if __name__ == '__main__':
 
 calcu = Calculated()
 # 游戏初始化设置
+calcu.rotation = get_config("rotation")
 calcu.get_hwnd()
 calcu.set_windowsize()
 calcu.active_window()
@@ -55,7 +57,8 @@ save_name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 mouse_move_value = 100
 # 记录最终水平移动视角距离数据
 last_move_value = 0
-
+# 记录时间保留的小数位数
+ndigits = 2
 print("开始录制")
 
 # 鼠标位移
@@ -83,7 +86,7 @@ def on_release(key):
     # 记录：赶路键、攻击键、转向键
     try:
         if key.char in key_list and key.char in key_down_time:
-            key_time = current_time - key_down_time[key.char]
+            key_time = round(current_time - key_down_time[key.char],ndigits)
             if last_move_value != 0:
                 key_event_list.append({"mouse_move":last_move_value})
                 print(f"最终视角平移mouse_move:{last_move_value}")

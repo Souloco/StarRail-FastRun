@@ -122,6 +122,7 @@ class Config():
     food = False
     functional_sequence = ["commisson","supportrewards","dungeon","skill_buy","skill_make","map","Universe","dailytask","rewards"]
     compare_maps = False
+    rotation = 1.0
 def check_config():
     config_path = os.path.join(root_dir,CONFIG_FILE_NAME)
     # 如果不存在先创建空白json

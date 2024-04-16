@@ -188,6 +188,7 @@ def map_config():
     sra.calculated.health_food = food_var.get()
     sra.calculated.reborn_food = food_var.get()
     sra.calculated.skill_food = skill_food_var.get()
+    sra.calculated.rotation = get_config("rotation")
 # 副本配置启用
 def dungeon_config():
     sra.dungeon.team_change = team_change_var.get()
@@ -247,6 +248,7 @@ def save_gui_config():
     set_config("proxy",proxy_text.get())
     set_config("gamepath",game_path.get())
     set_config("fight_time",fight_time.get())
+    set_config("rotation",rotation.get())
 
 # 清理图片log
 def clear_imglog():
@@ -652,6 +654,11 @@ if __name__ == '__main__':
     fight_time.set(get_config("fight_time"))
     fight_time_spinbox = ttk.Spinbox(configframe,from_=1, to=3600, increment=1,textvariable=fight_time)
     fight_time_spinbox.grid(row=7,column=2,columnspan=2,pady=5)
+    ttk.Label(configframe,text='旋转系数:').grid(row=8,column=0,columnspan=2,pady=5)
+    rotation = tk.DoubleVar()
+    rotation.set(get_config("rotation"))
+    rotation_spinbox = ttk.Spinbox(configframe,from_=0, to=100, increment=0.01,textvariable=rotation)
+    rotation_spinbox.grid(row=8,column=2,columnspan=2,pady=5)
     ttk.Button(configframe,text='确定',width=10,command=save_gui_config).grid(columnspan=4,pady=5)
     ttk.Button(configframe,text='返回',width=10,command=Enter_mainframe).grid(columnspan=4,pady=5)
     # 按键监听线程
