@@ -747,8 +747,8 @@ class Calculated:
                 self.Mouse.position = self.mouse_pos((950,900))
                 self.Mouse.click(mouse.Button.left)
                 time.sleep(1.0)
+            time.sleep(3.5)
             self.Mouse.click(mouse.Button.left)
-            time.sleep(1.5)
 
     def use_huangquan_skill(self,nums,move_key="w"):
         """

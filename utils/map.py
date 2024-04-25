@@ -50,7 +50,6 @@ class Map:
                     if not check_mapname_flag:
                         # 进入星球
                         if self.planetid != planet_id:
-                            self.planetid = planet_id
                             log.info("进入星球")
                             for i in range(3):
                                 if self.calculated.img_check("planet_navigation.jpg",(40,40,100,100),2):
@@ -85,6 +84,8 @@ class Map:
                             else:
                                 break
                         self.calculated.img_click(map_name_dir,(1420,180,1890,1020),2)
+                    # 星球编号记录
+                    self.planetid = planet_id
                     if value != "":
                         # 进入层数
                         log.info(f"进入{value}层")
