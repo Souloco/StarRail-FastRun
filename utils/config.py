@@ -87,6 +87,7 @@ class Config():
     close_game = 0
     img_log = False
     map_list_data = []
+    huangquan_map_sequence = []
     team_change = False
     team_id = 1
     dungeon_team_id = 1

@@ -757,7 +757,7 @@ class Calculated:
         """
         self.Keyboard.press(move_key)
         for i in range(nums):
-            self.use_skill(0.26)
+            self.use_skill(0.28)
             # 手机白色---战斗判断
             # print("战斗判断:",self.get_pix_bgr((40,65)))
             if not self.pixelMatchesColor((40,65),(229,229,229),10):
@@ -772,7 +772,7 @@ class Calculated:
         说明:
             使用秘技
         """
-        print("秘技判断:",self.get_pix_bgr((1765,865)))
+        # print("秘技判断:",self.get_pix_bgr((1765,865)))
         # 秘技用尽紫色判断
         if not self.pixelMatchesColor((1765,865),(206,132,147),10):
             self.Keyboard.press('e')
