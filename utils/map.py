@@ -39,7 +39,7 @@ class Map:
                     # 激活窗口
                     win32gui.SetForegroundWindow(self.calculated.hwnd)
                     self.calculated.wait_main_interface()
-                    check_mapname_flag = self.calculated.ocr_check(map_name,(0,0,200,40),1,mode=2)
+                    check_mapname_flag = self.calculated.ocr_check(map_name,(0,0,300,40),1,mode=2)
                     # 进入地图
                     self.calculated.open_map()
                     if self.compare_maps:
