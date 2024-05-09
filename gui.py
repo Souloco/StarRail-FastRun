@@ -427,7 +427,7 @@ if __name__ == '__main__':
         map_planet_value_list[int(planet_id)-1].append(map_value_list[i])
         if map_list[i] in map_list_data:
             map_value_list[i].set(1)
-        map_checkbutton_list.append(ttk.Checkbutton(map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=map_value_list[i],onvalue=1, offvalue=0,width=12))
+        map_checkbutton_list.append(ttk.Checkbutton(map_tab_list[int(planet_id)-1],text=map_allname_list1[i],variable=map_value_list[i],onvalue=1, offvalue=0,width=10))
         map_checkbutton_list[i].grid(row=int(map_id),column=int(index_id))
     map_notebook.grid(columnspan=5)
     # 按钮
