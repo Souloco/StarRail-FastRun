@@ -6,7 +6,7 @@
       "map": "2"
     },
     {
-      "map_4-6_point_3.jpg": 1.5
+      "map_4-6_point_4.jpg": 1.5
     },
     {
       "transfer": 1.5
@@ -14,31 +14,31 @@
   ],
   "map": [
     {
-      "w": 2.45
+      "loc_angle": 280
     },
     {
-      "a": 1.969226000001072
+      "w": 4.2
     },
     {
-      "e": 1.2
+      "fighting": 1
     },
     {
-      "fighting":1
+      "loc_angle": 280
     },
     {
-      "a": 2.3
+      "d": 1.8430246000007173
     },
     {
-      "fighting":1
+      "fighting": 1
     },
     {
-      "fighting":1
+      "loc_angle": 280
     },
     {
-      "w": 0.85
+      "s": 0.7
     },
     {
-      "fighting":1
+      "fighting": 1
     }
   ]
 }
