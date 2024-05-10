@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import tkinter.font as tkfont
-from utils.config import read_map,read_maplist_name,set_config,get_config,read_json_info,check_config
+from utils.config import read_map,read_maplist_name,set_config,get_config,read_json_info,check_config,get_map_types,check_map_config
 from utils.StarRail import StarRail
 import os
 import logging
@@ -313,6 +313,7 @@ if __name__ == '__main__':
         # raise Exception("请以管理员身份运行")
     # 配置检查
     check_config()
+    check_map_config()
     # 功能实例
     sra = StarRail()
     # gui页面
@@ -649,7 +650,7 @@ if __name__ == '__main__':
     font_sizes.set(get_config("fontsize"))
     ttk.Spinbox(configframe,from_=5, to=100, increment=1,textvariable=font_sizes).grid(row=3,column=2,columnspan=2,pady=5)
     ttk.Label(configframe,text='锄地路线:').grid(row=4,column=0,columnspan=2,pady=5)
-    map_types = os.listdir("./maps")
+    map_types = get_map_types()
     map_type_sets = tk.StringVar()
     map_type_sets.set(map_type)
     ttk.OptionMenu(configframe,map_type_sets,map_type,*map_types).grid(row=4,column=2,columnspan=2,pady=5)

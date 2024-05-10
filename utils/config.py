@@ -11,8 +11,7 @@ elif __file__:
 picture_dir = os.path.join(root_dir,"picture")
 # model路径
 model_dir = os.path.join(root_dir,"model")
-# dungeon路径
-dungeon_dir = os.path.join(root_dir,"dungeon")
+
 # 配置文件名字
 CONFIG_FILE_NAME = "config.json"
 def read_map(map_type="map"):
@@ -32,10 +31,23 @@ def read_json_info(path,info,prepath=""):
         info:信息字段
         prepath:修补目录
     """
-    with open(os.path.join(root_dir,prepath,path),encoding='utf-8') as f:
+    json_path = os.path.join(root_dir,prepath,path)
+    try:
+        with open(json_path,encoding='utf-8') as f:
+            data = json.load(f)
+            info_list = data[info]
+        return info_list
+    except Exception:
+        print(json_path + f"读取{info}字段信息失败")
+        raise
+
+def set_json_info(path,info:str,value,prepath=""):
+    json_path = os.path.join(root_dir,prepath,path)
+    with open(json_path,"r",encoding='utf-8') as f:
         data = json.load(f)
-        info_list = data[info]
-    return info_list
+        data[info] = value
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(data,f,indent=2,ensure_ascii=False)
 
 def read_maplist_name(map_type="map"):
     """
@@ -62,11 +74,11 @@ def read_picture(imgname,prepath="picture"):
         prepath: 修补目录
     """
     imgpath = os.path.join(root_dir,prepath,imgname)
-    if os.path.exists(imgpath):
+    try:
         img = cv.imread(imgpath)
         return img
-    else:
-        print(f"{imgpath}图片不存在")
+    except Exception:
+        print(f"{imgpath}图片读取失败")
         return False
 
 def set_config(info:str,value):
@@ -124,6 +136,8 @@ class Config():
     functional_sequence = ["commisson","supportrewards","dungeon","skill_buy","skill_make","map","Universe","dailytask","rewards"]
     compare_maps = False
     rotation = 1.0
+
+
 def check_config():
     config_path = os.path.join(root_dir,CONFIG_FILE_NAME)
     # 如果不存在先创建空白json
@@ -138,6 +152,31 @@ def check_config():
             if '__' not in key and key not in data:
                 set_config(key,item)
     return True
+
+def check_map_config():
+    config_path = os.path.join(root_dir,'maps',CONFIG_FILE_NAME)
+    # 如果不存在先创建空白json
+    if not os.path.exists(config_path):
+        with open(config_path,"w",encoding='utf-8') as f:
+            json.dump({},f)
+            f.close()
+    # 获取路线种类
+    map_types = get_map_types()
+    # 缺少配置补充默认值
+    with open(config_path,"r",encoding='utf-8') as f:
+        data = json.load(f)
+        for type in map_types:
+            info = type + '_sequence'
+            if info not in data:
+                set_json_info(CONFIG_FILE_NAME,info,[],"maps")
+
+def get_map_types():
+    map_types = os.listdir(os.path.join(root_dir,'maps'))
+    map_types = [item for item in map_types if os.path.isdir(os.path.join(root_dir,'maps',item))]
+    map_types.remove('save')
+    map_types.remove('special')
+    return map_types
+
 def message(msg:str):
     with open(os.path.join(root_dir,"logs","message.txt"),"w",encoding='utf-8') as f:
         f.write(f"{msg}")
