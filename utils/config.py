@@ -75,8 +75,12 @@ def read_picture(imgname,prepath="picture"):
     """
     imgpath = os.path.join(root_dir,prepath,imgname)
     try:
-        img = cv.imread(imgpath)
-        return img
+        if os.path.exists(imgpath):
+            img = cv.imread(imgpath)
+            return img
+        else:
+            print(f"{imgpath}图片路径不存在")
+            return False
     except Exception:
         print(f"{imgpath}图片读取失败")
         return False
