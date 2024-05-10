@@ -20,19 +20,7 @@ sra.map.id = get_config("character_id")
 sra.map.skill = get_config("skill")
 sra.map.run_change = get_config("run_change")
 sra.map.mappath = "maps\\" + get_config("map_type")
-if "huangquan" in get_config("map_type"):
-    huangquan_map_sequence = get_config("huangquan_map_sequence")
-    map_sequence = get_config("map_list_data")
-    map_list = []
-    for map in huangquan_map_sequence:
-        if map in map_sequence:
-            map_list.append(map)
-    for map in map_sequence:
-        if map not in huangquan_map_sequence:
-            map_list.append(map)
-    sra.map.map_list = map_list
-else:
-    sra.map.map_list = get_config("map_list_data")
+sra.map.map_list = get_config("map_list_data")
 sra.calculated.fight_time = get_config("fight_time")
 sra.calculated.health_food = get_config("food")
 sra.calculated.reborn_food = get_config("food")

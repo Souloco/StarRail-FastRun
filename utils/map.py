@@ -247,8 +247,21 @@ class Map:
         self.calculated.Keyboard.release("m")
         time.sleep(1)
 
+    def map_config(self):
+        map_type = self.mappath.replace("maps\\","")
+        sequence = read_json_info("config.json",f"{map_type}_sequence",prepath="maps")
+        new_sequence = []
+        for map in sequence:
+            if map in self.map_list:
+                new_sequence.append(map)
+        for map in self.map_list:
+            if map not in sequence:
+                new_sequence.append(map)
+        self.map_list = new_sequence
+
     def start(self):
         log.info("游戏初始化设置")
+        self.map_config()
         self.calculated.set_windowsize()
         self.calculated.check_main_interface()
         if self.run_change:

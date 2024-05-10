@@ -174,20 +174,7 @@ def allfunction_config():
     sra.close_game = close_game_var.get()
 # 锄地配置启用
 def map_config():
-    # 黄泉路线自定义执行路线
-    if "huangquan" in map_type:
-        huangquan_map_sequence = get_config("huangquan_map_sequence")
-        map_sequence = get_map_list(map_value_list)
-        map_list = []
-        for map in huangquan_map_sequence:
-            if map in map_sequence:
-                map_list.append(map)
-        for map in map_sequence:
-            if map not in huangquan_map_sequence:
-                map_list.append(map)
-        sra.map.map_list = map_list
-    else:
-        sra.map.map_list = get_map_list(map_value_list)
+    sra.map.map_list = get_map_list(map_value_list)
     sra.map.compare_maps = compare_map_Var.get()
     sra.map.img_logs = img_log_Var.get()
     sra.map.team_change = team_change_var.get()
