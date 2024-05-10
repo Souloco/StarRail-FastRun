@@ -273,8 +273,3 @@ class Map:
         log.info("锄大地---执行完毕")
         message("锄大地---执行完毕")
 
-    def check_map(self):
-        log.info("锄大地---打开背包")
-        self.calculated.Keyboard.press('b')
-        self.calculated.Keyboard.release("b")
-        self.calculated.img_click("check1.jpg",(0,0,1300,950),overtime=2)

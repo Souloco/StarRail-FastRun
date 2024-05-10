@@ -646,11 +646,12 @@ class Calculated:
             self.Keyboard.press("m")
             time.sleep(0.05)
             self.Keyboard.release("m")
-            # 稚子的梦返回地图界面
+            # 返回地图界面
             self.Mouse.position = self.mouse_pos((250,900))
             time.sleep(1)
-            self.ocr_click("返回",(1700,110,1800,150),1)
+            self.ocr_click("返回",(1700,110,1800,150),1.0)
             # self.img_click("return.jpg",overtime=1.5,rates=0.85)
+        time.sleep(1)
 
     def release_mouse_keyboard(self):
         """
