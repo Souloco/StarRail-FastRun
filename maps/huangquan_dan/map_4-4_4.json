@@ -1,0 +1,26 @@
+{
+  "name": "白日梦酒店-11",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "3"
+    },
+    {
+      "map_4-3_point_7.jpg": "ddw"
+    },
+    {
+      "map_4-3_point_8.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "E":[4,"w"]
+    },
+    {
+      "E":[10,"a"]
+    }
+  ]
+}

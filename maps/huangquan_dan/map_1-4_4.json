@@ -1,0 +1,20 @@
+{
+  "name": "禁闭舱段-4",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "1"
+    },
+    {
+      "map_1-4_point_3.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "E":[5,"d"]
+    }
+  ]
+}

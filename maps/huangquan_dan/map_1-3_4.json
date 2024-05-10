@@ -1,0 +1,20 @@
+{
+  "name": "支援舱段-4",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "2"
+    },
+    {
+      "map_1-3_point_5.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "E":[1,"d"]
+    }
+  ]
+}

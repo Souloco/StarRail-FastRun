@@ -1,0 +1,23 @@
+{
+  "name": "基座舱段-3",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": ""
+    },
+    {
+      "map_1-1_point_3.jpg": "ss"
+    },
+    {
+      "map_1-1_point_4.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "E":[2,"d"]
+    }
+  ]
+}

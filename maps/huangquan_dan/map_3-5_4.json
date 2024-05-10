@@ -1,0 +1,23 @@
+{
+  "name": "丹鼎司-4",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "2"
+    },
+    {
+      "map_3-5_point_6.jpg": "dd"
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "E":[3,"s"]
+    },
+    {
+      "E":[2,"d"]
+    }
+  ]
+}

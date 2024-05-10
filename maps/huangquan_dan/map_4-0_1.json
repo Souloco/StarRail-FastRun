@@ -1,0 +1,26 @@
+{
+  "name": "黄金时刻-1",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "2"
+    },
+    {
+      "map_4-0_point_1.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "loc_angle": 0
+    },
+    {
+      "E":[2,"w"]
+    },
+    {
+      "E":[9,"a"]
+    }
+  ]
+}

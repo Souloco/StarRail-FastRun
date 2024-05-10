@@ -1,0 +1,23 @@
+{
+  "name": "大矿区-3",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": ""
+    },
+    {
+      "map_2-5_point_6.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "mouse_move": 750
+    },
+    {
+      "E":[8,"s"]
+    }
+  ]
+}

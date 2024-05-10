@@ -1,0 +1,20 @@
+{
+  "name": "流云渡-2",
+  "author": "Souloco",
+  "start": [
+    {
+      "map": "1"
+    },
+    {
+      "map_3-1_point_5.jpg": 1.5
+    },
+    {
+      "transfer": 1.5
+    }
+  ],
+  "map": [
+    {
+      "E":[2,"d"]
+    }
+  ]
+}
