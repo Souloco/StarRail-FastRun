@@ -460,7 +460,7 @@ if __name__ == '__main__':
     ttk.Button(hoe_frame,text='保存',width=10,command=save_config).grid(row=9,column=4,pady=5)
     ttk.Button(hoe_frame,text='返回',width=10,command=Enter_mainframe).grid(row=10,column=4)
     # 黄泉路线前置配置
-    if map_type == "huangquan":
+    if "huangquan" in map_type:
         skill_var.set(True)
         skill_food_var.set(True)
         skill_btn.state(['disabled'])
