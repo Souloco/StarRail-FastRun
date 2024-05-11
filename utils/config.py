@@ -14,12 +14,18 @@ model_dir = os.path.join(root_dir,"model")
 
 # 配置文件名字
 CONFIG_FILE_NAME = "config.json"
+def compare_map(item:str):
+    planet_id = item[item.index('_') + 1:item.index('-')].zfill(2)
+    map_id = item[item.index('-') + 1:item.index('_',5)].zfill(2)
+    index_id = item[item.index('_',5) + 1:item.index('.')].zfill(2)
+    return planet_id + map_id + index_id
 def read_map(map_type="map"):
     """
     说明：
         读取地图文件
     """
     map_list = os.listdir(os.path.join(root_dir,f"maps\\{map_type}"))
+    map_list.sort(key=compare_map)
     return map_list
 
 def read_json_info(path,info,prepath=""):
