@@ -70,17 +70,17 @@ class Map:
                         # 向下滚动寻找
                         for i in range(6):
                             if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
-                                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,250))
+                                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,550))
                                 for j in range(2):
-                                    self.calculated.Mouse.scroll(0,-200)
+                                    drag(0,-200, 1,button='left')
                             else:
                                 break
                         # 向上滚动寻找
                         for i in range(6):
                             if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
-                                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,250))
+                                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,550))
                                 for j in range(2):
-                                    self.calculated.Mouse.scroll(0,200)
+                                    drag(0,200, 1,button='left')
                             else:
                                 break
                         self.calculated.img_click(map_name_dir,(1420,180,1890,1020),2)
@@ -95,13 +95,7 @@ class Map:
                     self.find_transfer_point(key,value)
                 elif key == "transfer":
                     log.info("进行传送")
-                    if not self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=value):
-                        self.calculated.img_click("transfer1.jpg",overtime=0.5)
-                        self.calculated.img_click("transfer2.jpg",overtime=0.5)
-                        self.calculated.img_click("transfer3.png",overtime=0.5)
-                        self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=value)
-                    time.sleep(3)
-                    self.calculated.check_main_interface()
+                    self.enter_transfer()
                     # 复活切换远程角色
                     if self.team_change:
                         self.calculated.change_team(0,self.id)
@@ -148,6 +142,20 @@ class Map:
                 break
         time.sleep(0.7)
         self.calculated.img_click(key,overtime=1.5)
+
+    def enter_transfer(self):
+        """
+        说明:
+            进入传送点
+        """
+        transfer_list = ["transfer1.jpg","transfer2.jpg","transfer3.jpg"]
+        if not self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=1.5):
+            for transfer in transfer_list:
+                if self.calculated.img_click(transfer,(1410,920,1840,1000),overtime=1.5):
+                    break
+            self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=1.5)
+        time.sleep(2.5)
+        self.calculated.check_main_interface()
 
     def find_floor(self,value):
         """
