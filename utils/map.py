@@ -66,24 +66,7 @@ class Map:
                                         drag(400,0, 1,button='left')
                         # 进入地名
                         log.info("进入地名")
-                        # 滚动寻找
-                        # 向下滚动寻找
-                        for i in range(6):
-                            if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
-                                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,550))
-                                for j in range(2):
-                                    drag(0,-200, 1,button='left')
-                            else:
-                                break
-                        # 向上滚动寻找
-                        for i in range(6):
-                            if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
-                                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,550))
-                                for j in range(2):
-                                    drag(0,200, 1,button='left')
-                            else:
-                                break
-                        self.calculated.img_click(map_name_dir,(1420,180,1890,1020),2)
+                        self.enter_map(map_name_dir)
                     # 星球编号记录
                     self.planetid = planet_id
                     if value != "":
@@ -142,6 +125,27 @@ class Map:
                 break
         time.sleep(0.7)
         self.calculated.img_click(key,overtime=1.5)
+
+    def enter_map(self,map_name_dir):
+        """
+        说明:
+            进入地名
+        """
+        # 向下滚动寻找
+        for i in range(5):
+            if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
+                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,550))
+                drag(0,-200, 0.5,button='left')
+            else:
+                break
+        # 向上滚动寻找
+        for i in range(5):
+            if not self.calculated.img_check(map_name_dir,(1420,180,1890,1020),1):
+                self.calculated.Mouse.position = self.calculated.mouse_pos((1750,550))
+                drag(0,200,0.5,button='left')
+            else:
+                break
+        self.calculated.img_click(map_name_dir,(1420,180,1890,1020),2)
 
     def enter_transfer(self):
         """
