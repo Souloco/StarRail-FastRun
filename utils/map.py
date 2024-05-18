@@ -152,7 +152,7 @@ class Map:
         说明:
             进入传送点
         """
-        transfer_list = ["transfer1.jpg","transfer2.jpg","transfer3.jpg"]
+        transfer_list = ["transfer1.jpg","transfer2.jpg","transfer3.png"]
         if not self.calculated.img_click("transfer.jpg",(1410,920,1840,1000),overtime=1.5):
             for transfer in transfer_list:
                 if self.calculated.img_click(transfer,overtime=0.5):
