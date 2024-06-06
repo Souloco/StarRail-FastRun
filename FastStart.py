@@ -37,7 +37,7 @@ sra.task.rewards_flag = get_config("task_dailytask")
 if get_config("dungeon_time_flag"):
     today_id = int(time.strftime("%w", time.localtime()))
     dungeon_time = get_config("dungeon_time")
-    sra.dungeon.dungeon_list = dungeon_time[today_id]
+    sra.dungeon.dungeon_list = get_config(dungeon_time[today_id])
 else:
     sra.dungeon.dungeon_list = get_config("配置1")
 # 单项功能是否执行
