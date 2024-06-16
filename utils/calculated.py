@@ -610,11 +610,12 @@ class Calculated:
             self.img_click("map_4-1_point_6.png",overtime=1.5)
             # 气泡弹珠交互
             self.img_click("space.jpg",(1110,920,1210,1020),overtime=0.5)
-            # 零食购买货全交互
-            if self.img_check("L.png",(0,0,200,100),overtime=1.5):
+            # 对话检测
+            while self.img_check("L.png",(0,0,200,100),overtime=1.5):
                 self.mouse_click()
                 time.sleep(0.5)
                 self.mouse_click()
+                # 零食购买货全交互
                 if self.img_click("buy.jpg",overtime=1.5):
                     time.sleep(0.5)
                     self.mouse_click()
@@ -630,6 +631,9 @@ class Calculated:
                         self.mouse_click()
                     time.sleep(0.5)
                     self.key_press(Key.esc,0.05)
+                else:
+                    self.img_click("exit4.png",overtime=0.5)
+                    self.img_click("exit.jpg",overtime=0.5)
             if time.time() - start_time > 30:
                 self.img_click("exit.jpg",overtime=0.5)
                 return False
