@@ -1,5 +1,6 @@
 import win32gui
 import time
+from datetime import datetime
 from .config import read_json_info,message,read_picture
 from .calculated import Calculated
 from .log import log
@@ -232,8 +233,11 @@ class Map:
         """
         map_name = read_json_info(mapjson,"name",prepath=self.mappath)
         log.info(f"当前执行路线:{map_name}")
+        starttime = datetime.now().replace(microsecond=0)
         self.Enter_map_start(mapjson)
         self.Enter_map_fighting(mapjson)
+        usetime = datetime.now().replace(microsecond=0) - starttime
+        log.info(f"执行路线{map_name}用时{usetime}")
 
     def Enter_map_jsonlist(self,jsonlist):
         """
@@ -276,6 +280,8 @@ class Map:
         self.map_config()
         self.calculated.set_windowsize()
         self.calculated.check_main_interface()
+        # 锄大地用时开始计时
+        starttime = datetime.now().replace(microsecond=0)
         if self.run_change:
             log.info("锄大地---疾跑模式切换")
             self.calculated.run_change(1)
@@ -295,6 +301,7 @@ class Map:
         if self.run_change:
             log.info("锄大地---疾跑模式切换")
             self.calculated.run_change(0)
+        usetime = datetime.now().replace(microsecond=0) - starttime
+        log.info(f"锄大地---用时统计{usetime}")
         log.info("锄大地---执行完毕")
         message("锄大地---执行完毕")
-
