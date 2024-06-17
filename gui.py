@@ -612,7 +612,7 @@ if __name__ == '__main__':
     skill_buy_var = tk.BooleanVar()
     skill_buy_var.set(get_config("skill_buy"))
     skill_make_var = tk.BooleanVar()
-    skill_make_var.set(get_config("skill_buy"))
+    skill_make_var.set(get_config("skill_make"))
     # 自动关机功能执行
     close_game_var = tk.IntVar()
     close_game_var.set(get_config("close_game"))
