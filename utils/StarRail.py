@@ -82,7 +82,8 @@ class StarRail:
         # 进入模拟宇宙页面
         log.info("进入模拟宇宙页面")
         self.dungeon.open_dungeon()
-        self.dungeon.calculated.dungeon_img_click("universe.jpg")
+        self.dungeon.calculated.dungeon_img_click("universe.jpg",overtime=1.5)
+        self.dungeon.calculated.dungeon_img_click("universe1.jpg",overtime=1.5)
         self.calculated.img_click("exit.jpg",points=(1700,200,1850,350),overtime=3)
         if self.calculated.ocr_check(text="扩展装置",points=(90,40,200,100)):
             self.calculated.img_click("universe_change.jpg")
