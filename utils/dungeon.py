@@ -37,7 +37,7 @@ class Dungeon:
             self.calculated.Keyboard.press(Key.f4)
             time.sleep(0.05)
             self.calculated.Keyboard.release(Key.f4)
-            self.calculated.img_click("dungeon_main.png",overtime=5)
+            self.calculated.img_click("dungeon_main.png",overtime=4)
 
     def enter_dungeon(self,dungeonpath:str,nums=1):
         self.open_dungeon()
