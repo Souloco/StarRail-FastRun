@@ -33,11 +33,11 @@ class Dungeon:
         self.calculated.check_main_interface()
         starttime = time.time()
         maxtime = 100
-        while not self.calculated.img_check("universe.jpg",overtime=1) and time.time() - starttime < maxtime:
+        while not self.calculated.img_check("universe.jpg",overtime=3) and time.time() - starttime < maxtime:
             self.calculated.Keyboard.press(Key.f4)
             time.sleep(0.05)
             self.calculated.Keyboard.release(Key.f4)
-            self.calculated.img_click("dungeon_main.png",overtime=4)
+            self.calculated.img_click("dungeon_main.png",overtime=2)
 
     def enter_dungeon(self,dungeonpath:str,nums=1):
         self.open_dungeon()
