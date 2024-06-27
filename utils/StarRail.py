@@ -3,6 +3,7 @@ from .dungeon import Dungeon
 from .map import Map
 from .task import Task
 from .log import log
+from pyautogui import drag
 import threading
 import ctypes
 import inspect
@@ -82,8 +83,15 @@ class StarRail:
         # 进入模拟宇宙页面
         log.info("进入模拟宇宙页面")
         self.dungeon.open_dungeon()
-        self.dungeon.calculated.dungeon_img_click("universe.jpg",overtime=1.5)
-        self.dungeon.calculated.dungeon_img_click("universe1.jpg",overtime=1.5)
+        if not self.calculated.dungeon_img_click("universe.jpg",overtime=1.5):
+            # 解锁差分宇宙UI进入模拟宇宙
+            self.calculated.img_click("universe_main.jpg",overtime=1.5)
+            self.calculated.img_click("universe_1.jpg",overtime=1.5)
+            for i in range(3):
+                if not self.calculated.img_check("universe_1-3.jpg",overtime=1):
+                    self.calculated.Mouse.position = self.calculated.mouse_pos((1200,900))
+                    drag(0,-300, 1,button='left')
+            self.calculated.dungeon_img_click("universe_1-3.jpg",overtime=1.5)
         self.calculated.img_click("exit.jpg",points=(1700,200,1850,350),overtime=3)
         if self.calculated.ocr_check(text="扩展装置",points=(90,40,200,100)):
             self.calculated.img_click("universe_change.jpg")
