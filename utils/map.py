@@ -169,7 +169,7 @@ class Map:
         """
         # self.calculated.ocr_click(value+"层",(0,700,125,1010),1)
         time.sleep(1)
-        self.calculated.img_click(f"floor_{value}.png",(0,700,125,1010),2.0,rates=0.85)
+        self.calculated.img_click(f"floor_{value}.png",(0,500,125,1010),2.0,rates=0.85)
 
     def skill_buy(self):
         path = self.mappath
