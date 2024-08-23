@@ -608,6 +608,7 @@ class Calculated:
                 break
             # 遥梦之眼交互
             self.img_click("map_4-1_point_6.png",overtime=1.5)
+            self.img_click("map_4-1_point_7.png",overtime=1.5)
             # 气泡弹珠交互
             self.img_click("space.jpg",(1110,920,1210,1020),overtime=0.5)
             # 对话检测
