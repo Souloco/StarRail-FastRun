@@ -33,7 +33,7 @@ class Dungeon:
         self.calculated.check_main_interface()
         starttime = time.time()
         maxtime = 100
-        while not (self.calculated.img_check("universe.jpg",overtime=1) or self.calculated.img_check("universe1.jpg",overtime=1)) and time.time() - starttime < maxtime:
+        while not (self.calculated.img_check("dungeon_check.jpg",overtime=1)) and time.time() - starttime < maxtime:
             self.calculated.Keyboard.press(Key.f4)
             time.sleep(0.05)
             self.calculated.Keyboard.release(Key.f4)
