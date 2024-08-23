@@ -21,7 +21,7 @@ This software is open source, free of charge and for learning and exchange purpo
 # 使用说明
 - 环境配置
     - python安装
-        - 版本要求```3.11.x```
+        - 版本要求```3.11.x```|```其他python版本自行安装依赖包|部分依赖需指定版本```
         - [python推荐安装版本3.11.3](https://www.python.org/downloads/release/python-3113/)
         - 页面拉至底部，下载Windows installer (64-bit)
         - 点击安装包进行安装
