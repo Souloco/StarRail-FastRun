@@ -100,6 +100,7 @@ This software is open source, free of charge and for learning and exchange purpo
 # 锄大地路线前置条件
 - 传送点激活|道路通路
 - 下方为部分前置要求`可能未提及全部`
+- 详情可以到地图机关注意事项查看|2024.08.23更新
 ## 仙舟罗浮
 - 工造司-2---精英怪金人---练度要求较高
 - 幽囚狱-2---传送点-3层`焦热狱`右侧路线---道路机关需通路
