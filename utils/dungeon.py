@@ -53,7 +53,7 @@ class Dungeon:
         # 向下滚动寻找
         for i in range(self.dungeon_find_nums):
             if not self.calculated.img_check(dungeonpath,(0,0,0,0),1):
-                self.calculated.Mouse.position = self.calculated.mouse_pos((1200,900))
+                self.calculated.Mouse.position = self.calculated.mouse_pos((1200,880))
                 drag(0,-300, 1,button='left')
             else:
                 break
